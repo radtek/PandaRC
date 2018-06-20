@@ -67,6 +67,7 @@ public:
 	void SetSentSize(int nSize) { m_nSentSize = nSize; }
 	void SetDataSize(int nSize) { assert(nSize >= 0 && nSize <= m_nCapacity); m_nDataSize = nSize; }
 
+	//websocket
 	int8_t IsMasking() { return m_nMasking; }
 	uint8_t* GetMaskingKey() { return m_tMaskingKey; }
 	void SetMaskingKey(bool bMasking, uint8_t* pKey) { if (bMasking) { m_nMasking = 1;  memcpy(m_tMaskingKey, pKey, 4); } }
@@ -81,6 +82,9 @@ public:
 	void RemoveInnerHeader();
 
 public:
+	bool Reserve(int nSize);
+
+private:
     bool CheckAndExpand(int nAppendSize);
 
 private:
@@ -93,10 +97,10 @@ private:
     int m_nDataSize;
 	int m_nSentSize;
 	int8_t m_nOffsetSize;
-	int8_t m_nWebSocketMark;
 	volatile short m_nRef;
 
 	int8_t m_nMasking;
+	int8_t m_nWebSocketMark;
 	uint8_t m_tMaskingKey[4]; //Websocket mask 长度在切包的时候解码,真正数据放到网关解码;
 	DISALLOW_COPY_AND_ASSIGN(Packet);
 };
