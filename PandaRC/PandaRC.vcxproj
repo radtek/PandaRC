@@ -13,11 +13,13 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B12702AD-ABFB-343A-A199-8E24837244A3}</ProjectGuid>
     <Keyword>Qt4VSv1.0</Keyword>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -112,13 +114,17 @@
     </QtRcc>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Common\DataStruct\XString.cpp" />
     <ClCompile Include="GeneratedFiles\qrc_PandaRC.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Logger\Logger.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="NetUtil\NetAPI.cpp" />
+    <ClCompile Include="NetUtil\Packet.cpp" />
     <ClCompile Include="PandaRC.cpp" />
     <ClCompile Include="UDPNet\UDPNet.cpp" />
   </ItemGroup>
@@ -143,7 +149,42 @@
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Common\DataStruct\Array.h" />
+    <ClInclude Include="Common\DataStruct\Atomic.h" />
+    <ClInclude Include="Common\DataStruct\CircleQueue.h" />
+    <ClInclude Include="Common\DataStruct\Encoding.h" />
+    <ClInclude Include="Common\DataStruct\Encrypt.h" />
+    <ClInclude Include="Common\DataStruct\HashFunc.h" />
+    <ClInclude Include="Common\DataStruct\HexStr.h" />
+    <ClInclude Include="Common\DataStruct\HList.h" />
+    <ClInclude Include="Common\DataStruct\List.h" />
+    <ClInclude Include="Common\DataStruct\Md5.h" />
+    <ClInclude Include="Common\DataStruct\Memory.h" />
+    <ClInclude Include="Common\DataStruct\MemPool.h" />
+    <ClInclude Include="Common\DataStruct\MinHeap.h" />
+    <ClInclude Include="Common\DataStruct\MsgQueue.h" />
+    <ClInclude Include="Common\DataStruct\MutexLock.h" />
+    <ClInclude Include="Common\DataStruct\ObjID.h" />
+    <ClInclude Include="Common\DataStruct\Point.h" />
+    <ClInclude Include="Common\DataStruct\PureList.h" />
+    <ClInclude Include="Common\DataStruct\Ranking.h" />
+    <ClInclude Include="Common\DataStruct\Regexp.h" />
+    <ClInclude Include="Common\DataStruct\RWLock.h" />
+    <ClInclude Include="Common\DataStruct\Slashes.h" />
+    <ClInclude Include="Common\DataStruct\stl_alloc.h" />
+    <ClInclude Include="Common\DataStruct\Sync.h" />
+    <ClInclude Include="Common\DataStruct\SyncMap.h" />
+    <ClInclude Include="Common\DataStruct\Thread.h" />
+    <ClInclude Include="Common\DataStruct\TimeMonitor.h" />
+    <ClInclude Include="Common\DataStruct\XMath.h" />
+    <ClInclude Include="Common\DataStruct\XString.h" />
+    <ClInclude Include="Common\DataStruct\XTime.h" />
+    <ClInclude Include="Common\Platform.h" />
+    <ClInclude Include="Common\PlatformHeader.h" />
     <ClInclude Include="GeneratedFiles\ui_PandaRC.h" />
+    <ClInclude Include="Logger\Logger.h" />
+    <ClInclude Include="NetUtil\NetAPI.h" />
+    <ClInclude Include="NetUtil\Packet.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

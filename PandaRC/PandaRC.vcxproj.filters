@@ -27,6 +27,18 @@
     <Filter Include="Source Files\UDPNet">
       <UniqueIdentifier>{a1675b93-6a96-458b-8045-3b48c50c8504}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\NetUtil">
+      <UniqueIdentifier>{bf7818de-a997-448a-8f1b-b7d4b456a214}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Common">
+      <UniqueIdentifier>{b1077ff0-b639-40d1-8213-d146b072cb87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Common\DataStruct">
+      <UniqueIdentifier>{bda3a264-f628-4d55-9e70-547af2fa6a7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Logger">
+      <UniqueIdentifier>{420e933c-8caf-422a-bb14-143232612cc3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -40,6 +52,18 @@
     </ClCompile>
     <ClCompile Include="GeneratedFiles\qrc_PandaRC.cpp">
       <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NetUtil\NetAPI.cpp">
+      <Filter>Source Files\NetUtil</Filter>
+    </ClCompile>
+    <ClCompile Include="NetUtil\Packet.cpp">
+      <Filter>Source Files\NetUtil</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\DataStruct\XString.cpp">
+      <Filter>Source Files\Common\DataStruct</Filter>
+    </ClCompile>
+    <ClCompile Include="Logger\Logger.cpp">
+      <Filter>Source Files\Logger</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -66,6 +90,111 @@
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_PandaRC.h">
       <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NetUtil\NetAPI.h">
+      <Filter>Source Files\NetUtil</Filter>
+    </ClInclude>
+    <ClInclude Include="NetUtil\Packet.h">
+      <Filter>Source Files\NetUtil</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Platform.h">
+      <Filter>Source Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PlatformHeader.h">
+      <Filter>Source Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\DataStruct\Array.h">
+      <Filter>Source Files\Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\DataStruct\Atomic.h">
+      <Filter>Source Files\Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\DataStruct\CircleQueue.h">
+      <Filter>Source Files\Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\DataStruct\Encoding.h">
+      <Filter>Source Files\Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\DataStruct\Encrypt.h">
+      <Filter>Source Files\Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\DataStruct\HashFunc.h">
+      <Filter>Source Files\Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\DataStruct\HexStr.h">
+      <Filter>Source Files\Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\DataStruct\HList.h">
+      <Filter>Source Files\Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\DataStruct\List.h">
+      <Filter>Source Files\Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\DataStruct\Md5.h">
+      <Filter>Source Files\Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\DataStruct\Memory.h">
+      <Filter>Source Files\Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\DataStruct\MemPool.h">
+      <Filter>Source Files\Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\DataStruct\MinHeap.h">
+      <Filter>Source Files\Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\DataStruct\MsgQueue.h">
+      <Filter>Source Files\Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\DataStruct\MutexLock.h">
+      <Filter>Source Files\Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\DataStruct\ObjID.h">
+      <Filter>Source Files\Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\DataStruct\Point.h">
+      <Filter>Source Files\Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\DataStruct\PureList.h">
+      <Filter>Source Files\Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\DataStruct\Ranking.h">
+      <Filter>Source Files\Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\DataStruct\Regexp.h">
+      <Filter>Source Files\Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\DataStruct\RWLock.h">
+      <Filter>Source Files\Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\DataStruct\Slashes.h">
+      <Filter>Source Files\Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\DataStruct\stl_alloc.h">
+      <Filter>Source Files\Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\DataStruct\Sync.h">
+      <Filter>Source Files\Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\DataStruct\SyncMap.h">
+      <Filter>Source Files\Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\DataStruct\Thread.h">
+      <Filter>Source Files\Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\DataStruct\TimeMonitor.h">
+      <Filter>Source Files\Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\DataStruct\XMath.h">
+      <Filter>Source Files\Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\DataStruct\XString.h">
+      <Filter>Source Files\Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\DataStruct\XTime.h">
+      <Filter>Source Files\Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="Logger\Logger.h">
+      <Filter>Source Files\Logger</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

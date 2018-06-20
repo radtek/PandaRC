@@ -2,6 +2,7 @@
 
 #include <QObject>
 #include <QUdpSocket>
+#include <NetUtil\Packet.h>
 
 class UDPNet : public QObject
 {
@@ -17,6 +18,12 @@ public:
 		m_sendAddress.setAddress(sendAddress);
 		m_sendPort = sendPort;
 	}
+
+	//·¢ËÍÊý¾Ý
+	void SendPacket(Packet* pPacket) {
+		//m_socket->writeDatagram();
+	}
+
 
 private:
 	QUdpSocket* m_socket;
