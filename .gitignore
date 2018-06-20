@@ -1,0 +1,6 @@
+/PandaRC/x64/Debug/*.log
+/PandaRC/x64/Debug/PandaRC.tlog/*.tlog
+/PandaRC/x64/Debug/*.obj
+/PandaRC/x64/Debug/*.pdb
+/PandaRC/x64/Debug
+/PandaRC/*.opendb
