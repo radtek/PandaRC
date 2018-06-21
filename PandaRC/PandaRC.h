@@ -13,6 +13,7 @@ public:
 
 public slots:
 	void onBtnSend();
+	void onBtnRecv();
 
 private:
 	Ui::PandaRCClass ui;

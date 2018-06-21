@@ -82,8 +82,25 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>btnRecv</sender>
+   <signal>clicked()</signal>
+   <receiver>PandaRCClass</receiver>
+   <slot>onBtnRecv()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>88</x>
+     <y>118</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>209</x>
+     <y>127</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>onBtnSend()</slot>
+  <slot>onBtnRecv()</slot>
  </slots>
 </ui>

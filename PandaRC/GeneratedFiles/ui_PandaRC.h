@@ -57,6 +57,7 @@ public:
 
         retranslateUi(PandaRCClass);
         QObject::connect(btnSend, SIGNAL(clicked()), PandaRCClass, SLOT(onBtnSend()));
+        QObject::connect(btnRecv, SIGNAL(clicked()), PandaRCClass, SLOT(onBtnRecv()));
 
         QMetaObject::connectSlotsByName(PandaRCClass);
     } // setupUi

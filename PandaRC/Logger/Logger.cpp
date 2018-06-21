@@ -1,4 +1,5 @@
 ﻿#include "Logger/Logger.h"
+#include <QDebug>
 #include "Common/DataStruct/Encoding.h"
 #include "Common/DataStruct/MutexLock.h"
 #include "Common/DataStruct/XMath.h"
@@ -89,6 +90,7 @@ void Logger::Print(int nLevel, const char* pFmt, ...)
 {
 	if (m_bClose)
 	{
+		//qDebug() << "Logger is closed!\n";
 		printf("Logger is closed!\n");
 		return;
 	}
