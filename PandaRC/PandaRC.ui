@@ -13,7 +13,34 @@
   <property name="windowTitle">
    <string>PandaRC</string>
   </property>
-  <widget class="QWidget" name="centralWidget"/>
+  <widget class="QWidget" name="centralWidget">
+   <widget class="QPushButton" name="btnSend">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>20</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>发送</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnRecv">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>70</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>接收</string>
+    </property>
+   </widget>
+  </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
@@ -38,5 +65,25 @@
  <resources>
   <include location="PandaRC.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>btnSend</sender>
+   <signal>clicked()</signal>
+   <receiver>PandaRCClass</receiver>
+   <slot>onBtnSend()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>41</x>
+     <y>58</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>206</x>
+     <y>72</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>onBtnSend()</slot>
+ </slots>
 </ui>

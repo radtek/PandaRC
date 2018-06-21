@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'PandaRC.ui'
 **
-** Created by: Qt User Interface Compiler version 5.11.0
+** Created by: Qt User Interface Compiler version 5.11.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -13,6 +13,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QWidget>
@@ -23,6 +24,8 @@ class Ui_PandaRCClass
 {
 public:
     QWidget *centralWidget;
+    QPushButton *btnSend;
+    QPushButton *btnRecv;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -34,6 +37,12 @@ public:
         PandaRCClass->resize(600, 400);
         centralWidget = new QWidget(PandaRCClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
+        btnSend = new QPushButton(centralWidget);
+        btnSend->setObjectName(QStringLiteral("btnSend"));
+        btnSend->setGeometry(QRect(40, 20, 75, 23));
+        btnRecv = new QPushButton(centralWidget);
+        btnRecv->setObjectName(QStringLiteral("btnRecv"));
+        btnRecv->setGeometry(QRect(40, 70, 75, 23));
         PandaRCClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(PandaRCClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
@@ -47,6 +56,7 @@ public:
         PandaRCClass->setStatusBar(statusBar);
 
         retranslateUi(PandaRCClass);
+        QObject::connect(btnSend, SIGNAL(clicked()), PandaRCClass, SLOT(onBtnSend()));
 
         QMetaObject::connectSlotsByName(PandaRCClass);
     } // setupUi
@@ -54,6 +64,8 @@ public:
     void retranslateUi(QMainWindow *PandaRCClass)
     {
         PandaRCClass->setWindowTitle(QApplication::translate("PandaRCClass", "PandaRC", nullptr));
+        btnSend->setText(QApplication::translate("PandaRCClass", "\345\217\221\351\200\201", nullptr));
+        btnRecv->setText(QApplication::translate("PandaRCClass", "\346\216\245\346\224\266", nullptr));
     } // retranslateUi
 
 };
