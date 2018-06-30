@@ -4,4 +4,12 @@
 /PandaRC/x64/Debug/*.pdb
 /PandaRC/x64/Debug
 /PandaRC/*.opendb
-/PandaRC/vnc/Debug
+/tightvnc-2.8.11-gpl/Debug/client-config-lib/*.obj
+/tightvnc-2.8.11-gpl/Debug/client-config-lib/client-c.97B29C1C.tlog/*.tlog
+/tightvnc-2.8.11-gpl/Debug/config-lib/config-lib.tlog/*.tlog
+*.obj
+*.tlog
+*.log
+*.pdb
+*.idb
+Debug
