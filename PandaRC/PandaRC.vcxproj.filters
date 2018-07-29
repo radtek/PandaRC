@@ -39,6 +39,33 @@
     <Filter Include="Source Files\Logger">
       <UniqueIdentifier>{420e933c-8caf-422a-bb14-143232612cc3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\desktop">
+      <UniqueIdentifier>{27386d1f-1a7e-43e6-ae71-e43a8f78a8e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\region">
+      <UniqueIdentifier>{f1ac9f1b-cd78-40c4-bbe9-dc1425d9b36d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\rfb">
+      <UniqueIdentifier>{bddb52b2-dcda-4a51-9a4b-7320db4e13ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\win-system">
+      <UniqueIdentifier>{8a7679b2-9081-42fe-8181-1e7c5ea9afff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\util">
+      <UniqueIdentifier>{2138d3cd-b5ed-4f16-9aa6-347be3479f1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\gui">
+      <UniqueIdentifier>{e052c302-487f-4ddc-b6e9-028ebeda958f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\thread">
+      <UniqueIdentifier>{f26adca6-3ba7-4755-b0d6-60caecf45c6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\zlib">
+      <UniqueIdentifier>{ed889da6-b95b-41a1-b9aa-d03cb37e4c16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\win-system\security">
+      <UniqueIdentifier>{1ef48a72-9af2-4807-9aa6-dede7e1f6823}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -64,6 +91,408 @@
     </ClCompile>
     <ClCompile Include="Logger\Logger.cpp">
       <Filter>Source Files\Logger</Filter>
+    </ClCompile>
+    <ClCompile Include="desktop\Win32MirrorScreenDriver.cpp">
+      <Filter>Source Files\desktop</Filter>
+    </ClCompile>
+    <ClCompile Include="desktop\MirrorScreenDriver.cpp">
+      <Filter>Source Files\desktop</Filter>
+    </ClCompile>
+    <ClCompile Include="desktop\Win32ScreenDriverBaseImpl.cpp">
+      <Filter>Source Files\desktop</Filter>
+    </ClCompile>
+    <ClCompile Include="region\RectSerializer.cpp">
+      <Filter>Source Files\region</Filter>
+    </ClCompile>
+    <ClCompile Include="region\Region.cpp">
+      <Filter>Source Files\region</Filter>
+    </ClCompile>
+    <ClCompile Include="region\x11region.c">
+      <Filter>Source Files\region</Filter>
+    </ClCompile>
+    <ClCompile Include="rfb\AuthDefs.cpp">
+      <Filter>Source Files\rfb</Filter>
+    </ClCompile>
+    <ClCompile Include="rfb\CursorShape.cpp">
+      <Filter>Source Files\rfb</Filter>
+    </ClCompile>
+    <ClCompile Include="rfb\EncodingDefs.cpp">
+      <Filter>Source Files\rfb</Filter>
+    </ClCompile>
+    <ClCompile Include="rfb\FrameBuffer.cpp">
+      <Filter>Source Files\rfb</Filter>
+    </ClCompile>
+    <ClCompile Include="rfb\HostPath.cpp">
+      <Filter>Source Files\rfb</Filter>
+    </ClCompile>
+    <ClCompile Include="rfb\MsgDefs.cpp">
+      <Filter>Source Files\rfb</Filter>
+    </ClCompile>
+    <ClCompile Include="rfb\PixelConverter.cpp">
+      <Filter>Source Files\rfb</Filter>
+    </ClCompile>
+    <ClCompile Include="rfb\PixelFormat.cpp">
+      <Filter>Source Files\rfb</Filter>
+    </ClCompile>
+    <ClCompile Include="rfb\RfbKeySym.cpp">
+      <Filter>Source Files\rfb</Filter>
+    </ClCompile>
+    <ClCompile Include="rfb\StandardPixelFormatFactory.cpp">
+      <Filter>Source Files\rfb</Filter>
+    </ClCompile>
+    <ClCompile Include="rfb\TunnelDefs.cpp">
+      <Filter>Source Files\rfb</Filter>
+    </ClCompile>
+    <ClCompile Include="rfb\VendorDefs.cpp">
+      <Filter>Source Files\rfb</Filter>
+    </ClCompile>
+    <ClCompile Include="desktop\MirrorDriverClient.cpp">
+      <Filter>Source Files\desktop</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\AnonymousPipe.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\AnonymousPipeFactory.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\AutoImpersonator.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\CtrlAltDelSimulator.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\CurrentConsoleProcess.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\DibSection.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\DynamicLibrary.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\EmulatedAnonymousPipeFactory.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\Environment.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\Impersonator.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\InputInjector.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\Keyboard.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\LocalWindowsApplication.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\NamedPipe.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\ParentProcess.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\Pipe.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\PipeClient.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\PipeImpersonatedThread.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\PipeServer.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\Process.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\ProcessHandle.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\Registry.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\RegistryKey.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\SCMClient.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\Screen.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\SecurityAttributes.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\Service.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\SharedMemory.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\Shell.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\SystemException.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\SystemInformation.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\UipiControl.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\VersionInfo.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\WinClipboard.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\WinCommandLineArgs.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\WinCursor.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\WindowsApplication.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\WindowsDisplays.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\WindowsEvent.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\WindowsEventEx.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\WinHandles.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\WinHooks.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\WinProcessCommandLine.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\WinStaLibrary.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\WinTimeMillis.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\Workstation.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\WsaStartup.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\WTS.cpp">
+      <Filter>Source Files\win-system</Filter>
+    </ClCompile>
+    <ClCompile Include="util\AnsiStringStorage.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\BrokenHandleException.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\Command.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\CommandLine.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\CommandLineArgs.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\CommandLineFormatException.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\CommandLineFormatHelp.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\DateTime.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\Deflater.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\DemandTimer.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\DesCrypt.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\Exception.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\GetCPUtime.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\Inflater.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\KeyContainer.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\Keymap.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\MacroCommand.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\md5.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\ResourceLoader.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\StringParser.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\StringStorage.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\StringTable.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\Unicode.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\UnicodeStringStorage.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\Utf8StringStorage.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\VncPassCrypt.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\ZLibBase.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\ZlibException.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="desktop\CopyRectDetector.cpp">
+      <Filter>Source Files\desktop</Filter>
+    </ClCompile>
+    <ClCompile Include="desktop\CursorPositionDetector.cpp">
+      <Filter>Source Files\desktop</Filter>
+    </ClCompile>
+    <ClCompile Include="desktop\CursorShapeDetector.cpp">
+      <Filter>Source Files\desktop</Filter>
+    </ClCompile>
+    <ClCompile Include="desktop\CursorShapeGrabber.cpp">
+      <Filter>Source Files\desktop</Filter>
+    </ClCompile>
+    <ClCompile Include="desktop\Win32ScreenDriverFactory.cpp">
+      <Filter>Source Files\desktop</Filter>
+    </ClCompile>
+    <ClCompile Include="desktop\WindowsCursorShapeGrabber.cpp">
+      <Filter>Source Files\desktop</Filter>
+    </ClCompile>
+    <ClCompile Include="desktop\WinVideoRegionUpdaterImpl.cpp">
+      <Filter>Source Files\desktop</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\WindowFinder.cpp">
+      <Filter>Source Files\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="desktop\WinCursorShapeUtils.cpp">
+      <Filter>Source Files\desktop</Filter>
+    </ClCompile>
+    <ClCompile Include="desktop\Win32ScreenDriver.cpp">
+      <Filter>Source Files\desktop</Filter>
+    </ClCompile>
+    <ClCompile Include="desktop\WindowsScreenGrabber.cpp">
+      <Filter>Source Files\desktop</Filter>
+    </ClCompile>
+    <ClCompile Include="thread\AutoLock.cpp">
+      <Filter>Source Files\thread</Filter>
+    </ClCompile>
+    <ClCompile Include="thread\DesktopSelector.cpp">
+      <Filter>Source Files\thread</Filter>
+    </ClCompile>
+    <ClCompile Include="thread\GlobalMutex.cpp">
+      <Filter>Source Files\thread</Filter>
+    </ClCompile>
+    <ClCompile Include="thread\GuiThread.cpp">
+      <Filter>Source Files\thread</Filter>
+    </ClCompile>
+    <ClCompile Include="thread\LocalMutex.cpp">
+      <Filter>Source Files\thread</Filter>
+    </ClCompile>
+    <ClCompile Include="thread\Thread.cpp">
+      <Filter>Source Files\thread</Filter>
+    </ClCompile>
+    <ClCompile Include="thread\ThreadCollector.cpp">
+      <Filter>Source Files\thread</Filter>
+    </ClCompile>
+    <ClCompile Include="thread\ZombieKiller.cpp">
+      <Filter>Source Files\thread</Filter>
+    </ClCompile>
+    <ClCompile Include="desktop\ScreenGrabber.cpp">
+      <Filter>Source Files\desktop</Filter>
+    </ClCompile>
+    <ClCompile Include="desktop\Win8ScreenDriver.cpp">
+      <Filter>Source Files\desktop</Filter>
+    </ClCompile>
+    <ClCompile Include="desktop\Win8CursorShape.cpp">
+      <Filter>Source Files\desktop</Filter>
+    </ClCompile>
+    <ClCompile Include="desktop\Win8DeskDuplicationThread.cpp">
+      <Filter>Source Files\desktop</Filter>
+    </ClCompile>
+    <ClCompile Include="desktop\Win8ScreenDriverImpl.cpp">
+      <Filter>Source Files\desktop</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\adler32.c">
+      <Filter>Source Files\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\compress.c">
+      <Filter>Source Files\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\crc32.c">
+      <Filter>Source Files\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\deflate.c">
+      <Filter>Source Files\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\gzlib.c">
+      <Filter>Source Files\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\infback.c">
+      <Filter>Source Files\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\inffast.c">
+      <Filter>Source Files\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\inflate.c">
+      <Filter>Source Files\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\inftrees.c">
+      <Filter>Source Files\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\trees.c">
+      <Filter>Source Files\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\uncompr.c">
+      <Filter>Source Files\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="zlib\zutil.c">
+      <Filter>Source Files\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\security\SecurityDescriptor.cpp">
+      <Filter>Source Files\win-system\security</Filter>
+    </ClCompile>
+    <ClCompile Include="win-system\security\SecurityIdentifier.cpp">
+      <Filter>Source Files\win-system\security</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\MessageWindow.cpp">
+      <Filter>Source Files\gui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -196,5 +625,532 @@
     <ClInclude Include="Logger\Logger.h">
       <Filter>Source Files\Logger</Filter>
     </ClInclude>
+    <ClInclude Include="desktop\Win32MirrorScreenDriver.h">
+      <Filter>Source Files\desktop</Filter>
+    </ClInclude>
+    <ClInclude Include="desktop\MirrorScreenDriver.h">
+      <Filter>Source Files\desktop</Filter>
+    </ClInclude>
+    <ClInclude Include="desktop\Win32ScreenDriverBaseImpl.h">
+      <Filter>Source Files\desktop</Filter>
+    </ClInclude>
+    <ClInclude Include="region\Dimension.h">
+      <Filter>Source Files\region</Filter>
+    </ClInclude>
+    <ClInclude Include="region\Point.h">
+      <Filter>Source Files\region</Filter>
+    </ClInclude>
+    <ClInclude Include="region\Rect.h">
+      <Filter>Source Files\region</Filter>
+    </ClInclude>
+    <ClInclude Include="region\RectSerializer.h">
+      <Filter>Source Files\region</Filter>
+    </ClInclude>
+    <ClInclude Include="region\Region.h">
+      <Filter>Source Files\region</Filter>
+    </ClInclude>
+    <ClInclude Include="region\x11region.h">
+      <Filter>Source Files\region</Filter>
+    </ClInclude>
+    <ClInclude Include="rfb\AuthDefs.h">
+      <Filter>Source Files\rfb</Filter>
+    </ClInclude>
+    <ClInclude Include="rfb\CursorShape.h">
+      <Filter>Source Files\rfb</Filter>
+    </ClInclude>
+    <ClInclude Include="rfb\EncodingDefs.h">
+      <Filter>Source Files\rfb</Filter>
+    </ClInclude>
+    <ClInclude Include="rfb\FrameBuffer.h">
+      <Filter>Source Files\rfb</Filter>
+    </ClInclude>
+    <ClInclude Include="rfb\HostPath.h">
+      <Filter>Source Files\rfb</Filter>
+    </ClInclude>
+    <ClInclude Include="rfb\keysymdef.h">
+      <Filter>Source Files\rfb</Filter>
+    </ClInclude>
+    <ClInclude Include="rfb\MsgDefs.h">
+      <Filter>Source Files\rfb</Filter>
+    </ClInclude>
+    <ClInclude Include="rfb\PixelConverter.h">
+      <Filter>Source Files\rfb</Filter>
+    </ClInclude>
+    <ClInclude Include="rfb\PixelFormat.h">
+      <Filter>Source Files\rfb</Filter>
+    </ClInclude>
+    <ClInclude Include="rfb\RfbKeySym.h">
+      <Filter>Source Files\rfb</Filter>
+    </ClInclude>
+    <ClInclude Include="rfb\RfbKeySymListener.h">
+      <Filter>Source Files\rfb</Filter>
+    </ClInclude>
+    <ClInclude Include="rfb\StandardPixelFormatFactory.h">
+      <Filter>Source Files\rfb</Filter>
+    </ClInclude>
+    <ClInclude Include="rfb\TunnelDefs.h">
+      <Filter>Source Files\rfb</Filter>
+    </ClInclude>
+    <ClInclude Include="rfb\VendorDefs.h">
+      <Filter>Source Files\rfb</Filter>
+    </ClInclude>
+    <ClInclude Include="desktop\MirrorDriverClient.h">
+      <Filter>Source Files\desktop</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\AnonymousPipe.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\AnonymousPipeFactory.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\ApplicationCrashEvents.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\AutoImpersonator.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\CtrlAltDelSimulator.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\CurrentConsoleProcess.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\DibSection.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\DynamicLibrary.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\EmulatedAnonymousPipeFactory.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\Environment.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\HookEventListener.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\Impersonator.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\InputInjector.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\Keyboard.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\LocalWindowsApplication.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\NamedPipe.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\ParentProcess.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\Pipe.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\PipeClient.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\PipeImpersonatedThread.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\PipeServer.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\Process.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\ProcessHandle.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\Registry.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\RegistryKey.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\SCMClient.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\Screen.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\SecurityAttributes.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\Service.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\SharedMemory.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\Shell.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\SystemException.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\SystemInformation.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\UipiControl.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\VersionInfo.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\WinClipboard.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\WinCommandLineArgs.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\WinCursor.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\WindowsApplication.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\WindowsDisplays.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\WindowsEvent.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\WindowsEventEx.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\WinHandles.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\WinHooks.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\WinProcessCommandLine.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\WinStaLibrary.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\WinTimeMillis.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\Workstation.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\WsaStartup.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\WTS.h">
+      <Filter>Source Files\win-system</Filter>
+    </ClInclude>
+    <ClInclude Include="util\AnEventListener.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\AnsiStringStorage.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\BrokenHandleException.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\CharDefs.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\Command.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\CommandLine.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\CommandLineArgs.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\CommandLineFormatException.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\CommandLineFormatHelp.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\CommonHeader.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\DateTime.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\Deflater.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\DemandTimer.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\DesCrypt.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\Exception.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\GetCPUtime.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\Inflater.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\inttypes.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\KeyContainer.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\Keymap.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\ListenerContainer.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\MacroCommand.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\md5.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\ResourceLoader.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\Singleton.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\StringParser.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\StringStorage.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\StringTable.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\StringVector.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\Unicode.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\UnicodeStringStorage.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\Utf8StringStorage.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\VncPassCrypt.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\winhdr.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\ZLibBase.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\ZlibException.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="desktop\ScreenDriver.h">
+      <Filter>Source Files\desktop</Filter>
+    </ClInclude>
+    <ClInclude Include="desktop\CopyRectDetector.h">
+      <Filter>Source Files\desktop</Filter>
+    </ClInclude>
+    <ClInclude Include="desktop\CursorPositionDetector.h">
+      <Filter>Source Files\desktop</Filter>
+    </ClInclude>
+    <ClInclude Include="desktop\CursorShapeDetector.h">
+      <Filter>Source Files\desktop</Filter>
+    </ClInclude>
+    <ClInclude Include="desktop\CursorShapeGrabber.h">
+      <Filter>Source Files\desktop</Filter>
+    </ClInclude>
+    <ClInclude Include="desktop\DisplayEsc.h">
+      <Filter>Source Files\desktop</Filter>
+    </ClInclude>
+    <ClInclude Include="desktop\WindowsCursorShapeGrabber.h">
+      <Filter>Source Files\desktop</Filter>
+    </ClInclude>
+    <ClInclude Include="desktop\WinVideoRegionUpdaterImpl.h">
+      <Filter>Source Files\desktop</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\WindowFinder.h">
+      <Filter>Source Files\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="desktop\WinCursorShapeUtils.h">
+      <Filter>Source Files\desktop</Filter>
+    </ClInclude>
+    <ClInclude Include="desktop\Win32ScreenDriverFactory.h">
+      <Filter>Source Files\desktop</Filter>
+    </ClInclude>
+    <ClInclude Include="desktop\ScreenDriverFactory.h">
+      <Filter>Source Files\desktop</Filter>
+    </ClInclude>
+    <ClInclude Include="desktop\Win32ScreenDriver.h">
+      <Filter>Source Files\desktop</Filter>
+    </ClInclude>
+    <ClInclude Include="desktop\WindowsScreenGrabber.h">
+      <Filter>Source Files\desktop</Filter>
+    </ClInclude>
+    <ClInclude Include="thread\AutoLock.h">
+      <Filter>Source Files\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="thread\DesktopSelector.h">
+      <Filter>Source Files\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="thread\GlobalMutex.h">
+      <Filter>Source Files\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="thread\GuiThread.h">
+      <Filter>Source Files\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="thread\LocalMutex.h">
+      <Filter>Source Files\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="thread\Lockable.h">
+      <Filter>Source Files\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="thread\Thread.h">
+      <Filter>Source Files\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="thread\ThreadCollector.h">
+      <Filter>Source Files\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="thread\ZombieKiller.h">
+      <Filter>Source Files\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="desktop\ScreenGrabber.h">
+      <Filter>Source Files\desktop</Filter>
+    </ClInclude>
+    <ClInclude Include="desktop\Win8ScreenDriver.h">
+      <Filter>Source Files\desktop</Filter>
+    </ClInclude>
+    <ClInclude Include="desktop\Win8CursorShape.h">
+      <Filter>Source Files\desktop</Filter>
+    </ClInclude>
+    <ClInclude Include="desktop\Win8DeskDuplicationThread.h">
+      <Filter>Source Files\desktop</Filter>
+    </ClInclude>
+    <ClInclude Include="desktop\Win8DuplicationListener.h">
+      <Filter>Source Files\desktop</Filter>
+    </ClInclude>
+    <ClInclude Include="desktop\Win8ScreenDriverImpl.h">
+      <Filter>Source Files\desktop</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\crc32.h">
+      <Filter>Source Files\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\deflate.h">
+      <Filter>Source Files\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\gzguts.h">
+      <Filter>Source Files\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\inffast.h">
+      <Filter>Source Files\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\inffixed.h">
+      <Filter>Source Files\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\inflate.h">
+      <Filter>Source Files\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\inftrees.h">
+      <Filter>Source Files\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\trees.h">
+      <Filter>Source Files\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\zconf.h">
+      <Filter>Source Files\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\zlib.h">
+      <Filter>Source Files\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\zutil.h">
+      <Filter>Source Files\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\security\SecurityDescriptor.h">
+      <Filter>Source Files\win-system\security</Filter>
+    </ClInclude>
+    <ClInclude Include="win-system\security\SecurityIdentifier.h">
+      <Filter>Source Files\win-system\security</Filter>
+    </ClInclude>
+    <ClInclude Include="desktop\Desktop.h">
+      <Filter>Source Files\desktop</Filter>
+    </ClInclude>
+    <ClInclude Include="desktop\DesktopFactory.h">
+      <Filter>Source Files\desktop</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\WindowMessageHandler.h">
+      <Filter>Source Files\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\MessageWindow.h">
+      <Filter>Source Files\gui</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="region\region.vcproj">
+      <Filter>Source Files\region</Filter>
+    </None>
+    <None Include="region\region.vcxproj">
+      <Filter>Source Files\region</Filter>
+    </None>
+    <None Include="region\region.vcxproj.filters">
+      <Filter>Source Files\region</Filter>
+    </None>
+    <None Include="rfb\rfb.vcproj">
+      <Filter>Source Files\rfb</Filter>
+    </None>
+    <None Include="rfb\rfb.vcxproj">
+      <Filter>Source Files\rfb</Filter>
+    </None>
+    <None Include="rfb\rfb.vcxproj.filters">
+      <Filter>Source Files\rfb</Filter>
+    </None>
+    <None Include="win-system\win-system.vcproj">
+      <Filter>Source Files\win-system</Filter>
+    </None>
+    <None Include="win-system\win-system.vcxproj">
+      <Filter>Source Files\win-system</Filter>
+    </None>
+    <None Include="win-system\win-system.vcxproj.filters">
+      <Filter>Source Files\win-system</Filter>
+    </None>
+    <None Include="util\util.vcproj">
+      <Filter>Source Files\util</Filter>
+    </None>
+    <None Include="util\util.vcxproj">
+      <Filter>Source Files\util</Filter>
+    </None>
+    <None Include="util\util.vcxproj.filters">
+      <Filter>Source Files\util</Filter>
+    </None>
+    <None Include="zlib\ChangeLog">
+      <Filter>Source Files\zlib</Filter>
+    </None>
+    <None Include="zlib\FAQ">
+      <Filter>Source Files\zlib</Filter>
+    </None>
+    <None Include="zlib\INDEX">
+      <Filter>Source Files\zlib</Filter>
+    </None>
+    <None Include="zlib\README">
+      <Filter>Source Files\zlib</Filter>
+    </None>
+    <None Include="zlib\zlib.vcproj">
+      <Filter>Source Files\zlib</Filter>
+    </None>
+    <None Include="zlib\zlib.vcxproj">
+      <Filter>Source Files\zlib</Filter>
+    </None>
+    <None Include="zlib\zlib.vcxproj.filters">
+      <Filter>Source Files\zlib</Filter>
+    </None>
   </ItemGroup>
 </Project>

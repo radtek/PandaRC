@@ -32,7 +32,7 @@
 #include "WindowsCursorShapeGrabber.h"
 #include "CopyRectDetector.h"
 
-// This class implements "grabbers" and "detectors" which is not coupleâ with screen frame buffer.
+// This class implements "grabbers" and "detectors" which is not couple?with screen frame buffer.
 class Win32ScreenDriverBaseImpl : public WinVideoRegionUpdaterImpl
 {
 public:

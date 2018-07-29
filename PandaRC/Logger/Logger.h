@@ -47,7 +47,7 @@ private:
 	char m_sLogName[256]; //log name
 	int m_nPipeFds[2];
 	PureList<std::string*> m_oLogList;
-	Thread m_oLogThread;
+	MThread m_oLogThread;
     MutexLock m_oPrintLock;
 	DISALLOW_COPY_AND_ASSIGN(Logger);
 };

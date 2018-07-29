@@ -1,9 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|x64">
       <Configuration>Release</Configuration>
@@ -21,7 +29,16 @@
     <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
@@ -32,7 +49,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
@@ -46,15 +69,21 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <PreprocessorDefinitions>UNICODE;_UNICODE;WIN32;WIN64;QT_DLL;QT_CORE_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_POSITIONING_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtPositioning;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtWidgets;.\UDPNet;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>UNICODE;_UNICODE;WIN32;WIN64;QT_CORE_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_POSITIONING_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\Libs;.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtPositioning;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtWidgets;.\UDPNet;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -70,8 +99,40 @@
     <QtMoc>
       <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
       <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
-      <IncludePath>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtPositioning;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtWidgets;.\UDPNet;%(AdditionalIncludeDirectories)</IncludePath>
-      <Define>UNICODE;_UNICODE;WIN32;WIN64;QT_DLL;QT_CORE_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_POSITIONING_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;%(PreprocessorDefinitions)</Define>
+      <IncludePath>.\Libs;.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtPositioning;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtWidgets;.\UDPNet;%(AdditionalIncludeDirectories)</IncludePath>
+      <Define>UNICODE;_UNICODE;WIN32;WIN64;QT_CORE_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_POSITIONING_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;%(PreprocessorDefinitions)</Define>
+    </QtMoc>
+    <QtUic>
+      <ExecutionDescription>Uic'ing %(Identity)...</ExecutionDescription>
+      <OutputFile>.\GeneratedFiles\ui_%(Filename).h</OutputFile>
+    </QtUic>
+    <QtRcc>
+      <ExecutionDescription>Rcc'ing %(Identity)...</ExecutionDescription>
+      <OutputFile>.\GeneratedFiles\qrc_%(Filename).cpp</OutputFile>
+    </QtRcc>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <PreprocessorDefinitions>UNICODE;_UNICODE;WIN32;WIN64;QT_CORE_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_POSITIONING_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\Libs;.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtPositioning;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtWidgets;.\UDPNet;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Disabled</Optimization>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>qtmaind.lib;Qt5Cored.lib;Qt5Guid.lib;Qt5Networkd.lib;Qt5Positioningd.lib;Qt5PrintSupportd.lib;Qt5Widgetsd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <QtMoc>
+      <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
+      <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
+      <IncludePath>.\Libs;.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtPositioning;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtWidgets;.\UDPNet;%(AdditionalIncludeDirectories)</IncludePath>
+      <Define>UNICODE;_UNICODE;WIN32;WIN64;QT_CORE_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_POSITIONING_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;%(PreprocessorDefinitions)</Define>
     </QtMoc>
     <QtUic>
       <ExecutionDescription>Uic'ing %(Identity)...</ExecutionDescription>
@@ -85,7 +146,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <PreprocessorDefinitions>UNICODE;_UNICODE;WIN32;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_POSITIONING_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>UNICODE;_UNICODE;WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_POSITIONING_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtPositioning;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtWidgets;.\UDPNet;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat />
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -102,7 +163,39 @@
       <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
       <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
       <IncludePath>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtPositioning;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtWidgets;.\UDPNet;%(AdditionalIncludeDirectories)</IncludePath>
-      <Define>UNICODE;_UNICODE;WIN32;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_POSITIONING_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;%(PreprocessorDefinitions)</Define>
+      <Define>UNICODE;_UNICODE;WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_POSITIONING_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;%(PreprocessorDefinitions)</Define>
+    </QtMoc>
+    <QtUic>
+      <ExecutionDescription>Uic'ing %(Identity)...</ExecutionDescription>
+      <OutputFile>.\GeneratedFiles\ui_%(Filename).h</OutputFile>
+    </QtUic>
+    <QtRcc>
+      <ExecutionDescription>Rcc'ing %(Identity)...</ExecutionDescription>
+      <OutputFile>.\GeneratedFiles\qrc_%(Filename).cpp</OutputFile>
+    </QtRcc>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <PreprocessorDefinitions>UNICODE;_UNICODE;WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_POSITIONING_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtPositioning;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtWidgets;.\UDPNet;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <AdditionalDependencies>qtmain.lib;Qt5Core.lib;Qt5Gui.lib;Qt5Network.lib;Qt5Positioning.lib;Qt5PrintSupport.lib;Qt5Widgets.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <QtMoc>
+      <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
+      <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
+      <IncludePath>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtPositioning;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtWidgets;.\UDPNet;%(AdditionalIncludeDirectories)</IncludePath>
+      <Define>UNICODE;_UNICODE;WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_POSITIONING_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB;%(PreprocessorDefinitions)</Define>
     </QtMoc>
     <QtUic>
       <ExecutionDescription>Uic'ing %(Identity)...</ExecutionDescription>
@@ -115,18 +208,156 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Common\DataStruct\XString.cpp" />
+    <ClCompile Include="desktop\CopyRectDetector.cpp" />
+    <ClCompile Include="desktop\CursorPositionDetector.cpp" />
+    <ClCompile Include="desktop\CursorShapeDetector.cpp" />
+    <ClCompile Include="desktop\CursorShapeGrabber.cpp" />
+    <ClCompile Include="desktop\MirrorDriverClient.cpp" />
+    <ClCompile Include="desktop\MirrorScreenDriver.cpp" />
+    <ClCompile Include="desktop\ScreenGrabber.cpp" />
+    <ClCompile Include="desktop\Win32MirrorScreenDriver.cpp" />
+    <ClCompile Include="desktop\Win32ScreenDriver.cpp" />
+    <ClCompile Include="desktop\Win32ScreenDriverBaseImpl.cpp" />
+    <ClCompile Include="desktop\Win32ScreenDriverFactory.cpp" />
+    <ClCompile Include="desktop\Win8CursorShape.cpp" />
+    <ClCompile Include="desktop\Win8DeskDuplicationThread.cpp" />
+    <ClCompile Include="desktop\Win8ScreenDriver.cpp" />
+    <ClCompile Include="desktop\Win8ScreenDriverImpl.cpp" />
+    <ClCompile Include="desktop\WinCursorShapeUtils.cpp" />
+    <ClCompile Include="desktop\WindowsCursorShapeGrabber.cpp" />
+    <ClCompile Include="desktop\WindowsScreenGrabber.cpp" />
+    <ClCompile Include="desktop\WinVideoRegionUpdaterImpl.cpp" />
     <ClCompile Include="GeneratedFiles\qrc_PandaRC.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="gui\MessageWindow.cpp" />
+    <ClCompile Include="gui\WindowFinder.cpp" />
     <ClCompile Include="Logger\Logger.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NetUtil\NetAPI.cpp" />
     <ClCompile Include="NetUtil\Packet.cpp" />
     <ClCompile Include="PandaRC.cpp" />
+    <ClCompile Include="region\RectSerializer.cpp" />
+    <ClCompile Include="region\Region.cpp" />
+    <ClCompile Include="region\x11region.c" />
+    <ClCompile Include="rfb\AuthDefs.cpp" />
+    <ClCompile Include="rfb\CursorShape.cpp" />
+    <ClCompile Include="rfb\EncodingDefs.cpp" />
+    <ClCompile Include="rfb\FrameBuffer.cpp" />
+    <ClCompile Include="rfb\HostPath.cpp" />
+    <ClCompile Include="rfb\MsgDefs.cpp" />
+    <ClCompile Include="rfb\PixelConverter.cpp" />
+    <ClCompile Include="rfb\PixelFormat.cpp" />
+    <ClCompile Include="rfb\RfbKeySym.cpp" />
+    <ClCompile Include="rfb\StandardPixelFormatFactory.cpp" />
+    <ClCompile Include="rfb\TunnelDefs.cpp" />
+    <ClCompile Include="rfb\VendorDefs.cpp" />
+    <ClCompile Include="thread\AutoLock.cpp" />
+    <ClCompile Include="thread\DesktopSelector.cpp" />
+    <ClCompile Include="thread\GlobalMutex.cpp" />
+    <ClCompile Include="thread\GuiThread.cpp" />
+    <ClCompile Include="thread\LocalMutex.cpp" />
+    <ClCompile Include="thread\Thread.cpp" />
+    <ClCompile Include="thread\ThreadCollector.cpp" />
+    <ClCompile Include="thread\ZombieKiller.cpp" />
     <ClCompile Include="UDPNet\UDPNet.cpp" />
+    <ClCompile Include="util\AnsiStringStorage.cpp" />
+    <ClCompile Include="util\BrokenHandleException.cpp" />
+    <ClCompile Include="util\Command.cpp" />
+    <ClCompile Include="util\CommandLine.cpp" />
+    <ClCompile Include="util\CommandLineArgs.cpp" />
+    <ClCompile Include="util\CommandLineFormatException.cpp" />
+    <ClCompile Include="util\CommandLineFormatHelp.cpp" />
+    <ClCompile Include="util\DateTime.cpp" />
+    <ClCompile Include="util\Deflater.cpp" />
+    <ClCompile Include="util\DemandTimer.cpp" />
+    <ClCompile Include="util\DesCrypt.cpp" />
+    <ClCompile Include="util\Exception.cpp" />
+    <ClCompile Include="util\GetCPUtime.cpp" />
+    <ClCompile Include="util\Inflater.cpp" />
+    <ClCompile Include="util\KeyContainer.cpp" />
+    <ClCompile Include="util\Keymap.cpp" />
+    <ClCompile Include="util\MacroCommand.cpp" />
+    <ClCompile Include="util\md5.cpp" />
+    <ClCompile Include="util\ResourceLoader.cpp" />
+    <ClCompile Include="util\StringParser.cpp" />
+    <ClCompile Include="util\StringStorage.cpp" />
+    <ClCompile Include="util\StringTable.cpp" />
+    <ClCompile Include="util\Unicode.cpp" />
+    <ClCompile Include="util\UnicodeStringStorage.cpp" />
+    <ClCompile Include="util\Utf8StringStorage.cpp" />
+    <ClCompile Include="util\VncPassCrypt.cpp" />
+    <ClCompile Include="util\ZLibBase.cpp" />
+    <ClCompile Include="util\ZlibException.cpp" />
+    <ClCompile Include="win-system\AnonymousPipe.cpp" />
+    <ClCompile Include="win-system\AnonymousPipeFactory.cpp" />
+    <ClCompile Include="win-system\AutoImpersonator.cpp" />
+    <ClCompile Include="win-system\CtrlAltDelSimulator.cpp" />
+    <ClCompile Include="win-system\CurrentConsoleProcess.cpp" />
+    <ClCompile Include="win-system\DibSection.cpp" />
+    <ClCompile Include="win-system\DynamicLibrary.cpp" />
+    <ClCompile Include="win-system\EmulatedAnonymousPipeFactory.cpp" />
+    <ClCompile Include="win-system\Environment.cpp" />
+    <ClCompile Include="win-system\Impersonator.cpp" />
+    <ClCompile Include="win-system\InputInjector.cpp" />
+    <ClCompile Include="win-system\Keyboard.cpp" />
+    <ClCompile Include="win-system\LocalWindowsApplication.cpp" />
+    <ClCompile Include="win-system\NamedPipe.cpp" />
+    <ClCompile Include="win-system\ParentProcess.cpp" />
+    <ClCompile Include="win-system\Pipe.cpp" />
+    <ClCompile Include="win-system\PipeClient.cpp" />
+    <ClCompile Include="win-system\PipeImpersonatedThread.cpp" />
+    <ClCompile Include="win-system\PipeServer.cpp" />
+    <ClCompile Include="win-system\Process.cpp" />
+    <ClCompile Include="win-system\ProcessHandle.cpp" />
+    <ClCompile Include="win-system\Registry.cpp" />
+    <ClCompile Include="win-system\RegistryKey.cpp" />
+    <ClCompile Include="win-system\SCMClient.cpp" />
+    <ClCompile Include="win-system\Screen.cpp" />
+    <ClCompile Include="win-system\SecurityAttributes.cpp" />
+    <ClCompile Include="win-system\security\SecurityDescriptor.cpp" />
+    <ClCompile Include="win-system\security\SecurityIdentifier.cpp" />
+    <ClCompile Include="win-system\Service.cpp" />
+    <ClCompile Include="win-system\SharedMemory.cpp" />
+    <ClCompile Include="win-system\Shell.cpp" />
+    <ClCompile Include="win-system\SystemException.cpp" />
+    <ClCompile Include="win-system\SystemInformation.cpp" />
+    <ClCompile Include="win-system\UipiControl.cpp" />
+    <ClCompile Include="win-system\VersionInfo.cpp" />
+    <ClCompile Include="win-system\WinClipboard.cpp" />
+    <ClCompile Include="win-system\WinCommandLineArgs.cpp" />
+    <ClCompile Include="win-system\WinCursor.cpp" />
+    <ClCompile Include="win-system\WindowsApplication.cpp" />
+    <ClCompile Include="win-system\WindowsDisplays.cpp" />
+    <ClCompile Include="win-system\WindowsEvent.cpp" />
+    <ClCompile Include="win-system\WindowsEventEx.cpp" />
+    <ClCompile Include="win-system\WinHandles.cpp" />
+    <ClCompile Include="win-system\WinHooks.cpp" />
+    <ClCompile Include="win-system\WinProcessCommandLine.cpp" />
+    <ClCompile Include="win-system\WinStaLibrary.cpp" />
+    <ClCompile Include="win-system\WinTimeMillis.cpp" />
+    <ClCompile Include="win-system\Workstation.cpp" />
+    <ClCompile Include="win-system\WsaStartup.cpp" />
+    <ClCompile Include="win-system\WTS.cpp" />
+    <ClCompile Include="zlib\adler32.c" />
+    <ClCompile Include="zlib\compress.c" />
+    <ClCompile Include="zlib\crc32.c" />
+    <ClCompile Include="zlib\deflate.c" />
+    <ClCompile Include="zlib\gzlib.c" />
+    <ClCompile Include="zlib\infback.c" />
+    <ClCompile Include="zlib\inffast.c" />
+    <ClCompile Include="zlib\inflate.c" />
+    <ClCompile Include="zlib\inftrees.c" />
+    <ClCompile Include="zlib\trees.c" />
+    <ClCompile Include="zlib\uncompr.c" />
+    <ClCompile Include="zlib\zutil.c" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="PandaRC.h" />
@@ -143,9 +374,13 @@
   <ItemGroup>
     <QtMoc Include="UDPNet\UDPNet.h">
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtPositioning;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtWidgets</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtPositioning;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtWidgets</IncludePath>
       <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">UNICODE;_UNICODE;WIN32;WIN64;QT_DLL;QT_CORE_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_POSITIONING_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB</Define>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">UNICODE;_UNICODE;WIN32;WIN64;QT_DLL;QT_CORE_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_POSITIONING_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB</Define>
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtPositioning;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtWidgets</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtPositioning;$(QTDIR)\include\QtPrintSupport;$(QTDIR)\include\QtWidgets</IncludePath>
       <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UNICODE;_UNICODE;WIN32;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_POSITIONING_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB</Define>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">UNICODE;_UNICODE;WIN32;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_POSITIONING_LIB;QT_PRINTSUPPORT_LIB;QT_WIDGETS_LIB</Define>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
@@ -181,10 +416,187 @@
     <ClInclude Include="Common\DataStruct\XTime.h" />
     <ClInclude Include="Common\Platform.h" />
     <ClInclude Include="Common\PlatformHeader.h" />
+    <ClInclude Include="desktop\CopyRectDetector.h" />
+    <ClInclude Include="desktop\CursorPositionDetector.h" />
+    <ClInclude Include="desktop\CursorShapeDetector.h" />
+    <ClInclude Include="desktop\CursorShapeGrabber.h" />
+    <ClInclude Include="desktop\Desktop.h" />
+    <ClInclude Include="desktop\DesktopFactory.h" />
+    <ClInclude Include="desktop\DisplayEsc.h" />
+    <ClInclude Include="desktop\MirrorDriverClient.h" />
+    <ClInclude Include="desktop\MirrorScreenDriver.h" />
+    <ClInclude Include="desktop\ScreenDriver.h" />
+    <ClInclude Include="desktop\ScreenDriverFactory.h" />
+    <ClInclude Include="desktop\ScreenGrabber.h" />
+    <ClInclude Include="desktop\Win32MirrorScreenDriver.h" />
+    <ClInclude Include="desktop\Win32ScreenDriver.h" />
+    <ClInclude Include="desktop\Win32ScreenDriverBaseImpl.h" />
+    <ClInclude Include="desktop\Win32ScreenDriverFactory.h" />
+    <ClInclude Include="desktop\Win8CursorShape.h" />
+    <ClInclude Include="desktop\Win8DeskDuplicationThread.h" />
+    <ClInclude Include="desktop\Win8DuplicationListener.h" />
+    <ClInclude Include="desktop\Win8ScreenDriver.h" />
+    <ClInclude Include="desktop\Win8ScreenDriverImpl.h" />
+    <ClInclude Include="desktop\WinCursorShapeUtils.h" />
+    <ClInclude Include="desktop\WindowsCursorShapeGrabber.h" />
+    <ClInclude Include="desktop\WindowsScreenGrabber.h" />
+    <ClInclude Include="desktop\WinVideoRegionUpdaterImpl.h" />
     <ClInclude Include="GeneratedFiles\ui_PandaRC.h" />
+    <ClInclude Include="gui\MessageWindow.h" />
+    <ClInclude Include="gui\WindowFinder.h" />
+    <ClInclude Include="gui\WindowMessageHandler.h" />
     <ClInclude Include="Logger\Logger.h" />
     <ClInclude Include="NetUtil\NetAPI.h" />
     <ClInclude Include="NetUtil\Packet.h" />
+    <ClInclude Include="region\Dimension.h" />
+    <ClInclude Include="region\Point.h" />
+    <ClInclude Include="region\Rect.h" />
+    <ClInclude Include="region\RectSerializer.h" />
+    <ClInclude Include="region\Region.h" />
+    <ClInclude Include="region\x11region.h" />
+    <ClInclude Include="rfb\AuthDefs.h" />
+    <ClInclude Include="rfb\CursorShape.h" />
+    <ClInclude Include="rfb\EncodingDefs.h" />
+    <ClInclude Include="rfb\FrameBuffer.h" />
+    <ClInclude Include="rfb\HostPath.h" />
+    <ClInclude Include="rfb\keysymdef.h" />
+    <ClInclude Include="rfb\MsgDefs.h" />
+    <ClInclude Include="rfb\PixelConverter.h" />
+    <ClInclude Include="rfb\PixelFormat.h" />
+    <ClInclude Include="rfb\RfbKeySym.h" />
+    <ClInclude Include="rfb\RfbKeySymListener.h" />
+    <ClInclude Include="rfb\StandardPixelFormatFactory.h" />
+    <ClInclude Include="rfb\TunnelDefs.h" />
+    <ClInclude Include="rfb\VendorDefs.h" />
+    <ClInclude Include="thread\AutoLock.h" />
+    <ClInclude Include="thread\DesktopSelector.h" />
+    <ClInclude Include="thread\GlobalMutex.h" />
+    <ClInclude Include="thread\GuiThread.h" />
+    <ClInclude Include="thread\LocalMutex.h" />
+    <ClInclude Include="thread\Lockable.h" />
+    <ClInclude Include="thread\Thread.h" />
+    <ClInclude Include="thread\ThreadCollector.h" />
+    <ClInclude Include="thread\ZombieKiller.h" />
+    <ClInclude Include="util\AnEventListener.h" />
+    <ClInclude Include="util\AnsiStringStorage.h" />
+    <ClInclude Include="util\BrokenHandleException.h" />
+    <ClInclude Include="util\CharDefs.h" />
+    <ClInclude Include="util\Command.h" />
+    <ClInclude Include="util\CommandLine.h" />
+    <ClInclude Include="util\CommandLineArgs.h" />
+    <ClInclude Include="util\CommandLineFormatException.h" />
+    <ClInclude Include="util\CommandLineFormatHelp.h" />
+    <ClInclude Include="util\CommonHeader.h" />
+    <ClInclude Include="util\DateTime.h" />
+    <ClInclude Include="util\Deflater.h" />
+    <ClInclude Include="util\DemandTimer.h" />
+    <ClInclude Include="util\DesCrypt.h" />
+    <ClInclude Include="util\Exception.h" />
+    <ClInclude Include="util\GetCPUtime.h" />
+    <ClInclude Include="util\Inflater.h" />
+    <ClInclude Include="util\inttypes.h" />
+    <ClInclude Include="util\KeyContainer.h" />
+    <ClInclude Include="util\Keymap.h" />
+    <ClInclude Include="util\ListenerContainer.h" />
+    <ClInclude Include="util\MacroCommand.h" />
+    <ClInclude Include="util\md5.h" />
+    <ClInclude Include="util\ResourceLoader.h" />
+    <ClInclude Include="util\Singleton.h" />
+    <ClInclude Include="util\StringParser.h" />
+    <ClInclude Include="util\StringStorage.h" />
+    <ClInclude Include="util\StringTable.h" />
+    <ClInclude Include="util\StringVector.h" />
+    <ClInclude Include="util\Unicode.h" />
+    <ClInclude Include="util\UnicodeStringStorage.h" />
+    <ClInclude Include="util\Utf8StringStorage.h" />
+    <ClInclude Include="util\VncPassCrypt.h" />
+    <ClInclude Include="util\winhdr.h" />
+    <ClInclude Include="util\ZLibBase.h" />
+    <ClInclude Include="util\ZlibException.h" />
+    <ClInclude Include="win-system\AnonymousPipe.h" />
+    <ClInclude Include="win-system\AnonymousPipeFactory.h" />
+    <ClInclude Include="win-system\ApplicationCrashEvents.h" />
+    <ClInclude Include="win-system\AutoImpersonator.h" />
+    <ClInclude Include="win-system\CtrlAltDelSimulator.h" />
+    <ClInclude Include="win-system\CurrentConsoleProcess.h" />
+    <ClInclude Include="win-system\DibSection.h" />
+    <ClInclude Include="win-system\DynamicLibrary.h" />
+    <ClInclude Include="win-system\EmulatedAnonymousPipeFactory.h" />
+    <ClInclude Include="win-system\Environment.h" />
+    <ClInclude Include="win-system\HookEventListener.h" />
+    <ClInclude Include="win-system\Impersonator.h" />
+    <ClInclude Include="win-system\InputInjector.h" />
+    <ClInclude Include="win-system\Keyboard.h" />
+    <ClInclude Include="win-system\LocalWindowsApplication.h" />
+    <ClInclude Include="win-system\NamedPipe.h" />
+    <ClInclude Include="win-system\ParentProcess.h" />
+    <ClInclude Include="win-system\Pipe.h" />
+    <ClInclude Include="win-system\PipeClient.h" />
+    <ClInclude Include="win-system\PipeImpersonatedThread.h" />
+    <ClInclude Include="win-system\PipeServer.h" />
+    <ClInclude Include="win-system\Process.h" />
+    <ClInclude Include="win-system\ProcessHandle.h" />
+    <ClInclude Include="win-system\Registry.h" />
+    <ClInclude Include="win-system\RegistryKey.h" />
+    <ClInclude Include="win-system\SCMClient.h" />
+    <ClInclude Include="win-system\Screen.h" />
+    <ClInclude Include="win-system\SecurityAttributes.h" />
+    <ClInclude Include="win-system\security\SecurityDescriptor.h" />
+    <ClInclude Include="win-system\security\SecurityIdentifier.h" />
+    <ClInclude Include="win-system\Service.h" />
+    <ClInclude Include="win-system\SharedMemory.h" />
+    <ClInclude Include="win-system\Shell.h" />
+    <ClInclude Include="win-system\SystemException.h" />
+    <ClInclude Include="win-system\SystemInformation.h" />
+    <ClInclude Include="win-system\UipiControl.h" />
+    <ClInclude Include="win-system\VersionInfo.h" />
+    <ClInclude Include="win-system\WinClipboard.h" />
+    <ClInclude Include="win-system\WinCommandLineArgs.h" />
+    <ClInclude Include="win-system\WinCursor.h" />
+    <ClInclude Include="win-system\WindowsApplication.h" />
+    <ClInclude Include="win-system\WindowsDisplays.h" />
+    <ClInclude Include="win-system\WindowsEvent.h" />
+    <ClInclude Include="win-system\WindowsEventEx.h" />
+    <ClInclude Include="win-system\WinHandles.h" />
+    <ClInclude Include="win-system\WinHooks.h" />
+    <ClInclude Include="win-system\WinProcessCommandLine.h" />
+    <ClInclude Include="win-system\WinStaLibrary.h" />
+    <ClInclude Include="win-system\WinTimeMillis.h" />
+    <ClInclude Include="win-system\Workstation.h" />
+    <ClInclude Include="win-system\WsaStartup.h" />
+    <ClInclude Include="win-system\WTS.h" />
+    <ClInclude Include="zlib\crc32.h" />
+    <ClInclude Include="zlib\deflate.h" />
+    <ClInclude Include="zlib\gzguts.h" />
+    <ClInclude Include="zlib\inffast.h" />
+    <ClInclude Include="zlib\inffixed.h" />
+    <ClInclude Include="zlib\inflate.h" />
+    <ClInclude Include="zlib\inftrees.h" />
+    <ClInclude Include="zlib\trees.h" />
+    <ClInclude Include="zlib\zconf.h" />
+    <ClInclude Include="zlib\zlib.h" />
+    <ClInclude Include="zlib\zutil.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="region\region.vcproj" />
+    <None Include="region\region.vcxproj" />
+    <None Include="region\region.vcxproj.filters" />
+    <None Include="rfb\rfb.vcproj" />
+    <None Include="rfb\rfb.vcxproj" />
+    <None Include="rfb\rfb.vcxproj.filters" />
+    <None Include="util\util.vcproj" />
+    <None Include="util\util.vcxproj" />
+    <None Include="util\util.vcxproj.filters" />
+    <None Include="win-system\win-system.vcproj" />
+    <None Include="win-system\win-system.vcxproj" />
+    <None Include="win-system\win-system.vcxproj.filters" />
+    <None Include="zlib\ChangeLog" />
+    <None Include="zlib\FAQ" />
+    <None Include="zlib\INDEX" />
+    <None Include="zlib\README" />
+    <None Include="zlib\zlib.vcproj" />
+    <None Include="zlib\zlib.vcxproj" />
+    <None Include="zlib\zlib.vcxproj.filters" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
@@ -194,7 +606,7 @@
   </ImportGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties MocDir=".\GeneratedFiles\$(ConfigurationName)" UicDir=".\GeneratedFiles" RccDir=".\GeneratedFiles" lupdateOptions="" lupdateOnBuild="0" lreleaseOptions="" Qt5Version_x0020_x64="Qt5.11" MocOptions="" />
+      <UserProperties MocDir=".\GeneratedFiles\$(ConfigurationName)" UicDir=".\GeneratedFiles" RccDir=".\GeneratedFiles" lupdateOptions="" lupdateOnBuild="0" lreleaseOptions="" Qt5Version_x0020_Win32="11win32" Qt5Version_x0020_x64="$(DefaultQtVersion)" MocOptions="" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>
