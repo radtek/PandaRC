@@ -15,6 +15,9 @@ public slots:
 	void onBtnSend();
 	void onBtnRecv();
 
+protected:
+	void paintEvent(QPaintEvent *event);
+
 private:
 	Ui::PandaRCClass ui;
 

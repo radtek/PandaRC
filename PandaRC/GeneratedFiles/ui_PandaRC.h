@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'PandaRC.ui'
 **
-** Created by: Qt User Interface Compiler version 5.11.0
+** Created by: Qt User Interface Compiler version 5.11.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -39,10 +39,10 @@ public:
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         btnSend = new QPushButton(centralWidget);
         btnSend->setObjectName(QStringLiteral("btnSend"));
-        btnSend->setGeometry(QRect(40, 20, 75, 23));
+        btnSend->setGeometry(QRect(0, 0, 75, 23));
         btnRecv = new QPushButton(centralWidget);
         btnRecv->setObjectName(QStringLiteral("btnRecv"));
-        btnRecv->setGeometry(QRect(40, 70, 75, 23));
+        btnRecv->setGeometry(QRect(0, 30, 75, 23));
         PandaRCClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(PandaRCClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));

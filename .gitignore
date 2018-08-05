@@ -13,3 +13,5 @@
 *.pdb
 *.idb
 Debug
+/tightvnc-2.8.11-gpl/*.opendb
+/PandaRC/*.db
