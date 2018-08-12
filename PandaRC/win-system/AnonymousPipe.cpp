@@ -31,7 +31,7 @@
 //  m_hWrite(hWrite),
 //  m_hRead(hRead),
 //  m_neededToClose(true),
-//  m_log(log)
+//  glog(log)
 //{
 //}
 //
@@ -40,7 +40,7 @@
 //  try {
 //    close();
 //  } catch (Exception &e) {
-//    m_log->error(_T("The close() function failed at AnonymousPipe destructor: %s"),
+//    glog.error(_T("The close() function failed at AnonymousPipe destructor: %s"),
 //               e.getMessage());
 //  }
 //}
@@ -58,7 +58,7 @@
 //                             &wrErrText);
 //      wrSuc = false;
 //    }
-//    m_log->debug(_T("Closed m_hWrite(%p) AnonymousPipe handle"),
+//  glog.debug(_T("Closed m_hWrite(%p) AnonymousPipe handle"),
 //               m_hWrite);
 //  }
 //  m_hWrite = INVALID_HANDLE_VALUE;
@@ -68,7 +68,7 @@
 //                             &wrErrText);
 //      rdSuc = false;
 //    }
-//    m_log->debug(_T("Closed m_hRead(%p) AnonymousPipe handle"),
+//  glog.debug(_T("Closed m_hRead(%p) AnonymousPipe handle"),
 //               m_hRead);
 //  }
 //  m_hRead = INVALID_HANDLE_VALUE;
@@ -85,7 +85,7 @@
 //  try {
 //    return readByHandle(buffer, len, m_hRead);
 //  } catch (...) {
-//    m_log->error(_T("AnonymousPipe::read() failed (m_hRead = %p)"),
+//    glog.error(_T("AnonymousPipe::read() failed (m_hRead = %p)"),
 //               m_hRead);
 //    throw;
 //  }
@@ -96,7 +96,7 @@
 //  try {
 //    return writeByHandle(buffer, len, m_hWrite);
 //  } catch (...) {
-//    m_log->error(_T("AnonymousPipe::write() failed (m_hWrite = %p)"),
+//    glog.error(_T("AnonymousPipe::write() failed (m_hWrite = %p)"),
 //               m_hWrite);
 //    throw;
 //  }

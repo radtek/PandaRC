@@ -1,29 +1,22 @@
 #include "PandaRC.h"
-#include "desktop/Win32ScreenDriverFactory.h"
+#include <qpainter.h>
+#include <qmath.h>
 
-ScreenDriver* poDriver;
-Win32ScreenDriverFactory* poDriverFactory;
+#include "log-writer/LogWriter.h"
+#include "desktip-ipc/UpdateHandlerServer.h"
+
+LogWriter glog;
+UpdateHandlerServer* pHandlerSrv;
+
 
 PandaRC::PandaRC(QWidget *parent)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);
 
-	Logger::Instance()->Init();
+	//Logger::Instance()->Init();
 	m_pUDPNet = new UDPNet(parent);
-
-	poDriverFactory = new Win32ScreenDriverFactory();
-	poDriver = poDriverFactory->createScreenDriver();
-	
-	//³ß´ç
-	Dimension oDimension = poDriver->getScreenDimension();
-	FrameBuffer* pScreenBuffer = poDriver->getScreenBuffer();
-	Rect oFb;
-	poDriver->grabFb(&oFb);
-	bool bChanged1 = poDriver->getScreenPropertiesChanged();
-	bool bChanged2 = poDriver->getScreenSizeChanged();
-	int i = 0;
-
+	pHandlerSrv = new UpdateHandlerServer(this);
 }
 
 void PandaRC::onBtnSend()
@@ -36,7 +29,28 @@ void PandaRC::onBtnRecv()
 
 void PandaRC::paintEvent(QPaintEvent *event)
 {
-	int i = 0;
+	std::vector<FrameBuffer>& fbList = pHandlerSrv->getUpdateFrameList();
+	FrameBuffer& fb = fbList[0];
+	Dimension dim = fb.getDimension();
+	uchar* pBuffer = (uchar*)fb.getBuffer();
+	int nBuffSize = fb.getBufferSize();
+	int nBytesRow = fb.getBytesPerRow();
+	QImage oImg(pBuffer, dim.width, dim.height, nBytesRow, QImage::Format_RGB32);
+	printf("img is null: %d\n", oImg.isNull());
+	QPainter painter(this);
+	painter.drawImage(QPoint(0, 0), oImg);
+
+	//poDriver->grabFb();
+	//HWND m_hWnd = (HWND)winId();
+	//pScreenBuffer = poDriver->getScreenBuffer();
+	//Dimension oDim = poDriver->getScreenDimension();
+	//uchar* pBuffer = (uchar*)pScreenBuffer->getBuffer();
+	//int nBuffSize = pScreenBuffer->getBufferSize();
+	//int nBytesRow = pScreenBuffer->getBytesPerRow();
+	//QImage oImg(pBuffer, oDim.width, oDim.height, nBytesRow, QImage::Format_RGB32);
+	//printf("img is null: %d\n", oImg.isNull());
+	//QPainter painter(this);
+	//painter.drawImage(QPoint(0, 0), oImg);
 }
 
 //void PandaRC::onPaint(DeviceContext *dc, PAINTSTRUCT *paintStruct)

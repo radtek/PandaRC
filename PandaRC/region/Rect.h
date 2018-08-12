@@ -180,6 +180,7 @@ public:
 
   inline void clear() { left = top = right = bottom = 0; }
 
+  //½»¼¯
   Rect intersection(const Rect *other) const {
     Rect result;
     result.setRect((left > other->left) ? left : other->left,

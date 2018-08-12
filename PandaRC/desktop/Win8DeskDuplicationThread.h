@@ -98,7 +98,7 @@ private:
   WinCustomD3D11Texture2D m_stageTexture2D;
   FrameBuffer m_auxiliaryFrameBuffer;
 
-  LogWriter *m_log;
+  LogWriter *glog;
 };
 
 #endif // __WIN8DESKDUPLICATIONTHREAD_H__

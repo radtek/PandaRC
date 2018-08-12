@@ -48,7 +48,7 @@ void CursorPositionDetector::onTerminate()
 
 void CursorPositionDetector::execute()
 {
-  //m_log->info(_T("mouse detector thread id = %d"), getThreadId());
+  //glog.info(_T("mouse detector thread id = %d"), getThreadId());
 
   //Point curPoint;
 

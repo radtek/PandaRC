@@ -24,7 +24,8 @@
 
 #include "Win32MirrorScreenDriver.h"
 
-Win32MirrorScreenDriver::Win32MirrorScreenDriver() : Win32ScreenDriverBaseImpl(),m_mirrorDriver()
+Win32MirrorScreenDriver::Win32MirrorScreenDriver(UpdateKeeper *updateKeeper, UpdateListener *updateListener)
+	: Win32ScreenDriverBaseImpl(), m_mirrorDriver(updateKeeper, updateListener)
 {
   // At this point the screen driver has valid screen properties.
 }

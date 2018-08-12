@@ -42,7 +42,7 @@
 //private:
 //  void getUniqPipeName(StringStorage *result);
 //
-//  LogWriter *m_log;
+//  LogWriter *glog;
 //  unsigned int m_bufferSize;
 //};
 //

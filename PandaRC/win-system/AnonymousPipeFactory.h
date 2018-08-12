@@ -53,7 +53,7 @@
 //                     bool secondSideIsInheritable);
 //
 //private:
-//  LogWriter *m_log;
+//  LogWriter *glog;
 //  unsigned int m_bufferSize;
 //};
 //

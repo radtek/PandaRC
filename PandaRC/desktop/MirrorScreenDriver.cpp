@@ -27,7 +27,8 @@
 #include <string.h>
 #include "region/Region.h"
 
-MirrorScreenDriver::MirrorScreenDriver()
+MirrorScreenDriver::MirrorScreenDriver(UpdateKeeper *updateKeeper, UpdateListener *updateListener)
+	: UpdateDetector(updateKeeper, updateListener)
 {
 	m_lastCounter = 0;
 	m_mirrorClient = new MirrorDriverClient();
@@ -44,13 +45,13 @@ MirrorScreenDriver::~MirrorScreenDriver()
 
 void MirrorScreenDriver::executeDetection()
 {
-	//resume();
+	resume();
 }
 
 void MirrorScreenDriver::terminateDetection()
 {
-	//terminate();
-	//wait();
+	terminate();
+	wait();
 }
 
 void MirrorScreenDriver::initFrameBuffer()
@@ -73,6 +74,8 @@ FrameBuffer *MirrorScreenDriver::getScreenBuffer()
 
 bool MirrorScreenDriver::grab(const Rect *rect)
 {
+	AutoLock al(&m_fbMutex);
+
 	if (m_mirrorClient == 0) {
 		printf("Mirror driver client didn't initilized.\n");
 		return false;
@@ -109,6 +112,8 @@ bool MirrorScreenDriver::grab(const Rect *rect)
 
 bool MirrorScreenDriver::getPropertiesChanged()
 {
+	AutoLock al(&m_fbMutex);
+
 	if (m_mirrorClient != 0) {
 		return m_mirrorClient->getPropertiesChanged();
 	}
@@ -120,6 +125,8 @@ bool MirrorScreenDriver::getPropertiesChanged()
 
 bool MirrorScreenDriver::getScreenSizeChanged()
 {
+	AutoLock al(&m_fbMutex);
+
 	if (m_mirrorClient != 0) {
 		return m_mirrorClient->getScreenSizeChanged();
 	}
@@ -131,6 +138,8 @@ bool MirrorScreenDriver::getScreenSizeChanged()
 
 bool MirrorScreenDriver::applyNewProperties()
 {
+	AutoLock al(&m_fbMutex);
+
 	delete m_mirrorClient;
 	m_mirrorClient = 0;
 	m_mirrorClient = new MirrorDriverClient();
@@ -145,7 +154,7 @@ bool MirrorScreenDriver::applyNewProperties()
 
 void MirrorScreenDriver::startUpdateSearching()
 {
-	//resume();
+	resume();
 }
 
 void MirrorScreenDriver::execute()
@@ -154,10 +163,11 @@ void MirrorScreenDriver::execute()
 	Rect changedRect;
 	unsigned long currentCounter = 0;
 
-	while (true) {
-		//m_updateTimeout.waitForEvent(20);
+	while (!isTerminating()) {
+		m_updateTimeout.waitForEvent(30);
 
 		{
+			AutoLock al(&m_fbMutex);
 			if (m_mirrorClient != 0) {
 				CHANGES_BUF *changesBuf = m_mirrorClient->getChangesBuf();
 				if (changesBuf != 0) {
@@ -169,16 +179,14 @@ void MirrorScreenDriver::execute()
 							changedRegion.addRect(&changedRect);
 						}
 					}
-
-					printf("change******\n");
-					//m_updateKeeper->addChangedRegion(&changedRegion);
+					m_updateKeeper->addChangedRegion(&changedRegion);
 					m_lastCounter = currentCounter;
 				}
 			}
 		}
 
 		if (!changedRegion.isEmpty()) {
-			//doUpdate();
+			doUpdate();
 			changedRegion.clear();
 		}
 	}
@@ -187,5 +195,5 @@ void MirrorScreenDriver::execute()
 
 void MirrorScreenDriver::onTerminate()
 {
-	//m_updateTimeout.notify();
+	m_updateTimeout.notify();
 }

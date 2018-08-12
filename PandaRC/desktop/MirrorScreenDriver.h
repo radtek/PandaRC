@@ -26,11 +26,13 @@
 #define __MIRRORSCREENDRIVER_H__
 
 #include "MirrorDriverClient.h"
+#include "win-system/WindowsEvent.h"
+#include "desktop/UpdateDetector.h"
 
-class MirrorScreenDriver
+class MirrorScreenDriver: public UpdateDetector
 {
 public:
-	MirrorScreenDriver();
+	MirrorScreenDriver(UpdateKeeper *updateKeeper, UpdateListener *updateListener);
 	virtual ~MirrorScreenDriver();
 
 	// Starts screen update detection if it not started yet.
@@ -59,6 +61,9 @@ private:
 	MirrorDriverClient *m_mirrorClient;
 	unsigned long m_lastCounter;
 	FrameBuffer m_frameBuffer;
+	LocalMutex m_fbMutex;
+
+	WindowsEvent m_updateTimeout;
 };
 
 #endif // __MIRRORSCREENDRIVER_H__

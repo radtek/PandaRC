@@ -56,7 +56,7 @@
 //                   (UINT)targetRect->getHeight(),
 //                   m_rotation),
 //  m_threadNumber(threadNumber),
-//  m_log(log)
+//  glog(log)
 //{
 //  resume();
 //}
@@ -78,7 +78,7 @@
 //    while (!isTerminating() && isValid()) {
 //      WinDxgiAcquiredFrame acquiredFrame(&m_outDupl, 20);
 //      if (acquiredFrame.wasTimeOut()) {
-//		m_log->debug(_T("Timeout on acquire frame for output:%d"), m_threadNumber);
+//		glog.debug(_T("Timeout on acquire frame for output:%d"), m_threadNumber);
 //        continue;
 //      }
 //
@@ -195,7 +195,7 @@
 //    rotateRectInsideStage(&dstRect, &stageDim, m_rotation);
 //    // Translate the rect to the frame buffer coordinates.
 //    dstRect.move(m_targetRect.left, m_targetRect.top);
-//    m_log->debug(_T("Destination dirty rect = %d, %d, %dx%d"), dstRect.left, dstRect.top, dstRect.getWidth(), dstRect.getHeight());
+//  glog.debug(_T("Destination dirty rect = %d, %d, %dx%d"), dstRect.left, dstRect.top, dstRect.getWidth(), dstRect.getHeight());
 //
 //    stageDim.width = static_cast<int> (autoMapSurface.getStride() / 4);
 //    m_auxiliaryFrameBuffer.setPropertiesWithoutResize(&stageDim, &m_targetFb->getPixelFormat());

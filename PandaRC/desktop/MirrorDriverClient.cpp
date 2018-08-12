@@ -63,7 +63,7 @@ MirrorDriverClient::~MirrorDriverClient()
 
 	//  dispose();
 	//} catch (Exception &e) {
-	//  m_log->error(_T("An error occured during the")
+	//  glog.error(_T("An error occured during the")
 	//             _T(" mirror driver deinitialization: %s"), e.getMessage());
 	//}
 }
@@ -405,7 +405,7 @@ void MirrorDriverClient::execute()
 {
 	if (!isTerminating()) {
 		//m_propertyChangeListenerWindow.createWindow(this);
-		//m_log->info(_T("Mirror driver client window has been created (hwnd = %d)"),
+		//glog.info(_T("Mirror driver client window has been created (hwnd = %d)"),
 		//	(int)m_propertyChangeListenerWindow.getHWND());
 	}
 

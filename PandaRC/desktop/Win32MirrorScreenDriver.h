@@ -31,7 +31,7 @@
 class Win32MirrorScreenDriver : public Win32ScreenDriverBaseImpl
 {
 public:
-  Win32MirrorScreenDriver();
+  Win32MirrorScreenDriver(UpdateKeeper *updateKeeper, UpdateListener *updateListener);
   virtual ~Win32MirrorScreenDriver();
 
   // Starts screen update detection if it not started yet.

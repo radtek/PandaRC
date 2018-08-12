@@ -32,7 +32,7 @@
 //
 //CurrentConsoleProcess::CurrentConsoleProcess(const TCHAR *path, const TCHAR *args)
 //: Process(path, args),
-//  m_log(log)
+//  glog(log)
 //{
 //}
 //
@@ -47,7 +47,7 @@
 //  DWORD sessionId = WTS::getActiveConsoleSessionId();
 //  DWORD uiAccess  = 1; // Nonzero enables UI control
 //
-//  m_log->info(_T("Try to start \"%s %s\" process as current user at %d session"),
+//  glog.info(_T("Try to start \"%s %s\" process as current user at %d session"),
 //            m_path.getString(),
 //            m_args.getString(),
 //            sessionId);
@@ -56,7 +56,7 @@
 //  STARTUPINFO sti;
 //  getStartupInfo(&sti);
 //
-//  m_log->debug(_T("sti: cb = %d, hStdError = %p, hStdInput = %p,")
+//glog.debug(_T("sti: cb = %d, hStdError = %p, hStdInput = %p,")
 //             _T(" hStdOutput = %p, dwFlags = %u"),
 //             (unsigned int)sti.cb,
 //             (void *)sti.hStdError,
@@ -69,13 +69,13 @@
 //  HANDLE token, userToken;
 //
 //  try {
-//    m_log->debug(_T("Try OpenProcessToken(%p, , )"),
+//  glog.debug(_T("Try OpenProcessToken(%p, , )"),
 //               (void *)procHandle);
 //    if (OpenProcessToken(procHandle, TOKEN_DUPLICATE, &token) == 0) {
 //      throw SystemException();
 //    }
 //
-//    m_log->debug(_T("Try DuplicateTokenEx(%p, , , , , )"),
+//  glog.debug(_T("Try DuplicateTokenEx(%p, , , , , )"),
 //               (void *)token);
 //    if (DuplicateTokenEx(token,
 //      MAXIMUM_ALLOWED,
@@ -86,7 +86,7 @@
 //        throw SystemException();
 //    }
 //
-//    m_log->debug(_T("Try SetTokenInformation(%p, , , )"),
+//  glog.debug(_T("Try SetTokenInformation(%p, , , )"),
 //               (void *)userToken);
 //    if (SetTokenInformation(userToken,
 //      (TOKEN_INFORMATION_CLASS) TokenSessionId,
@@ -98,19 +98,19 @@
 //    // http://stackoverflow.com/questions/13972165/pressing-winx-alt-tab-programatically
 //    // For application we need to set /uiAccess='true' in linker manifest, sign binary 
 //    // and run from "Program Files/"
-//    m_log->debug(_T("Try SetTokenInformation(%p, , , ) with UIAccess=1"),
+//  glog.debug(_T("Try SetTokenInformation(%p, , , ) with UIAccess=1"),
 //               (void *)userToken);
 //    if (SetTokenInformation(userToken,
 //      (TOKEN_INFORMATION_CLASS) TokenUIAccess,
 //      &uiAccess,
 //      sizeof(uiAccess)) == 0) {
-//        m_log->info(_T("Can't set UIAccess=1, ignore it"),
+//        glog.info(_T("Can't set UIAccess=1, ignore it"),
 //               (void *)userToken);
 //    }
 //
 //    StringStorage commandLine = getCommandLineString();
 //
-//    m_log->debug(_T("Try CreateProcessAsUser(%p, 0, %s, 0, 0, %d, NORMAL_PRIORITY_CLASS, 0, 0,")
+//  glog.debug(_T("Try CreateProcessAsUser(%p, 0, %s, 0, 0, %d, NORMAL_PRIORITY_CLASS, 0, 0,")
 //               _T(" sti, pi)"),
 //               (void *)userToken, commandLine.getString(),
 //               (int)m_handlesIsInherited);
@@ -119,10 +119,10 @@
 //      &pi) == 0) {
 //        throw SystemException();
 //    }
-//    m_log->info(_T("Created \"%s\" process at %d windows session"),
+//    glog.info(_T("Created \"%s\" process at %d windows session"),
 //              commandLine.getString(), sessionId);
 //  } catch (SystemException &sysEx) {
-//    m_log->error(_T("Failed to start process with %d error"), sysEx.getErrorCode());
+//    glog.error(_T("Failed to start process with %d error"), sysEx.getErrorCode());
 //    throw;
 //  }
 //

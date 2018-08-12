@@ -2,8 +2,10 @@
 
 #include <QObject>
 #include <QUdpSocket>
-#include "NetUtil\Packet.h"
-#include "Logger\Logger.h"
+#include "NetUtil/Packet.h"
+
+#include "util/CommonHeader.h"
+#include "log-writer/LogWriter.h"
 
 class UDPNet : public QObject
 {
@@ -24,9 +26,9 @@ public:
 	void SendPacket(Packet* pPacket) {
 		qint64 res = m_sendSocket->writeDatagram((const char*)pPacket->GetData(), pPacket->GetDataSize(), m_sendAddress, m_sendPort.toInt());
 		if (res == -1) {
-			XLog(LEVEL_ERROR, "send failure error:%s\n", m_sendSocket->errorString().data());
+			glog.debug(_T("send failure error:%s\n"), m_sendSocket->errorString().data());
 		} else {
-			XLog(LEVEL_ERROR, "send successful size:%d\n", pPacket->GetDataSize());
+			glog.debug(_T("send successful size:%d\n"), pPacket->GetDataSize());
 		}
 		ReturnPacket(pPacket);
 	}

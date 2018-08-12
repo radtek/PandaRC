@@ -36,9 +36,6 @@
     <Filter Include="Source Files\Common\DataStruct">
       <UniqueIdentifier>{bda3a264-f628-4d55-9e70-547af2fa6a7f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Logger">
-      <UniqueIdentifier>{420e933c-8caf-422a-bb14-143232612cc3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\desktop">
       <UniqueIdentifier>{27386d1f-1a7e-43e6-ae71-e43a8f78a8e7}</UniqueIdentifier>
     </Filter>
@@ -66,6 +63,15 @@
     <Filter Include="Source Files\win-system\security">
       <UniqueIdentifier>{1ef48a72-9af2-4807-9aa6-dede7e1f6823}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\desktop-ipc">
+      <UniqueIdentifier>{99038814-3919-46a7-bcec-bddc23688a6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\log-writer">
+      <UniqueIdentifier>{2b177a7b-0bb7-4e9f-be6e-a70e53a81c61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Logger">
+      <UniqueIdentifier>{8eb9e421-08ec-4f2c-90a5-3906c1d8ea39}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -88,9 +94,6 @@
     </ClCompile>
     <ClCompile Include="Common\DataStruct\XString.cpp">
       <Filter>Source Files\Common\DataStruct</Filter>
-    </ClCompile>
-    <ClCompile Include="Logger\Logger.cpp">
-      <Filter>Source Files\Logger</Filter>
     </ClCompile>
     <ClCompile Include="desktop\Win32MirrorScreenDriver.cpp">
       <Filter>Source Files\desktop</Filter>
@@ -494,6 +497,108 @@
     <ClCompile Include="gui\MessageWindow.cpp">
       <Filter>Source Files\gui</Filter>
     </ClCompile>
+    <ClCompile Include="gui\DibFrameBuffer.cpp">
+      <Filter>Source Files\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="desktop\UpdateDetector.cpp">
+      <Filter>Source Files\desktop</Filter>
+    </ClCompile>
+    <ClCompile Include="desktop\UpdateContainer.cpp">
+      <Filter>Source Files\desktop</Filter>
+    </ClCompile>
+    <ClCompile Include="desktop\UpdateKeeper.cpp">
+      <Filter>Source Files\desktop</Filter>
+    </ClCompile>
+    <ClCompile Include="desktop\UpdateListener.cpp">
+      <Filter>Source Files\desktop</Filter>
+    </ClCompile>
+    <ClCompile Include="desktip-ipc\UpdateHandlerClient.cpp">
+      <Filter>Source Files\desktop-ipc</Filter>
+    </ClCompile>
+    <ClCompile Include="desktip-ipc\UpdateHandlerServer.cpp">
+      <Filter>Source Files\desktop-ipc</Filter>
+    </ClCompile>
+    <ClCompile Include="desktip-ipc\UserInputClient.cpp">
+      <Filter>Source Files\desktop-ipc</Filter>
+    </ClCompile>
+    <ClCompile Include="desktip-ipc\UserInputServer.cpp">
+      <Filter>Source Files\desktop-ipc</Filter>
+    </ClCompile>
+    <ClCompile Include="desktip-ipc\DesktopServerProto.cpp">
+      <Filter>Source Files\desktop-ipc</Filter>
+    </ClCompile>
+    <ClCompile Include="desktop\UpdateFilter.cpp">
+      <Filter>Source Files\desktop</Filter>
+    </ClCompile>
+    <ClCompile Include="desktop\GrabOptimizator.cpp">
+      <Filter>Source Files\desktop</Filter>
+    </ClCompile>
+    <ClCompile Include="log-writer\FileAccount.cpp">
+      <Filter>Source Files\log-writer</Filter>
+    </ClCompile>
+    <ClCompile Include="log-writer\FileLogger.cpp">
+      <Filter>Source Files\log-writer</Filter>
+    </ClCompile>
+    <ClCompile Include="log-writer\LogDump.cpp">
+      <Filter>Source Files\log-writer</Filter>
+    </ClCompile>
+    <ClCompile Include="log-writer\LogWriter.cpp">
+      <Filter>Source Files\log-writer</Filter>
+    </ClCompile>
+    <ClCompile Include="log-writer\ProfileLogger.cpp">
+      <Filter>Source Files\log-writer</Filter>
+    </ClCompile>
+    <ClCompile Include="log-writer\WinFile.cpp">
+      <Filter>Source Files\log-writer</Filter>
+    </ClCompile>
+    <ClCompile Include="log-writer\WinFileChannel.cpp">
+      <Filter>Source Files\log-writer</Filter>
+    </ClCompile>
+    <ClCompile Include="log-writer\EOFException.cpp">
+      <Filter>Source Files\log-writer</Filter>
+    </ClCompile>
+    <ClCompile Include="log-writer\File.cpp">
+      <Filter>Source Files\log-writer</Filter>
+    </ClCompile>
+    <ClCompile Include="log-writer\FileNotFoundException.cpp">
+      <Filter>Source Files\log-writer</Filter>
+    </ClCompile>
+    <ClCompile Include="log-writer\DataInputStream.cpp">
+      <Filter>Source Files\log-writer</Filter>
+    </ClCompile>
+    <ClCompile Include="log-writer\DataOutputStream.cpp">
+      <Filter>Source Files\log-writer</Filter>
+    </ClCompile>
+    <ClCompile Include="log-writer\InputStream.cpp">
+      <Filter>Source Files\log-writer</Filter>
+    </ClCompile>
+    <ClCompile Include="log-writer\IOException.cpp">
+      <Filter>Source Files\log-writer</Filter>
+    </ClCompile>
+    <ClCompile Include="log-writer\OutputStream.cpp">
+      <Filter>Source Files\log-writer</Filter>
+    </ClCompile>
+    <ClCompile Include="log-writer\BufferedOutputStream.cpp">
+      <Filter>Source Files\log-writer</Filter>
+    </ClCompile>
+    <ClCompile Include="log-writer\ByteArrayInputStream.cpp">
+      <Filter>Source Files\log-writer</Filter>
+    </ClCompile>
+    <ClCompile Include="log-writer\ByteArrayOutputStream.cpp">
+      <Filter>Source Files\log-writer</Filter>
+    </ClCompile>
+    <ClCompile Include="log-writer\Channel.cpp">
+      <Filter>Source Files\log-writer</Filter>
+    </ClCompile>
+    <ClCompile Include="Logger\Logger.cpp">
+      <Filter>Source Files\Logger</Filter>
+    </ClCompile>
+    <ClCompile Include="desktop\UpdateHandlerImpl.cpp">
+      <Filter>Source Files\desktop</Filter>
+    </ClCompile>
+    <ClCompile Include="desktop\UpdateHandler.cpp">
+      <Filter>Source Files\desktop</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="UDPNet\UDPNet.h">
@@ -621,9 +726,6 @@
     </ClInclude>
     <ClInclude Include="Common\DataStruct\XTime.h">
       <Filter>Source Files\Common\DataStruct</Filter>
-    </ClInclude>
-    <ClInclude Include="Logger\Logger.h">
-      <Filter>Source Files\Logger</Filter>
     </ClInclude>
     <ClInclude Include="desktop\Win32MirrorScreenDriver.h">
       <Filter>Source Files\desktop</Filter>
@@ -1092,6 +1194,114 @@
     </ClInclude>
     <ClInclude Include="gui\MessageWindow.h">
       <Filter>Source Files\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\DibFrameBuffer.h">
+      <Filter>Source Files\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="desktop\UpdateDetector.h">
+      <Filter>Source Files\desktop</Filter>
+    </ClInclude>
+    <ClInclude Include="desktop\UpdateContainer.h">
+      <Filter>Source Files\desktop</Filter>
+    </ClInclude>
+    <ClInclude Include="desktop\UpdateKeeper.h">
+      <Filter>Source Files\desktop</Filter>
+    </ClInclude>
+    <ClInclude Include="desktop\UpdateListener.h">
+      <Filter>Source Files\desktop</Filter>
+    </ClInclude>
+    <ClInclude Include="desktip-ipc\UpdateHandlerClient.h">
+      <Filter>Source Files\desktop-ipc</Filter>
+    </ClInclude>
+    <ClInclude Include="desktip-ipc\UpdateHandlerServer.h">
+      <Filter>Source Files\desktop-ipc</Filter>
+    </ClInclude>
+    <ClInclude Include="desktip-ipc\UserInputClient.h">
+      <Filter>Source Files\desktop-ipc</Filter>
+    </ClInclude>
+    <ClInclude Include="desktip-ipc\UserInputServer.h">
+      <Filter>Source Files\desktop-ipc</Filter>
+    </ClInclude>
+    <ClInclude Include="desktip-ipc\DesktopServerProto.h">
+      <Filter>Source Files\desktop-ipc</Filter>
+    </ClInclude>
+    <ClInclude Include="desktop\UpdateFilter.h">
+      <Filter>Source Files\desktop</Filter>
+    </ClInclude>
+    <ClInclude Include="desktop\GrabOptimizator.h">
+      <Filter>Source Files\desktop</Filter>
+    </ClInclude>
+    <ClInclude Include="log-writer\FileAccount.h">
+      <Filter>Source Files\log-writer</Filter>
+    </ClInclude>
+    <ClInclude Include="log-writer\FileLogger.h">
+      <Filter>Source Files\log-writer</Filter>
+    </ClInclude>
+    <ClInclude Include="log-writer\LogDump.h">
+      <Filter>Source Files\log-writer</Filter>
+    </ClInclude>
+    <ClInclude Include="log-writer\Logger.h">
+      <Filter>Source Files\log-writer</Filter>
+    </ClInclude>
+    <ClInclude Include="log-writer\LogWriter.h">
+      <Filter>Source Files\log-writer</Filter>
+    </ClInclude>
+    <ClInclude Include="log-writer\ProfileLogger.h">
+      <Filter>Source Files\log-writer</Filter>
+    </ClInclude>
+    <ClInclude Include="log-writer\FileNotFoundException.h">
+      <Filter>Source Files\log-writer</Filter>
+    </ClInclude>
+    <ClInclude Include="log-writer\WinFile.h">
+      <Filter>Source Files\log-writer</Filter>
+    </ClInclude>
+    <ClInclude Include="log-writer\WinFileChannel.h">
+      <Filter>Source Files\log-writer</Filter>
+    </ClInclude>
+    <ClInclude Include="log-writer\EOFException.h">
+      <Filter>Source Files\log-writer</Filter>
+    </ClInclude>
+    <ClInclude Include="log-writer\File.h">
+      <Filter>Source Files\log-writer</Filter>
+    </ClInclude>
+    <ClInclude Include="log-writer\FileChannel.h">
+      <Filter>Source Files\log-writer</Filter>
+    </ClInclude>
+    <ClInclude Include="log-writer\Channel.h">
+      <Filter>Source Files\log-writer</Filter>
+    </ClInclude>
+    <ClInclude Include="log-writer\DataInputStream.h">
+      <Filter>Source Files\log-writer</Filter>
+    </ClInclude>
+    <ClInclude Include="log-writer\DataOutputStream.h">
+      <Filter>Source Files\log-writer</Filter>
+    </ClInclude>
+    <ClInclude Include="log-writer\InputStream.h">
+      <Filter>Source Files\log-writer</Filter>
+    </ClInclude>
+    <ClInclude Include="log-writer\IOException.h">
+      <Filter>Source Files\log-writer</Filter>
+    </ClInclude>
+    <ClInclude Include="log-writer\OutputStream.h">
+      <Filter>Source Files\log-writer</Filter>
+    </ClInclude>
+    <ClInclude Include="log-writer\BufferedOutputStream.h">
+      <Filter>Source Files\log-writer</Filter>
+    </ClInclude>
+    <ClInclude Include="log-writer\ByteArrayInputStream.h">
+      <Filter>Source Files\log-writer</Filter>
+    </ClInclude>
+    <ClInclude Include="log-writer\ByteArrayOutputStream.h">
+      <Filter>Source Files\log-writer</Filter>
+    </ClInclude>
+    <ClInclude Include="Logger\Logger.h">
+      <Filter>Source Files\Logger</Filter>
+    </ClInclude>
+    <ClInclude Include="desktop\UpdateHandler.h">
+      <Filter>Source Files\desktop</Filter>
+    </ClInclude>
+    <ClInclude Include="desktop\UpdateHandlerImpl.h">
+      <Filter>Source Files\desktop</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

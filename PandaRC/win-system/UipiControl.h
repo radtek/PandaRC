@@ -44,7 +44,7 @@
 //  void allowMessage(UINT message, HWND hwnd);
 //
 //private:
-//  LogWriter *m_log;
+//  LogWriter *glog;
 //};
 //
 //#endif // __UIPICONTROL_H__

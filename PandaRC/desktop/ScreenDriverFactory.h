@@ -26,14 +26,13 @@
 #define __SCREENDRIVERFACTORY_H__
 
 #include "ScreenDriver.h"
-//#include "UpdateKeeper.h"
-//#include "UpdateListener.h"
-//#include "log-writer/LogWriter.h"
+#include "UpdateKeeper.h"
+#include "UpdateListener.h"
 
 class ScreenDriverFactory
 {
 public:
-  virtual ScreenDriver *createScreenDriver() = 0;
+  virtual ScreenDriver *createScreenDriver(UpdateKeeper *updateKeeper, UpdateListener *updateListener, FrameBuffer* fb) = 0;
 private:
 };
 

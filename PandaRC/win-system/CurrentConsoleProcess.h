@@ -68,7 +68,7 @@
 //  virtual void start() throw(SystemException);
 //
 //private:
-//  LogWriter *m_log;
+//  LogWriter *glog;
 //};
 //
 //#endif

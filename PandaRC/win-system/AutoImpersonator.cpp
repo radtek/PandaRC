@@ -30,7 +30,7 @@ AutoImpersonator::AutoImpersonator(Impersonator *imp)
   try {
     m_imp->impersonateAsLoggedUser();
   } catch (Exception &e) {
-    //m_log->error(e.getMessage());
+    //glog.error(e.getMessage());
   }
 }
 
@@ -39,6 +39,6 @@ AutoImpersonator::~AutoImpersonator()
   try {
     m_imp->revertToSelf();
   } catch (Exception &e) {
-    //m_log->error(e.getMessage());
+    //glog.error(e.getMessage());
   }
 }

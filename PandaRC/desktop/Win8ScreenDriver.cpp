@@ -80,11 +80,11 @@
 //{
 //  try {
 //    win8screendriverimpl *drvimpl =
-//      new win8screendriverimpl(m_log, m_updatekeeper, m_fblocalmutex, m_updatelistener, m_detectionenabled);
+//      new win8screendriverimpl(glog, m_updatekeeper, m_fblocalmutex, m_updatelistener, m_detectionenabled);
 //    delete m_drvimpl;
 //    m_drvimpl = drvimpl;
 //  } catch (exception &e) {
-//    m_log->error(_t("can't apply new screen properties: %s"), e.getmessage());
+//    glog.error(_t("can't apply new screen properties: %s"), e.getmessage());
 //    return false;
 //  }
 //  return true;
