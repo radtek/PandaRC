@@ -55,7 +55,7 @@ void UpdateHandlerServer::onUpdate()
 	//}
 }
 
-std::vector<FrameBuffer>& UpdateHandlerServer::getUpdateFrameList()
+std::vector<FrameBuffer*>& UpdateHandlerServer::getUpdateFrameList()
 {
 	const FrameBuffer* fb = m_updateHandler->getFrameBuffer();
 
@@ -66,14 +66,14 @@ std::vector<FrameBuffer>& UpdateHandlerServer::getUpdateFrameList()
 	std::vector<Rect>::iterator iRect;
 	updCont.changedRegion.getRectVector(&rects);
 
-	static std::vector<FrameBuffer> fbList;
+	static std::vector<FrameBuffer*> fbList;
 	fbList.clear();
 
 	for (iRect = rects.begin(); iRect < rects.end(); iRect++) {
-		FrameBuffer fbC;
 		Rect *rect = &(*iRect);
-		fbC.setProperties(rect, &(fb->getPixelFormat()));
-		fbC.copyFrom(fb, rect->left, rect->top);
+		FrameBuffer* fbC = new FrameBuffer();
+		fbC->setProperties(rect, &(fb->getPixelFormat()));
+		fbC->copyFrom(fb, rect->left, rect->top);
 		fbList.push_back(fbC);
 	}
 	return fbList;

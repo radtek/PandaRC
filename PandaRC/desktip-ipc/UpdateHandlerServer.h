@@ -37,7 +37,7 @@ public:
 	UpdateHandlerServer(QWidget* parent);
 	virtual ~UpdateHandlerServer();
 
-	std::vector<FrameBuffer>& getUpdateFrameList();
+	std::vector<FrameBuffer*>& getUpdateFrameList();
 
 	// Internal dispatcher
 	virtual void onRequest(UINT8 reqCode);
