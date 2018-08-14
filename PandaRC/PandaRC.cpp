@@ -29,26 +29,17 @@ void PandaRC::onBtnRecv()
 
 void PandaRC::paintEvent(QPaintEvent *event)
 {
-	static int i = 0;
-	if (i == 0)
-	{
-		std::vector<FrameBuffer*>& fbList = pHandlerSrv->getUpdateFrameList();
-		for (int i = 0; i < fbList.size(); i++)
-		{
-			FrameBuffer* fb = fbList[i];
-			Dimension dim = fb->getDimension();
-			uchar* pBuffer = (uchar*)fb->getBuffer();
-			int nBuffSize = fb->getBufferSize();
-			int nBytesRow = fb->getBytesPerRow();
-			QImage oImg(pBuffer, dim.width, dim.height, nBytesRow, QImage::Format_RGB32);
-			printf("img is null: %d\n", oImg.isNull());
-			QPainter painter(this);
-			painter.drawImage(QPoint(0, 0), oImg);
-			delete fb;
-		}
-		fbList.clear();
-		i++;
-	}
+	PDFRAME* pd = pHandlerSrv->getUpdateFrame();
+	if (pd == NULL) return;
+
+	Dimension dim = pd->fb.getDimension();
+	uchar* pBuffer = (uchar*)pd->fb.getBuffer();
+	int nBuffSize = pd->fb.getBufferSize();
+	int nBytesRow = pd->fb.getBytesPerRow();
+	QImage oImg(pBuffer, dim.width, dim.height, nBytesRow, QImage::Format_RGB32);
+	QPainter painter(this);
+	painter.drawImage(QPoint(pd->rect.left, pd->rect.top), oImg);
+	delete pd;
 
 	//poDriver->grabFb();
 	//HWND m_hWnd = (HWND)winId();

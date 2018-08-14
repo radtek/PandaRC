@@ -23,11 +23,13 @@
 //
 
 #include "UpdateHandlerServer.h"
+#include <queue>
 
 UpdateHandlerServer::UpdateHandlerServer(QWidget* parent)
 {
 	m_parent = parent;
 	m_updateHandler = new UpdateHandlerImpl(this, &m_scrDriverFactory);
+	m_updateHandler->doUpdate();
 
 	//dispatcher->registerNewHandle(EXTRACT_REQ, this);
 	//dispatcher->registerNewHandle(SCREEN_PROP_REQ, this);
@@ -41,9 +43,27 @@ UpdateHandlerServer::~UpdateHandlerServer()
 	delete m_updateHandler;
 }
 
+std::queue<PDFRAME*> pdList;
 void UpdateHandlerServer::onUpdate()
 {
-	m_parent->update();
+	const FrameBuffer* fb = m_updateHandler->getFrameBuffer();
+	UpdateContainer updCont;
+	m_updateHandler->extract(&updCont);
+
+	std::vector<Rect> rects;
+	std::vector<Rect>::iterator iRect;
+	updCont.changedRegion.getRectVector(&rects);
+
+	for (iRect = rects.begin(); iRect < rects.end(); iRect++) {
+		Rect *rect = &(*iRect);
+		PDFRAME* pd = new PDFRAME();
+		pd->rect = *rect;
+		pd->fb.setProperties(rect, &(fb->getPixelFormat()));
+		pd->fb.copyFrom(fb, rect->left, rect->top);
+		pdList.push(pd);
+		m_parent->update(rect->left, rect->top, rect->getWidth(), rect->getHeight());
+	}
+
 	//AutoLock al(m_forwGate);
 	//try {
 	//  m_forwGate->writeUInt8(UPDATE_DETECTED);
@@ -55,28 +75,13 @@ void UpdateHandlerServer::onUpdate()
 	//}
 }
 
-std::vector<FrameBuffer*>& UpdateHandlerServer::getUpdateFrameList()
+PDFRAME* UpdateHandlerServer::getUpdateFrame()
 {
-	const FrameBuffer* fb = m_updateHandler->getFrameBuffer();
-
-	UpdateContainer updCont;
-	m_updateHandler->extract(&updCont);
-
-	std::vector<Rect> rects;
-	std::vector<Rect>::iterator iRect;
-	updCont.changedRegion.getRectVector(&rects);
-
-	static std::vector<FrameBuffer*> fbList;
-	fbList.clear();
-
-	for (iRect = rects.begin(); iRect < rects.end(); iRect++) {
-		Rect *rect = &(*iRect);
-		FrameBuffer* fbC = new FrameBuffer();
-		fbC->setProperties(rect, &(fb->getPixelFormat()));
-		fbC->copyFrom(fb, rect->left, rect->top);
-		fbList.push_back(fbC);
-	}
-	return fbList;
+	if (pdList.size() == 0)
+		return NULL;
+	PDFRAME* pd = pdList.front();
+	pdList.pop();
+	return pd;
 }
 
 void UpdateHandlerServer::onRequest(UINT8 reqCode)

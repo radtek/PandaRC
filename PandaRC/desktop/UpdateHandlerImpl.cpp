@@ -42,7 +42,6 @@ UpdateHandlerImpl::UpdateHandlerImpl(UpdateListener *externalUpdateListener, Scr
 	// Force first update with full screen grab
 	m_absoluteRect = m_backupFrameBuffer.getDimension().getRect();
 	m_updateKeeper.addChangedRect(&m_absoluteRect);
-	doUpdate();
 }
 
 UpdateHandlerImpl::~UpdateHandlerImpl()

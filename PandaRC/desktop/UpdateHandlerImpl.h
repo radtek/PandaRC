@@ -46,6 +46,7 @@ private:
 	virtual void executeDetectors();
 	virtual void terminateDetectors();
 
+public:
 	void doUpdate()
 	{
 		if (m_externalUpdateListener) {
@@ -53,6 +54,7 @@ private:
 		}
 	}
 
+private:
 	virtual void onUpdate();
 
 	void applyNewScreenProperties();
