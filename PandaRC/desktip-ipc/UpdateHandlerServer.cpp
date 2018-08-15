@@ -23,13 +23,12 @@
 //
 
 #include "UpdateHandlerServer.h"
-#include <queue>
+#include "PandaRC.h"
 
 UpdateHandlerServer::UpdateHandlerServer(QWidget* parent)
 {
 	m_parent = parent;
 	m_updateHandler = new UpdateHandlerImpl(this, &m_scrDriverFactory);
-	m_updateHandler->doUpdate();
 
 	//dispatcher->registerNewHandle(EXTRACT_REQ, this);
 	//dispatcher->registerNewHandle(SCREEN_PROP_REQ, this);
@@ -43,7 +42,6 @@ UpdateHandlerServer::~UpdateHandlerServer()
 	delete m_updateHandler;
 }
 
-std::queue<PDFRAME*> pdList;
 void UpdateHandlerServer::onUpdate()
 {
 	const FrameBuffer* fb = m_updateHandler->getFrameBuffer();
@@ -60,8 +58,7 @@ void UpdateHandlerServer::onUpdate()
 		pd->rect = *rect;
 		pd->fb.setProperties(rect, &(fb->getPixelFormat()));
 		pd->fb.copyFrom(fb, rect->left, rect->top);
-		pdList.push(pd);
-		m_parent->update(rect->left, rect->top, rect->getWidth(), rect->getHeight());
+		((PandaRC*)m_parent)->getUpdateThread()->addFrame(pd);
 	}
 
 	//AutoLock al(m_forwGate);
@@ -73,15 +70,6 @@ void UpdateHandlerServer::onUpdate()
 	//             e.getMessage());
 	//  m_extTerminationListener->onAnObjectEvent();
 	//}
-}
-
-PDFRAME* UpdateHandlerServer::getUpdateFrame()
-{
-	if (pdList.size() == 0)
-		return NULL;
-	PDFRAME* pd = pdList.front();
-	pdList.pop();
-	return pd;
 }
 
 void UpdateHandlerServer::onRequest(UINT8 reqCode)

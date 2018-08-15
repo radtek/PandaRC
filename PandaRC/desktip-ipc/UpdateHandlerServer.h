@@ -31,20 +31,11 @@
 
 #include <QtWidgets/qwidget.h>
 
-//fix pd
-struct PDFRAME
-{
-	Rect rect;
-	FrameBuffer fb;
-};
-
 class UpdateHandlerServer : public UpdateListener
 {
 public:
 	UpdateHandlerServer(QWidget* parent);
 	virtual ~UpdateHandlerServer();
-
-	PDFRAME* getUpdateFrame();
 
 	// Internal dispatcher
 	virtual void onRequest(UINT8 reqCode);

@@ -599,12 +599,18 @@
     <ClCompile Include="desktop\UpdateHandler.cpp">
       <Filter>Source Files\desktop</Filter>
     </ClCompile>
+    <ClCompile Include="QMyThread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="UDPNet\UDPNet.h">
       <Filter>Source Files\UDPNet</Filter>
     </QtMoc>
     <QtMoc Include="PandaRC.h">
+      <Filter>Source Files</Filter>
+    </QtMoc>
+    <QtMoc Include="QMyThread.h">
       <Filter>Source Files</Filter>
     </QtMoc>
   </ItemGroup>

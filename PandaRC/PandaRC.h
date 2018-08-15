@@ -2,7 +2,9 @@
 
 #include <QtWidgets/QMainWindow>
 #include "ui_PandaRC.h"
-#include "UDPNet\UDPNet.h"
+
+#include "UDPNet/UDPNet.h"
+#include "QMyThread.h"
 
 class PandaRC : public QMainWindow
 {
@@ -14,6 +16,7 @@ public:
 public slots:
 	void onBtnSend();
 	void onBtnRecv();
+	void onPaintDataChanged(PDFRAME* pd);
 
 protected:
 	void paintEvent(QPaintEvent *event);
@@ -21,6 +24,11 @@ protected:
 private:
 	Ui::PandaRCClass ui;
 
+public:
+	QMyThread* getUpdateThread() { return &m_oMyThread; }
+
 private:
 	UDPNet* m_pUDPNet;
+	QMyThread m_oMyThread;
+	PDFRAME* m_currFrame;
 };
