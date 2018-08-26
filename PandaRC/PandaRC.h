@@ -20,6 +20,7 @@ public slots:
 
 protected:
 	void paintEvent(QPaintEvent *event);
+	void resizeEvent(QResizeEvent * event);
 
 private:
 	Ui::PandaRCClass ui;
@@ -31,4 +32,5 @@ private:
 	UDPNet* m_pUDPNet;
 	QMyThread m_oMyThread;
 	PDFRAME* m_currFrame;
+	PDFRAME* m_backFrame;
 };

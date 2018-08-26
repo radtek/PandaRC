@@ -173,21 +173,21 @@ void UpdateHandlerServer::extractReply()
 
 void UpdateHandlerServer::screenPropReply()
 {
-	//const FrameBuffer *fb = m_updateHandler->getFrameBuffer();
+	const FrameBuffer *fb = m_updateHandler->getFrameBuffer();
 	//sendPixelFormat(&fb->getPixelFormat(), backGate);
 	//sendDimension(&fb->getDimension(), backGate);
 }
 
 void UpdateHandlerServer::receiveFullReqReg()
 {
-	//Region region;
+	Region region;
 	//readRegion(&region, backGate);
 	//m_updateHandler->setFullUpdateRequested(&region);
 }
 
 void UpdateHandlerServer::receiveExcludingReg()
 {
-	//Region region;
+	Region region;
 	//readRegion(&region, backGate);
 	//m_updateHandler->setExcludedRegion(&region);
 }

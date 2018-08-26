@@ -147,10 +147,14 @@ int Screen::findFirstBit(const UINT32 bits)
 
 void Screen::fillScreenRect()
 {
-  m_virtDesktopRect.left = GetSystemMetrics(SM_XVIRTUALSCREEN);
-  m_virtDesktopRect.top = GetSystemMetrics(SM_YVIRTUALSCREEN);
-  m_virtDesktopRect.setWidth(GetSystemMetrics(SM_CXVIRTUALSCREEN));
-  m_virtDesktopRect.setHeight(GetSystemMetrics(SM_CYVIRTUALSCREEN));
+	m_virtDesktopRect.left = 0;
+	m_virtDesktopRect.top = 0;
+	m_virtDesktopRect.setWidth(GetSystemMetrics(SM_CXSCREEN));
+	m_virtDesktopRect.setHeight(GetSystemMetrics(SM_CYSCREEN));
+  //m_virtDesktopRect.left = GetSystemMetrics(SM_XVIRTUALSCREEN);
+  //m_virtDesktopRect.top = GetSystemMetrics(SM_YVIRTUALSCREEN);
+  //m_virtDesktopRect.setWidth(GetSystemMetrics(SM_CXVIRTUALSCREEN));
+  //m_virtDesktopRect.setHeight(GetSystemMetrics(SM_CYVIRTUALSCREEN));
 }
 
 size_t Screen::getVisibleMonitorCount()

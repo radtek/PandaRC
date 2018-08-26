@@ -16,9 +16,12 @@ PandaRC::PandaRC(QWidget *parent)
 
 	//Logger::Instance()->Init();
 	m_currFrame = NULL;
+	m_backFrame = NULL;
+
 	m_oMyThread.start();
 	m_pUDPNet = new UDPNet(parent);
 	pHandlerSrv = new UpdateHandlerServer(this);
+
 	connect(&m_oMyThread, SIGNAL(paintDataChanged(PDFRAME*)), this, SLOT(onPaintDataChanged(PDFRAME*)));
 }
 
@@ -32,13 +35,30 @@ void PandaRC::onBtnRecv()
 
 void PandaRC::onPaintDataChanged(PDFRAME* pd)
 {
+	if (pd == NULL)
+	{
+		return;
+	}
+	if (m_backFrame == NULL)
+	{
+		m_backFrame = pd;
+	}
+
 	m_currFrame = pd;
 	repaint(pd->rect.left, pd->rect.top, pd->rect.getWidth(), pd->rect.getHeight());
 }
 
+void PandaRC::resizeEvent(QResizeEvent * event)
+{
+	onPaintDataChanged(m_backFrame);
+}
+
 void PandaRC::paintEvent(QPaintEvent *event)
 {
-	if (m_currFrame == NULL) return;
+	if (m_currFrame == NULL)
+	{
+		return;
+	}
 	PDFRAME* pd = m_currFrame;
 	Dimension dim = pd->fb.getDimension();
 	uchar* pBuffer = (uchar*)pd->fb.getBuffer();
@@ -47,7 +67,10 @@ void PandaRC::paintEvent(QPaintEvent *event)
 	QImage oImg(pBuffer, dim.width, dim.height, nBytesRow, QImage::Format_RGB32);
 	QPainter painter(this);
 	painter.drawImage(QPoint(pd->rect.left, pd->rect.top), oImg);
-	delete pd;
+	if (pd != m_backFrame)
+	{
+		delete pd;
+	}
 	m_currFrame = NULL;
 
 	//poDriver->grabFb();
