@@ -27,10 +27,9 @@
 #include <string.h>
 #include "region/Region.h"
 
-MirrorScreenDriver::MirrorScreenDriver(UpdateKeeper *updateKeeper, UpdateListener *updateListener)
-	: UpdateDetector(updateKeeper, updateListener)
+MirrorScreenDriver::MirrorScreenDriver(UpdateKeeper *updateKeeper, UpdateListener *updateListener, LocalMutex *fbLocalMutex)
+	: UpdateDetector(updateKeeper, updateListener), m_lastCounter(0), m_fbMutex(fbLocalMutex)
 {
-	m_lastCounter = 0;
 	m_mirrorClient = new MirrorDriverClient();
 	initFrameBuffer();
 }
@@ -74,7 +73,7 @@ FrameBuffer *MirrorScreenDriver::getScreenBuffer()
 
 bool MirrorScreenDriver::grab(const Rect *rect)
 {
-	AutoLock al(&m_fbMutex);
+	AutoLock al(m_fbMutex);
 
 	if (m_mirrorClient == 0) {
 		printf("Mirror driver client didn't initilized.\n");
@@ -112,7 +111,7 @@ bool MirrorScreenDriver::grab(const Rect *rect)
 
 bool MirrorScreenDriver::getPropertiesChanged()
 {
-	AutoLock al(&m_fbMutex);
+	AutoLock al(m_fbMutex);
 
 	if (m_mirrorClient != 0) {
 		return m_mirrorClient->getPropertiesChanged();
@@ -125,7 +124,7 @@ bool MirrorScreenDriver::getPropertiesChanged()
 
 bool MirrorScreenDriver::getScreenSizeChanged()
 {
-	AutoLock al(&m_fbMutex);
+	AutoLock al(m_fbMutex);
 
 	if (m_mirrorClient != 0) {
 		return m_mirrorClient->getScreenSizeChanged();
@@ -138,7 +137,7 @@ bool MirrorScreenDriver::getScreenSizeChanged()
 
 bool MirrorScreenDriver::applyNewProperties()
 {
-	AutoLock al(&m_fbMutex);
+	AutoLock al(m_fbMutex);
 
 	delete m_mirrorClient;
 	m_mirrorClient = 0;
@@ -167,7 +166,7 @@ void MirrorScreenDriver::execute()
 		m_updateTimeout.waitForEvent(30);
 
 		{
-			AutoLock al(&m_fbMutex);
+			AutoLock al(m_fbMutex);
 			if (m_mirrorClient != 0) {
 				CHANGES_BUF *changesBuf = m_mirrorClient->getChangesBuf();
 				if (changesBuf != 0) {

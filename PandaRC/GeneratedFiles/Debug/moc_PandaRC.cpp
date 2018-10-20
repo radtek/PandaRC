@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_PandaRC_t {
-    QByteArrayData data[7];
-    char stringdata0[60];
+    QByteArrayData data[5];
+    char stringdata0[48];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -35,13 +35,11 @@ QT_MOC_LITERAL(0, 0, 7), // "PandaRC"
 QT_MOC_LITERAL(1, 8, 9), // "onBtnSend"
 QT_MOC_LITERAL(2, 18, 0), // ""
 QT_MOC_LITERAL(3, 19, 9), // "onBtnRecv"
-QT_MOC_LITERAL(4, 29, 18), // "onPaintDataChanged"
-QT_MOC_LITERAL(5, 48, 8), // "PDFRAME*"
-QT_MOC_LITERAL(6, 57, 2) // "pd"
+QT_MOC_LITERAL(4, 29, 18) // "onPaintDataChanged"
 
     },
     "PandaRC\0onBtnSend\0\0onBtnRecv\0"
-    "onPaintDataChanged\0PDFRAME*\0pd"
+    "onPaintDataChanged"
 };
 #undef QT_MOC_LITERAL
 
@@ -61,12 +59,12 @@ static const uint qt_meta_data_PandaRC[] = {
  // slots: name, argc, parameters, tag, flags
        1,    0,   29,    2, 0x0a /* Public */,
        3,    0,   30,    2, 0x0a /* Public */,
-       4,    1,   31,    2, 0x0a /* Public */,
+       4,    0,   31,    2, 0x0a /* Public */,
 
  // slots: parameters
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, 0x80000000 | 5,    6,
+    QMetaType::Void,
 
        0        // eod
 };
@@ -79,10 +77,11 @@ void PandaRC::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, voi
         switch (_id) {
         case 0: _t->onBtnSend(); break;
         case 1: _t->onBtnRecv(); break;
-        case 2: _t->onPaintDataChanged((*reinterpret_cast< PDFRAME*(*)>(_a[1]))); break;
+        case 2: _t->onPaintDataChanged(); break;
         default: ;
         }
     }
+    Q_UNUSED(_a);
 }
 
 QT_INIT_METAOBJECT const QMetaObject PandaRC::staticMetaObject = {

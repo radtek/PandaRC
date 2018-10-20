@@ -32,7 +32,7 @@
 class MirrorScreenDriver: public UpdateDetector
 {
 public:
-	MirrorScreenDriver(UpdateKeeper *updateKeeper, UpdateListener *updateListener);
+	MirrorScreenDriver(UpdateKeeper *updateKeeper, UpdateListener *updateListener, LocalMutex *fbLocalMutex);
 	virtual ~MirrorScreenDriver();
 
 	// Starts screen update detection if it not started yet.
@@ -61,7 +61,7 @@ private:
 	MirrorDriverClient *m_mirrorClient;
 	unsigned long m_lastCounter;
 	FrameBuffer m_frameBuffer;
-	LocalMutex m_fbMutex;
+	LocalMutex* m_fbMutex;
 
 	WindowsEvent m_updateTimeout;
 };

@@ -25,16 +25,16 @@
 #ifndef __CURSORHAPEDETECTOR_H__
 #define __CURSORHAPEDETECTOR_H__
 
-//#include "UpdateKeeper.h"
+#include "UpdateKeeper.h"
+#include "UpdateDetector.h"
 #include "CursorShapeGrabber.h"
-//#include "UpdateDetector.h"
 #include "win-system/WindowsEvent.h"
 //#include "log-writer/LogWriter.h"
 
-class CursorShapeDetector
+class CursorShapeDetector : public UpdateDetector
 {
 public:
-	CursorShapeDetector(CursorShapeGrabber *mouseGrabber);
+	CursorShapeDetector(UpdateKeeper *updateKeeper, UpdateListener *updateListener, CursorShapeGrabber *mouseGrabber, LocalMutex *mouseGrabLocMut);
 	virtual ~CursorShapeDetector();
 
 protected:
@@ -42,6 +42,7 @@ protected:
 	virtual void onTerminate();
 
 	CursorShapeGrabber *m_mouseGrabber;
+	LocalMutex *m_mouseGrabLocMut;
 	WindowsEvent m_sleepTimer;
 };
 

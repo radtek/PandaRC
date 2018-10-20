@@ -36,7 +36,7 @@
 class Win32ScreenDriverBaseImpl : public WinVideoRegionUpdaterImpl
 {
 public:
-	Win32ScreenDriverBaseImpl();
+	Win32ScreenDriverBaseImpl(UpdateKeeper *updateKeeper, UpdateListener *updateListener, LocalMutex *fbLocalMutex);
 	virtual ~Win32ScreenDriverBaseImpl();
 
 	// Starts screen update detection if it not started yet.
@@ -51,7 +51,11 @@ public:
 
 	virtual void getCopiedRegion(Rect *copyRect, Point *source);
 
+protected:
+	LocalMutex *getFbMutex();
+
 private:
+	LocalMutex *m_fbLocalMutex;
 
 	CursorPositionDetector m_cursorPosDetector;
 	WindowsCursorShapeGrabber m_curShapeGrabber;

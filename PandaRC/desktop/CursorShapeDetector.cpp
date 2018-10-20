@@ -26,14 +26,15 @@
 
 const int SLEEP_TIME = 100;
 
-CursorShapeDetector::CursorShapeDetector( CursorShapeGrabber *mouseGrabber):m_mouseGrabber(mouseGrabber)
+CursorShapeDetector::CursorShapeDetector(UpdateKeeper *updateKeeper, UpdateListener *updateListener, CursorShapeGrabber *mouseGrabber, LocalMutex *mouseGrabLocMut)
+	: UpdateDetector(updateKeeper, updateListener), m_mouseGrabLocMut(mouseGrabLocMut), m_mouseGrabber(mouseGrabber)
 {
 }
 
 CursorShapeDetector::~CursorShapeDetector(void)
 {
   terminate();
-  //wait();
+  wait();
 }
 
 void CursorShapeDetector::onTerminate()
@@ -43,16 +44,16 @@ void CursorShapeDetector::onTerminate()
 
 void CursorShapeDetector::execute()
 {
-  //while (!isTerminating()) {
-  //  bool isCursorShapeChanged;
-  //  {
-  //    AutoLock al(m_mouseGrabLocMut);
-  //    isCursorShapeChanged = m_mouseGrabber->isCursorShapeChanged();
-  //  }
-  //  if (isCursorShapeChanged) {
-  //    m_updateKeeper->setCursorShapeChanged();
-  //    doUpdate();
-  //  }
-  //  m_sleepTimer.waitForEvent(SLEEP_TIME);
-  //}
+  while (!isTerminating()) {
+    bool isCursorShapeChanged;
+    {
+      AutoLock al(m_mouseGrabLocMut);
+      isCursorShapeChanged = m_mouseGrabber->isCursorShapeChanged();
+    }
+    if (isCursorShapeChanged) {
+      m_updateKeeper->setCursorShapeChanged();
+      doUpdate();
+    }
+    m_sleepTimer.waitForEvent(SLEEP_TIME);
+  }
 }

@@ -32,7 +32,7 @@
 class ScreenDriverFactory
 {
 public:
-  virtual ScreenDriver *createScreenDriver(UpdateKeeper *updateKeeper, UpdateListener *updateListener, FrameBuffer* fb) = 0;
+  virtual ScreenDriver *createScreenDriver(UpdateKeeper *updateKeeper, UpdateListener *updateListener, FrameBuffer* fb, LocalMutex*  fbLocalMutex) = 0;
 private:
 };
 

@@ -61,6 +61,38 @@ void UpdateHandlerServer::onUpdate()
 		((PandaRC*)m_parent)->getUpdateThread()->addFrame(pd);
 	}
 
+	rects.clear();
+	updCont.copiedRegion.getRectVector(&rects);
+
+	for (iRect = rects.begin(); iRect < rects.end(); iRect++) {
+		Rect *rect = &(*iRect);
+		PDFRAME* pd = new PDFRAME();
+		pd->rect = *rect;
+		pd->fb.setProperties(rect, &(fb->getPixelFormat()));
+		pd->fb.copyFrom(fb, rect->left, rect->top);
+		((PandaRC*)m_parent)->getUpdateThread()->addFrame(pd);
+	}
+
+	// Send cursor position if it has been changed.
+	PDCURSOR cursor;
+	if (updCont.cursorPosChanged)
+	{
+		cursor.pos = updCont.cursorPos;
+	}
+
+	// Send cursor shape if it has been changed.
+	if (updCont.cursorShapeChanged)
+	{
+		const CursorShape *curSh = m_updateHandler->getCursorShape();
+		cursor.dim = curSh->getDimension();
+		cursor.hotspot = curSh->getHotSpot();
+		memcpy(cursor.buffer, curSh->getPixels()->getBuffer(), curSh->getPixelsSize());
+		if (curSh->getMaskSize()) {
+			memcpy(cursor.mask, curSh->getMask(), curSh->getMaskSize());
+		}
+	}
+
+	int i = 0;
 	//AutoLock al(m_forwGate);
 	//try {
 	//  m_forwGate->writeUInt8(UPDATE_DETECTED);
@@ -74,6 +106,7 @@ void UpdateHandlerServer::onUpdate()
 
 void UpdateHandlerServer::onRequest(UINT8 reqCode)
 {
+	extractReply();
 	//switch (reqCode) {
 	//case EXTRACT_REQ:
 	//  extractReply(backGate);
@@ -113,6 +146,12 @@ void UpdateHandlerServer::extractReply()
 		updCont.screenSizeChanged = true;
 		m_oldPf = newPf;
 	}
+
+	PDFRAME* pd = new PDFRAME();
+	pd->rect = fb->getDimension().getRect();
+	pd->fb.setProperties(&pd->rect, &(fb->getPixelFormat()));
+	pd->fb.copyFrom(fb, pd->rect.left, pd->rect.top);
+	((PandaRC*)m_parent)->getUpdateThread()->addFrame(pd);
 
 	//backGate->writeUInt8(updCont.screenSizeChanged);
 	//if (updCont.screenSizeChanged) {

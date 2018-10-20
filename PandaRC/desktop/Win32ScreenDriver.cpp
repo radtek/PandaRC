@@ -24,7 +24,8 @@
 
 #include "Win32ScreenDriver.h"
 
-Win32ScreenDriver::Win32ScreenDriver():Win32ScreenDriverBaseImpl()
+Win32ScreenDriver::Win32ScreenDriver(UpdateKeeper *updateKeeper, UpdateListener *updateListener, FrameBuffer *fb, LocalMutex *fbLocalMutex)
+	:Win32ScreenDriverBaseImpl(updateKeeper, updateListener, fbLocalMutex)
 {
   // At this point the screen driver has valid screen properties (provides by screen grabber).
 }
@@ -57,13 +58,13 @@ void Win32ScreenDriver::terminateDetection()
 
 Dimension Win32ScreenDriver::getScreenDimension()
 {
-  //AutoLock al(getFbMutex());
+  AutoLock al(getFbMutex());
   return Dimension(&m_screenGrabber.getScreenRect());
 }
 
 bool Win32ScreenDriver::grabFb(const Rect *rect)
 {
-  //AutoLock al(getFbMutex());
+  AutoLock al(getFbMutex());
   return m_screenGrabber.grab(rect);
 }
 
@@ -74,18 +75,18 @@ FrameBuffer *Win32ScreenDriver::getScreenBuffer()
 
 bool Win32ScreenDriver::getScreenPropertiesChanged()
 {
-  //AutoLock al(getFbMutex());
+  AutoLock al(getFbMutex());
   return m_screenGrabber.getPropertiesChanged();
 }
 
 bool Win32ScreenDriver::getScreenSizeChanged()
 {
-  //AutoLock al(getFbMutex());
+  AutoLock al(getFbMutex());
   return m_screenGrabber.getScreenSizeChanged();
 }
 
 bool Win32ScreenDriver::applyNewScreenProperties()
 {
-  //AutoLock al(getFbMutex());
+  AutoLock al(getFbMutex());
   return m_screenGrabber.applyNewProperties();
 }

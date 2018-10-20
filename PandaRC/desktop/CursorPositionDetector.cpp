@@ -26,7 +26,8 @@
 
 const int MOUSE_SLEEP_TIME = 10;
 
-CursorPositionDetector::CursorPositionDetector()
+CursorPositionDetector::CursorPositionDetector(UpdateKeeper *updateKeeper, UpdateListener *updateListener)
+	: UpdateDetector(updateKeeper, updateListener)
 {
 }
 
@@ -50,15 +51,15 @@ void CursorPositionDetector::execute()
 {
   //glog.info(_T("mouse detector thread id = %d"), getThreadId());
 
-  //Point curPoint;
+  Point curPoint;
 
-  //while (!isTerminating()) {
-  //  curPoint = m_cursor.getCursorPos();
-  //  if (!m_lastCursorPos.isEqualTo(&curPoint)) {
-  //    m_lastCursorPos = curPoint;
-  //    m_updateKeeper->setCursorPosChanged(&m_lastCursorPos);
-  //    doUpdate();
-  //  }
-  //  m_sleepTimer.waitForEvent(MOUSE_SLEEP_TIME);
-  //}
+  while (!isTerminating()) {
+    curPoint = m_cursor.getCursorPos();
+    if (!m_lastCursorPos.isEqualTo(&curPoint)) {
+      m_lastCursorPos = curPoint;
+      m_updateKeeper->setCursorPosChanged(&m_lastCursorPos);
+      doUpdate();
+    }
+    m_sleepTimer.waitForEvent(MOUSE_SLEEP_TIME);
+  }
 }

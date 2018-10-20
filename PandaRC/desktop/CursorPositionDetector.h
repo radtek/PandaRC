@@ -25,15 +25,15 @@
 #ifndef __CURSORPOSITIONDETECTOR_H__
 #define __CURSORPOSITIONDETECTOR_H__
 
-//#include "UpdateDetector.h"
-#include "win-system/WindowsEvent.h"
+#include "UpdateDetector.h"
 //#include "log-writer/LogWriter.h"
+#include "win-system/WindowsEvent.h"
 #include "win-system/WinCursor.h"
 
-class CursorPositionDetector
+class CursorPositionDetector : public UpdateDetector
 {
 public:
-	CursorPositionDetector();
+	CursorPositionDetector(UpdateKeeper *updateKeeper, UpdateListener *updateListener);
 	virtual ~CursorPositionDetector(void);
 
 	// Returns current position of a windows cursor.

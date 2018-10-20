@@ -36,10 +36,11 @@ public:
 	Win32ScreenDriverFactory();
 	virtual ~Win32ScreenDriverFactory();
 
-	virtual ScreenDriver *createScreenDriver(UpdateKeeper *updateKeeper, UpdateListener *updateListener, FrameBuffer* fb);
+	virtual ScreenDriver *createScreenDriver(UpdateKeeper *updateKeeper, UpdateListener *updateListener, FrameBuffer* fb, LocalMutex*  fbLocalMutex);
+
 private:
-	ScreenDriver *createStandardScreenDriver();
-	ScreenDriver *createMirrorScreenDriver(UpdateKeeper *updateKeeper, UpdateListener *updateListener);
+	ScreenDriver *createStandardScreenDriver(UpdateKeeper *updateKeeper, UpdateListener *updateListener, FrameBuffer *fb, LocalMutex *fbLocalMutex);
+	ScreenDriver *createMirrorScreenDriver(UpdateKeeper *updateKeeper, UpdateListener *updateListener, LocalMutex*  fbLocalMutex);
 
 	bool isMirrorDriverAllowed();
 

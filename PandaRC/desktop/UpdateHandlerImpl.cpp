@@ -28,7 +28,7 @@
 UpdateHandlerImpl::UpdateHandlerImpl(UpdateListener *externalUpdateListener, ScreenDriverFactory *scrDriverFactory)
 	: m_externalUpdateListener(externalUpdateListener), m_fullUpdateRequested(false)
 {
-	m_screenDriver = scrDriverFactory->createScreenDriver(&m_updateKeeper, this, &m_backupFrameBuffer);
+	m_screenDriver = scrDriverFactory->createScreenDriver(&m_updateKeeper, this, &m_backupFrameBuffer, &m_fbLocMut);
 
 	// At this point the screen driver must contain valid screen properties.
 	m_backupFrameBuffer.assignProperties(m_screenDriver->getScreenBuffer());

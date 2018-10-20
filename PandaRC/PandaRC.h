@@ -16,11 +16,10 @@ public:
 public slots:
 	void onBtnSend();
 	void onBtnRecv();
-	void onPaintDataChanged(PDFRAME* pd);
+	void onPaintDataChanged();
 
 protected:
 	void paintEvent(QPaintEvent *event);
-	void resizeEvent(QResizeEvent * event);
 
 private:
 	Ui::PandaRCClass ui;
@@ -31,6 +30,7 @@ public:
 private:
 	UDPNet* m_pUDPNet;
 	QMyThread m_oMyThread;
-	PDFRAME* m_currFrame;
-	PDFRAME* m_backFrame;
+
+	QPixmap* m_nPixmap;
+	QPainter* m_nPainter;
 };

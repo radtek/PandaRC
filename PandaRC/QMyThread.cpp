@@ -10,15 +10,22 @@ void QMyThread::run()
 {
 	for (;;)
 	{
-		m_updateTimeout.waitForEvent(30);
-		m_pdMutex.lock();
+		m_updateTimeout.waitForEvent(60);
+		AutoLock al(&m_pdMutex);
+		if (m_oneFrame.size() > 0)
+		{
+			continue;
+		}
 		while (m_pdList.size() > 0)
 		{
-			PDFRAME* pd = m_pdList.front();
+			PDFRAME* frame = m_pdList.front();
 			m_pdList.pop();
-			emit paintDataChanged(pd);
+			m_oneFrame.push(frame);
 		}
-		m_pdMutex.unlock();
+		if (m_oneFrame.size() > 0)
+		{
+			emit paintDataChanged();
+		}
 	}
 }
 
@@ -26,4 +33,23 @@ void QMyThread::addFrame(PDFRAME* pd)
 {
 	AutoLock al(&m_pdMutex);
 	m_pdList.push(pd);
+}
+
+PDFRAME* QMyThread::getFrame()
+{
+	AutoLock al(&m_pdMutex);
+	if (m_oneFrame.size() <= 0)
+		return NULL;
+	PDFRAME* pd  = m_oneFrame.front();
+	m_oneFrame.pop();
+	return pd;
+}
+
+PDFRAME* QMyThread::peekFrame()
+{
+	AutoLock al(&m_pdMutex);
+	if (m_oneFrame.size() <= 0)
+		return NULL;
+	PDFRAME* pd  = m_oneFrame.front();
+	return pd;
 }

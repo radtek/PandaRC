@@ -35,31 +35,31 @@ Win32ScreenDriverFactory::~Win32ScreenDriverFactory()
 {
 }
 
-ScreenDriver *Win32ScreenDriverFactory::createScreenDriver(UpdateKeeper *updateKeeper, UpdateListener *updateListener, FrameBuffer* fb)
+ScreenDriver *Win32ScreenDriverFactory::createScreenDriver(UpdateKeeper *updateKeeper, UpdateListener *updateListener, FrameBuffer* fb, LocalMutex*  fbLocalMutex)
 {
 	// Try to use Win8 duplication API firstly because it's in preference to other methods.
 	//return new Win8ScreenDriver();
 
 	if (isMirrorDriverAllowed()) {
 		printf("Mirror driver usage is allowed, try to start it...");
-		return createMirrorScreenDriver(updateKeeper, updateListener);
+		return createMirrorScreenDriver(updateKeeper, updateListener, fbLocalMutex);
 	}
 	else
 	{
 		printf("Mirror driver usage is disallowed");
 	}
 	printf("Using the standart screen driver");
-	return createStandardScreenDriver();
+	return createStandardScreenDriver(updateKeeper, updateListener, fb, fbLocalMutex);
 }
 
-ScreenDriver *Win32ScreenDriverFactory::createStandardScreenDriver()
+ScreenDriver *Win32ScreenDriverFactory::createStandardScreenDriver(UpdateKeeper *updateKeeper, UpdateListener *updateListener, FrameBuffer *fb, LocalMutex *fbLocalMutex)
 {
-	return new Win32ScreenDriver();
+	return new Win32ScreenDriver(updateKeeper, updateListener, fb, fbLocalMutex);
 }
 
-ScreenDriver *Win32ScreenDriverFactory::createMirrorScreenDriver(UpdateKeeper *updateKeeper, UpdateListener *updateListener)
+ScreenDriver *Win32ScreenDriverFactory::createMirrorScreenDriver(UpdateKeeper *updateKeeper, UpdateListener *updateListener, LocalMutex*  fbLocalMutex)
 {
-	return new Win32MirrorScreenDriver(updateKeeper, updateListener);
+	return new Win32MirrorScreenDriver(updateKeeper, updateListener, fbLocalMutex);
 }
 
 bool Win32ScreenDriverFactory::isMirrorDriverAllowed()
