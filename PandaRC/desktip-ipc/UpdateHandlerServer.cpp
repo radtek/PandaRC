@@ -48,25 +48,25 @@ void UpdateHandlerServer::onUpdate()
 	UpdateContainer updCont;
 	m_updateHandler->extract(&updCont);
 
-	std::vector<Rect> rects;
-	std::vector<Rect>::iterator iRect;
-	updCont.changedRegion.getRectVector(&rects);
+	std::vector<Rect> vecRect;
+	std::vector<Rect>::iterator iterRect;
+	updCont.changedRegion.getRectVector(&vecRect);
 
-	for (iRect = rects.begin(); iRect < rects.end(); iRect++) {
-		Rect *rect = &(*iRect);
-		PDFRAME* pd = new PDFRAME();
+	for (iterRect = vecRect.begin(); iterRect < vecRect.end(); iterRect++) {
+		Rect *rect = &(*iterRect);
+		PDFRAME* pd = new PDFRAME((int8_t)PDEVENT_TYPE::eFRAME);
 		pd->rect = *rect;
 		pd->fb.setProperties(rect, &(fb->getPixelFormat()));
 		pd->fb.copyFrom(fb, rect->left, rect->top);
 		((PandaRC*)m_parent)->getUpdateThread()->addFrame(pd);
 	}
 
-	rects.clear();
-	updCont.copiedRegion.getRectVector(&rects);
+	vecRect.clear();
+	updCont.copiedRegion.getRectVector(&vecRect);
 
-	for (iRect = rects.begin(); iRect < rects.end(); iRect++) {
-		Rect *rect = &(*iRect);
-		PDFRAME* pd = new PDFRAME();
+	for (iterRect = vecRect.begin(); iterRect < vecRect.end(); iterRect++) {
+		Rect *rect = &(*iterRect);
+		PDFRAME* pd = new PDFRAME((int8_t)PDEVENT_TYPE::eFRAME);
 		pd->rect = *rect;
 		pd->fb.setProperties(rect, &(fb->getPixelFormat()));
 		pd->fb.copyFrom(fb, rect->left, rect->top);
@@ -74,25 +74,35 @@ void UpdateHandlerServer::onUpdate()
 	}
 
 	// Send cursor position if it has been changed.
-	PDCURSOR cursor;
+	PDCURSOR* cursor = NULL;
 	if (updCont.cursorPosChanged)
 	{
-		cursor.pos = updCont.cursorPos;
+		cursor = new PDCURSOR(PDEVENT_TYPE::eCURSOR);
+		cursor->pos = updCont.cursorPos;
 	}
 
 	// Send cursor shape if it has been changed.
 	if (updCont.cursorShapeChanged)
 	{
+		if (cursor == NULL)
+		{
+			cursor = new PDCURSOR(PDEVENT_TYPE::eCURSOR);
+		}
 		const CursorShape *curSh = m_updateHandler->getCursorShape();
-		cursor.dim = curSh->getDimension();
-		cursor.hotspot = curSh->getHotSpot();
-		memcpy(cursor.buffer, curSh->getPixels()->getBuffer(), curSh->getPixelsSize());
+		cursor->dim = curSh->getDimension();
+		cursor->hotspot = curSh->getHotSpot();
+		memcpy(cursor->buffer, curSh->getPixels()->getBuffer(), curSh->getPixelsSize());
+		cursor->bufferSize = curSh->getPixelsSize();
 		if (curSh->getMaskSize()) {
-			memcpy(cursor.mask, curSh->getMask(), curSh->getMaskSize());
+			memcpy(cursor->mask, curSh->getMask(), curSh->getMaskSize());
+			cursor->maskSize = curSh->getMaskSize();
 		}
 	}
+	if (cursor != NULL)
+	{
+		((PandaRC*)m_parent)->getUpdateThread()->addFrame(cursor);
+	}
 
-	int i = 0;
 	//AutoLock al(m_forwGate);
 	//try {
 	//  m_forwGate->writeUInt8(UPDATE_DETECTED);
@@ -106,7 +116,8 @@ void UpdateHandlerServer::onUpdate()
 
 void UpdateHandlerServer::onRequest(UINT8 reqCode)
 {
-	extractReply();
+	//extractReply();
+
 	//switch (reqCode) {
 	//case EXTRACT_REQ:
 	//  extractReply(backGate);
@@ -147,7 +158,7 @@ void UpdateHandlerServer::extractReply()
 		m_oldPf = newPf;
 	}
 
-	PDFRAME* pd = new PDFRAME();
+	PDFRAME* pd = new PDFRAME(PDEVENT_TYPE::eFRAME);
 	pd->rect = fb->getDimension().getRect();
 	pd->fb.setProperties(&pd->rect, &(fb->getPixelFormat()));
 	pd->fb.copyFrom(fb, pd->rect.left, pd->rect.top);

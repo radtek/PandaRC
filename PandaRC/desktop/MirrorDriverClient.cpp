@@ -144,7 +144,7 @@ void MirrorDriverClient::extractDeviceInfo(TCHAR *driverName)
 
 	m_deviceNumber = 0;
 	BOOL result;
-	while (result = EnumDisplayDevices(0, m_deviceNumber, &m_deviceInfo, 0)) {
+	while (result = EnumDisplayDevices(0, m_deviceNumber, &m_deviceInfo, EDD_GET_DEVICE_INTERFACE_NAME)) {
 		printf("Found: %ls\n", m_deviceInfo.DeviceString);
 		printf("RegKey: %ls\n", m_deviceInfo.DeviceKey);
 		StringStorage deviceString(m_deviceInfo.DeviceString);

@@ -8,24 +8,41 @@
 #include "rfb/FrameBuffer.h"
 #include "thread/LocalMutex.h"
 
-struct PDFRAME
+enum PDEVENT_TYPE
 {
+	eFRAME = 1,	
+	eCURSOR = 2,
+};
+
+class PDEVENT
+{
+public:
+	PDEVENT(int8_t _type): type(_type) {}
+	int8_t type;
+};
+
+class PDFRAME : public PDEVENT
+{
+public:
+	PDFRAME(int8_t _type): PDEVENT(_type) {}
 	Rect rect;
 	FrameBuffer fb;
 };
 
-struct PDCURSOR
+class PDCURSOR : public PDEVENT
 {
-	bool posChange;
+public:
+	PDCURSOR(int8_t _type): PDEVENT(_type) {}
 	Point pos;
+	bool posChange;
 	
-	bool shapeChange;
 	Dimension dim;
 	Point hotspot;
-	char buffer[1024];
+	char buffer[4096];
 	int bufferSize;
-	char mask[1024];
+	char mask[4096];
 	int maskSize;
+	bool shapeChange;
 };
 
 class QMyThread : public QThread
@@ -40,14 +57,14 @@ signals:
 
 public:
 	void notify() { m_updateTimeout.notify(); }
-	void addFrame(PDFRAME* pd);
-	PDFRAME* getFrame();
-	PDFRAME* peekFrame();
+	void addFrame(PDEVENT* pd);
+	PDEVENT* getFrame();
+	PDEVENT* peekFrame();
 
 protected:
 	WindowsEvent m_updateTimeout;
-	std::queue<PDFRAME*> m_pdList;
-	std::queue<PDFRAME*> m_oneFrame;
+	std::queue<PDEVENT*> m_pdList;
+	std::queue<PDEVENT*> m_oneFrame;
 	LocalMutex m_pdMutex;
 
 };

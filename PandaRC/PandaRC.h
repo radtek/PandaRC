@@ -31,6 +31,6 @@ private:
 	UDPNet* m_pUDPNet;
 	QMyThread m_oMyThread;
 
-	QPixmap* m_nPixmap;
-	QPainter* m_nPainter;
+	QPixmap* m_pPixmap;
+	QPainter* m_pPainter;
 };

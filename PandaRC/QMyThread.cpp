@@ -18,7 +18,7 @@ void QMyThread::run()
 		}
 		while (m_pdList.size() > 0)
 		{
-			PDFRAME* frame = m_pdList.front();
+			PDEVENT* frame = m_pdList.front();
 			m_pdList.pop();
 			m_oneFrame.push(frame);
 		}
@@ -29,27 +29,27 @@ void QMyThread::run()
 	}
 }
 
-void QMyThread::addFrame(PDFRAME* pd)
+void QMyThread::addFrame(PDEVENT* pd)
 {
 	AutoLock al(&m_pdMutex);
 	m_pdList.push(pd);
 }
 
-PDFRAME* QMyThread::getFrame()
+PDEVENT* QMyThread::getFrame()
 {
 	AutoLock al(&m_pdMutex);
 	if (m_oneFrame.size() <= 0)
 		return NULL;
-	PDFRAME* pd  = m_oneFrame.front();
+	PDEVENT* pd  = m_oneFrame.front();
 	m_oneFrame.pop();
 	return pd;
 }
 
-PDFRAME* QMyThread::peekFrame()
+PDEVENT* QMyThread::peekFrame()
 {
 	AutoLock al(&m_pdMutex);
 	if (m_oneFrame.size() <= 0)
 		return NULL;
-	PDFRAME* pd  = m_oneFrame.front();
+	PDEVENT* pd  = m_oneFrame.front();
 	return pd;
 }

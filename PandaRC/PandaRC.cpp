@@ -21,8 +21,8 @@ PandaRC::PandaRC(QWidget *parent)
 	pHandlerSrv = new UpdateHandlerServer(this);
 	connect(&m_oMyThread, SIGNAL(paintDataChanged()), this, SLOT(onPaintDataChanged()));
 
-	m_nPixmap = new QPixmap(1366,768);
-	m_nPainter = new QPainter(m_nPixmap);
+	m_pPixmap = NULL;
+	m_pPainter = NULL;
 }
 
 void PandaRC::onBtnSend()
@@ -36,17 +36,61 @@ void PandaRC::onBtnRecv()
 void PandaRC::onPaintDataChanged()
 {
 	do {
-		PDFRAME* pd = m_oMyThread.getFrame();
+		PDEVENT* pd = m_oMyThread.getFrame();
 		if (pd == NULL)
+		{
 			break;
+		}
+		switch (pd->type)
+		{
+		case PDEVENT_TYPE::eFRAME:
+		{
+			PDFRAME* frame = (PDFRAME*)pd;
+			Dimension dim = frame->fb.getDimension();
+			if (m_pPixmap == NULL)
+			{
+				m_pPixmap = new QPixmap(dim.width, dim.height);
+				m_pPainter = new QPainter(m_pPixmap);
+			}
+			uchar* pBuffer = (uchar*)frame->fb.getBuffer();
+			int nBytesRow = frame->fb.getBytesPerRow();
+			QImage oImg(pBuffer, frame->rect.getWidth(), frame->rect.getHeight(), nBytesRow, QImage::Format_RGB32);
+			m_pPainter->drawImage(QPoint(frame->rect.left, frame->rect.top), oImg);
+			delete pd;
 
-		Dimension dim = pd->fb.getDimension();
-		uchar* pBuffer = (uchar*)pd->fb.getBuffer();
-		int nBytesRow = pd->fb.getBytesPerRow();
-		QImage oImg(pBuffer, pd->rect.getWidth(), pd->rect.getHeight(), nBytesRow, QImage::Format_RGB32);
-		m_nPainter->drawImage(QPoint(pd->rect.left, pd->rect.top), oImg);
-		delete pd;
+			break;
+		}
+		case PDEVENT_TYPE::eCURSOR:
+		{
+			PDCURSOR* pdcr = (PDCURSOR*)pd;
+			//if (pdcr->shapeChange)
+			//{
+			//	QPixmap pixmap(pdcr->dim.width, pdcr->dim.height);
+			//	pixmap.loadFromData((const uchar*)pdcr->buffer, pdcr->bufferSize);
+			//	QCursor cursor(pixmap, pdcr->hotspot.x, pdcr->hotspot.y);
+			//	if (pdcr->posChange)
+			//	{
+			//		cursor.setPos(pdcr->pos.x, pdcr->pos.y);
+			//	}
+			//	else
+			//	{
+			//		const QCursor& orgCursor = QWidget::cursor();
+			//		cursor.setPos(orgCursor.pos().x(), orgCursor.pos().y());
+			//	}
+			//	setCursor(cursor);
+			//}
+			if (pdcr->posChange)// && !pdcr->shapeChange)
+			{
+				SetCursorPos(pdcr->pos.x, pdcr->pos.y);
+			}
+			delete pd;
+
+			break;
+		}
+		}
+
 	} while (true);
+
 	update();
 }
 
@@ -68,16 +112,16 @@ void PandaRC::paintEvent(QPaintEvent *event)
 
 	QPainter painter(this);
 	const QSize& screenSize = size();
-	const QSize& bufferSize = m_nPixmap->size();
+	const QSize& bufferSize = m_pPixmap->size();
 	if (bufferSize != screenSize)
 	{
-		QPixmap scalePixmap = m_nPixmap->scaled(screenSize.width(), screenSize.height());
+		QPixmap scalePixmap = m_pPixmap->scaled(screenSize.width(), screenSize.height());
 		painter.drawPixmap(0, 0, scalePixmap);
 	}
 	else
 	{
 		painter.eraseRect(0, 0, screenSize.width(), screenSize.height());
-		painter.drawPixmap(0, 0, *m_nPixmap);
+		painter.drawPixmap(0, 0, *m_pPixmap);
 	}
 
 }
