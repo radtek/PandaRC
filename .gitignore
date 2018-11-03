@@ -18,3 +18,6 @@ Debug
 /PandaRC/.vs
 /tightvnc-2.8.11-gpl/.vs/tightvnc/v14/.suo
 /tightvnc-2.8.11-gpl/*.db
+/*.db
+/*.opendb
+/.vs/PandaRC/v14/*.suo
