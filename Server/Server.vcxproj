@@ -68,13 +68,20 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>E:\PandaRC\3rd\enet-master\include;E:\PandaRC;$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>E:\PandaRC\3rd\enet-master\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>enet.lib;winmm.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>LIBCMTD;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -110,6 +117,57 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\3rd\enet-master\include\enet\callbacks.h" />
+    <ClInclude Include="..\3rd\enet-master\include\enet\enet.h" />
+    <ClInclude Include="..\3rd\enet-master\include\enet\list.h" />
+    <ClInclude Include="..\3rd\enet-master\include\enet\protocol.h" />
+    <ClInclude Include="..\3rd\enet-master\include\enet\time.h" />
+    <ClInclude Include="..\3rd\enet-master\include\enet\types.h" />
+    <ClInclude Include="..\3rd\enet-master\include\enet\unix.h" />
+    <ClInclude Include="..\3rd\enet-master\include\enet\utility.h" />
+    <ClInclude Include="..\3rd\enet-master\include\enet\win32.h" />
+    <ClInclude Include="..\Common\DataStruct\Array.h" />
+    <ClInclude Include="..\Common\DataStruct\Atomic.h" />
+    <ClInclude Include="..\Common\DataStruct\CircleQueue.h" />
+    <ClInclude Include="..\Common\DataStruct\Encoding.h" />
+    <ClInclude Include="..\Common\DataStruct\Encrypt.h" />
+    <ClInclude Include="..\Common\DataStruct\HashFunc.h" />
+    <ClInclude Include="..\Common\DataStruct\HexStr.h" />
+    <ClInclude Include="..\Common\DataStruct\HList.h" />
+    <ClInclude Include="..\Common\DataStruct\List.h" />
+    <ClInclude Include="..\Common\DataStruct\Md5.h" />
+    <ClInclude Include="..\Common\DataStruct\Memory.h" />
+    <ClInclude Include="..\Common\DataStruct\MemPool.h" />
+    <ClInclude Include="..\Common\DataStruct\MinHeap.h" />
+    <ClInclude Include="..\Common\DataStruct\MsgQueue.h" />
+    <ClInclude Include="..\Common\DataStruct\MutexLock.h" />
+    <ClInclude Include="..\Common\DataStruct\ObjID.h" />
+    <ClInclude Include="..\Common\DataStruct\Point.h" />
+    <ClInclude Include="..\Common\DataStruct\PureList.h" />
+    <ClInclude Include="..\Common\DataStruct\Ranking.h" />
+    <ClInclude Include="..\Common\DataStruct\Regexp.h" />
+    <ClInclude Include="..\Common\DataStruct\RWLock.h" />
+    <ClInclude Include="..\Common\DataStruct\Slashes.h" />
+    <ClInclude Include="..\Common\DataStruct\stl_alloc.h" />
+    <ClInclude Include="..\Common\DataStruct\Sync.h" />
+    <ClInclude Include="..\Common\DataStruct\SyncMap.h" />
+    <ClInclude Include="..\Common\DataStruct\Thread.h" />
+    <ClInclude Include="..\Common\DataStruct\TimeMonitor.h" />
+    <ClInclude Include="..\Common\DataStruct\XMath.h" />
+    <ClInclude Include="..\Common\DataStruct\XString.h" />
+    <ClInclude Include="..\Common\DataStruct\XTime.h" />
+    <ClInclude Include="..\Common\Platform.h" />
+    <ClInclude Include="..\Common\PlatformHeader.h" />
+    <ClInclude Include="source\Network\Network.h" />
+    <ClInclude Include="source\Room\Room.h" />
+    <ClInclude Include="source\Room\RoomMgr.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Common\DataStruct\XString.cpp" />
+    <ClCompile Include="source\main.cpp" />
+    <ClCompile Include="source\Network\Network.cpp" />
+    <ClCompile Include="source\Room\Room.cpp" />
+    <ClCompile Include="source\Room\RoomMgr.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

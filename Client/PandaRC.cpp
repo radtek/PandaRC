@@ -15,28 +15,79 @@ PandaRC::PandaRC(QWidget *parent)
 	ui.setupUi(this);
 
 	//Logger::Instance()->Init();
+	//m_pUDPNet = new UDPNet(parent);
+	//m_myThread.start();
+	//pHandlerSrv = new UpdateHandlerServer(this);
+	//connect(&m_myThread, SIGNAL(paintDataChanged()), this, SLOT(onPaintDataChanged()));
+	m_pixmap = NULL;
+	m_painter = NULL;
 
-	m_oMyThread.start();
-	m_pUDPNet = new UDPNet(parent);
-	pHandlerSrv = new UpdateHandlerServer(this);
-	connect(&m_oMyThread, SIGNAL(paintDataChanged()), this, SLOT(onPaintDataChanged()));
+	initENet();
+}
 
-	m_pPixmap = NULL;
-	m_pPainter = NULL;
+bool PandaRC::initENet()
+{
+	if (enet_initialize() != 0)
+	{
+		fprintf(stderr, "An error occurred while initializing ENet.\n");
+		return false;
+	}
+	m_enetClient = enet_host_create(NULL, 1, 2, 0, 0);
+	if (m_enetClient == NULL)
+	{
+		fprintf(stderr, "An error occurred while trying to create an ENet client host.\n");
+		return false;
+	}
+	//atexit(enet_deinitialize); //fix pd
+	//enet_host_destroy(client); //fix pd
+	return true;
 }
 
 void PandaRC::onBtnSend()
 {
+	ENetAddress address;
+	ENetEvent event;
+	enet_address_set_host_ip(&address, "127.0.0.1");
+	address.port = 10001;
+	/* Initiate the connection, allocating the two channels 0 and 1. */
+	m_enetPeer = enet_host_connect(m_enetClient, &address, 2, 0);
+	if (m_enetPeer == NULL)
+	{
+		fprintf(stderr, "No available peers for initiating an ENet connection.\n");
+		return;
+	}
+	/* Wait up to 5 seconds for the connection attempt to succeed. */
+	if (enet_host_service(m_enetClient, &event, 3000) > 0 && event.type == ENET_EVENT_TYPE_CONNECT)
+	{
+		fprintf(stdout, "Connection to 127.0.0.1:10001 succeeded.\n");
+	}
+	else
+	{
+		enet_peer_reset(m_enetPeer);
+		fprintf(stderr, "Connection to 127.0.0.1:10001 failed.\n");
+	}
 }
 
 void PandaRC::onBtnRecv()
 {
+	/* Create a reliable packet of size 7 containing "packet\0" */
+	ENetPacket * packet = enet_packet_create("packet", strlen("packet") + 1, ENET_PACKET_FLAG_RELIABLE);
+	/* Extend the packet so and append the string "foo", so it now */
+	/* contains "packetfoo\0"                                      */
+	enet_packet_resize(packet, strlen("packetfoo") + 1);
+	strcpy((char*)&packet->data[strlen("packet")], "foo");
+	/* Send the packet to the peer over channel id 0. */
+	/* One could also broadcast the packet by         */
+	/* enet_host_broadcast (host, 0, packet);         */
+	enet_peer_send(m_enetPeer, 0, packet);
+	/* One could just use enet_host_service() instead. */
+	enet_host_flush(m_enetClient);
 }
 
 void PandaRC::onPaintDataChanged()
 {
 	do {
-		PDEVENT* pd = m_oMyThread.getFrame();
+		PDEVENT* pd = m_myThread.getFrame();
 		if (pd == NULL)
 		{
 			break;
@@ -47,15 +98,15 @@ void PandaRC::onPaintDataChanged()
 		{
 			PDFRAME* frame = (PDFRAME*)pd;
 			Dimension dim = frame->fb.getDimension();
-			if (m_pPixmap == NULL)
+			if (m_pixmap == NULL)
 			{
-				m_pPixmap = new QPixmap(dim.width, dim.height);
-				m_pPainter = new QPainter(m_pPixmap);
+				m_pixmap = new QPixmap(dim.width, dim.height);
+				m_painter = new QPainter(m_pixmap);
 			}
 			uchar* pBuffer = (uchar*)frame->fb.getBuffer();
 			int nBytesRow = frame->fb.getBytesPerRow();
 			QImage oImg(pBuffer, frame->rect.getWidth(), frame->rect.getHeight(), nBytesRow, QImage::Format_RGB32);
-			m_pPainter->drawImage(QPoint(frame->rect.left, frame->rect.top), oImg);
+			m_painter->drawImage(QPoint(frame->rect.left, frame->rect.top), oImg);
 			delete pd;
 
 			break;
@@ -65,7 +116,7 @@ void PandaRC::onPaintDataChanged()
 			PDCURSOR* pdcr = (PDCURSOR*)pd;
 
 			const QSize& screenSize = size();
-			const QSize& bufferSize = m_pPixmap->size();
+			const QSize& bufferSize = m_pixmap->size();
 			//if (pdcr->shapeChange)
 			//{
 			//	QPixmap pixmap(pdcr->dim.width, pdcr->dim.height);
@@ -101,32 +152,18 @@ void PandaRC::onPaintDataChanged()
 
 void PandaRC::paintEvent(QPaintEvent *event)
 {
-	//if (m_pd == NULL)
-	//	return;
-	//PDFRAME* pd = m_pd;
-	//Dimension dim = pd->fb.getDimension();
-
-	//uchar* pBuffer = (uchar*)pd->fb.getBuffer();
-	//int nBytesRow = pd->fb.getBytesPerRow();
-	//QImage oImg(pBuffer, dim.width, dim.height, nBytesRow, QImage::Format_RGB32);
-
 	//QPainter painter(this);
-	//painter.drawImage(QPoint(pd->rect.left, pd->rect.top), oImg);
-	//m_pd = NULL;
-	//delete pd;
-
-	QPainter painter(this);
-	const QSize& screenSize = size();
-	const QSize& bufferSize = m_pPixmap->size();
-	if (bufferSize != screenSize)
-	{
-		QPixmap scalePixmap = m_pPixmap->scaled(screenSize.width(), screenSize.height());
-		painter.drawPixmap(0, 0, scalePixmap);
-	}
-	else
-	{
-		painter.eraseRect(0, 0, screenSize.width(), screenSize.height());
-		painter.drawPixmap(0, 0, *m_pPixmap);
-	}
+	//const QSize& screenSize = size();
+	//const QSize& bufferSize = m_pixmap->size();
+	//if (bufferSize != screenSize)
+	//{
+	//	QPixmap scalePixmap = m_pixmap->scaled(screenSize.width(), screenSize.height());
+	//	painter.drawPixmap(0, 0, scalePixmap);
+	//}
+	//else
+	//{
+	//	painter.eraseRect(0, 0, screenSize.width(), screenSize.height());
+	//	painter.drawPixmap(0, 0, *m_pixmap);
+	//}
 
 }

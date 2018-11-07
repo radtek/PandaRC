@@ -72,6 +72,9 @@
     <Filter Include="Source Files\Logger">
       <UniqueIdentifier>{8eb9e421-08ec-4f2c-90a5-3906c1d8ea39}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\enet">
+      <UniqueIdentifier>{2c9f1e42-e364-4d74-b8ed-94eeb918caea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -1308,6 +1311,33 @@
     </ClInclude>
     <ClInclude Include="..\Common\PlatformHeader.h">
       <Filter>Source Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rd\enet-master\include\enet\callbacks.h">
+      <Filter>Source Files\enet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rd\enet-master\include\enet\enet.h">
+      <Filter>Source Files\enet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rd\enet-master\include\enet\list.h">
+      <Filter>Source Files\enet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rd\enet-master\include\enet\protocol.h">
+      <Filter>Source Files\enet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rd\enet-master\include\enet\time.h">
+      <Filter>Source Files\enet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rd\enet-master\include\enet\types.h">
+      <Filter>Source Files\enet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rd\enet-master\include\enet\unix.h">
+      <Filter>Source Files\enet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rd\enet-master\include\enet\utility.h">
+      <Filter>Source Files\enet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rd\enet-master\include\enet\win32.h">
+      <Filter>Source Files\enet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,2 +1,169 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" />
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="enet">
+      <UniqueIdentifier>{f37e6fe4-de77-4b57-af15-dcabb664cae2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{1fa42c35-0e9a-4927-9474-2c33c67c63e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Room">
+      <UniqueIdentifier>{fe5dca8d-0748-414e-8ac8-05d6c6e982d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\DataStruct">
+      <UniqueIdentifier>{45c04604-62a4-4c8b-88a6-390e522f1f4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network">
+      <UniqueIdentifier>{cebf6a7b-aef5-4f2e-a905-6ec3e21eb4b5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\3rd\enet-master\include\enet\callbacks.h">
+      <Filter>enet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rd\enet-master\include\enet\enet.h">
+      <Filter>enet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rd\enet-master\include\enet\list.h">
+      <Filter>enet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rd\enet-master\include\enet\protocol.h">
+      <Filter>enet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rd\enet-master\include\enet\time.h">
+      <Filter>enet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rd\enet-master\include\enet\types.h">
+      <Filter>enet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rd\enet-master\include\enet\unix.h">
+      <Filter>enet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rd\enet-master\include\enet\utility.h">
+      <Filter>enet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rd\enet-master\include\enet\win32.h">
+      <Filter>enet</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Room\Room.h">
+      <Filter>Room</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Room\RoomMgr.h">
+      <Filter>Room</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\DataStruct\Array.h">
+      <Filter>Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\DataStruct\Atomic.h">
+      <Filter>Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\DataStruct\CircleQueue.h">
+      <Filter>Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\DataStruct\Encoding.h">
+      <Filter>Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\DataStruct\Encrypt.h">
+      <Filter>Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\DataStruct\HashFunc.h">
+      <Filter>Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\DataStruct\HexStr.h">
+      <Filter>Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\DataStruct\HList.h">
+      <Filter>Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\DataStruct\List.h">
+      <Filter>Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\DataStruct\Md5.h">
+      <Filter>Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\DataStruct\Memory.h">
+      <Filter>Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\DataStruct\MemPool.h">
+      <Filter>Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\DataStruct\MinHeap.h">
+      <Filter>Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\DataStruct\MsgQueue.h">
+      <Filter>Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\DataStruct\MutexLock.h">
+      <Filter>Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\DataStruct\ObjID.h">
+      <Filter>Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\DataStruct\Point.h">
+      <Filter>Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\DataStruct\PureList.h">
+      <Filter>Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\DataStruct\Ranking.h">
+      <Filter>Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\DataStruct\Regexp.h">
+      <Filter>Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\DataStruct\RWLock.h">
+      <Filter>Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\DataStruct\Slashes.h">
+      <Filter>Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\DataStruct\stl_alloc.h">
+      <Filter>Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\DataStruct\Sync.h">
+      <Filter>Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\DataStruct\SyncMap.h">
+      <Filter>Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\DataStruct\Thread.h">
+      <Filter>Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\DataStruct\TimeMonitor.h">
+      <Filter>Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\DataStruct\XMath.h">
+      <Filter>Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\DataStruct\XString.h">
+      <Filter>Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\DataStruct\XTime.h">
+      <Filter>Common\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Platform.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\PlatformHeader.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Network\Network.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="source\main.cpp" />
+    <ClCompile Include="source\Room\Room.cpp">
+      <Filter>Room</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Room\RoomMgr.cpp">
+      <Filter>Room</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\DataStruct\XString.cpp">
+      <Filter>Common\DataStruct</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Network\Network.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

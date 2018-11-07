@@ -52,7 +52,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IncludePath>..\;$(IncludePath)</IncludePath>
+    <IncludePath>..\;E:\PandaRC\3rd\enet-master\include\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
@@ -126,9 +126,9 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
-      <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;E:\PandaRC\3rd\enet-master\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>qtmaind.lib;Qt5Widgetsd.lib;Qt5Cored.lib;Qt5Networkd.lib;Qt5Guid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>qtmaind.lib;Qt5Widgetsd.lib;Qt5Cored.lib;Qt5Networkd.lib;Qt5Guid.lib;enet.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <QtMoc>
       <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
@@ -411,6 +411,15 @@
     <QtMoc Include="UDPNet\UDPNet.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\3rd\enet-master\include\enet\callbacks.h" />
+    <ClInclude Include="..\3rd\enet-master\include\enet\enet.h" />
+    <ClInclude Include="..\3rd\enet-master\include\enet\list.h" />
+    <ClInclude Include="..\3rd\enet-master\include\enet\protocol.h" />
+    <ClInclude Include="..\3rd\enet-master\include\enet\time.h" />
+    <ClInclude Include="..\3rd\enet-master\include\enet\types.h" />
+    <ClInclude Include="..\3rd\enet-master\include\enet\unix.h" />
+    <ClInclude Include="..\3rd\enet-master\include\enet\utility.h" />
+    <ClInclude Include="..\3rd\enet-master\include\enet\win32.h" />
     <ClInclude Include="..\Common\DataStruct\Array.h" />
     <ClInclude Include="..\Common\DataStruct\Atomic.h" />
     <ClInclude Include="..\Common\DataStruct\CircleQueue.h" />
