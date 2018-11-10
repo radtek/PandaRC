@@ -150,6 +150,18 @@
     <ClInclude Include="source\Network\Network.h">
       <Filter>Network</Filter>
     </ClInclude>
+    <ClInclude Include="source\Network\NetInterface.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Room\User.h">
+      <Filter>Room</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Network\Protocol.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Network\Cmd.h">
+      <Filter>Network</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\main.cpp" />
@@ -164,6 +176,9 @@
     </ClCompile>
     <ClCompile Include="source\Network\Network.cpp">
       <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Room\User.cpp">
+      <Filter>Room</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

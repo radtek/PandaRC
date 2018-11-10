@@ -69,7 +69,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>E:\PandaRC\3rd\enet-master\include;E:\PandaRC;$(IncludePath)</IncludePath>
+    <IncludePath>E:\PandaRC\3rd\enet-master\include;E:\PandaRC;E:\PandaRC\Server\Source;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -158,9 +158,13 @@
     <ClInclude Include="..\Common\DataStruct\XTime.h" />
     <ClInclude Include="..\Common\Platform.h" />
     <ClInclude Include="..\Common\PlatformHeader.h" />
+    <ClInclude Include="Source\Network\Cmd.h" />
+    <ClInclude Include="source\Network\NetInterface.h" />
     <ClInclude Include="source\Network\Network.h" />
+    <ClInclude Include="Source\Network\Protocol.h" />
     <ClInclude Include="source\Room\Room.h" />
     <ClInclude Include="source\Room\RoomMgr.h" />
+    <ClInclude Include="Source\Room\User.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Common\DataStruct\XString.cpp" />
@@ -168,6 +172,7 @@
     <ClCompile Include="source\Network\Network.cpp" />
     <ClCompile Include="source\Room\Room.cpp" />
     <ClCompile Include="source\Room\RoomMgr.cpp" />
+    <ClCompile Include="Source\Room\User.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

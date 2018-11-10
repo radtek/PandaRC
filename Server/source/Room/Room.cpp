@@ -1,10 +1,16 @@
-#include "Room.h"
+#include "Room/Room.h"
 
-Room::Room(int nID)
+Room::Room(int nRoomID)
 {
-	m_nID = nID;
+	m_nRoomID = nRoomID;
 }
 
 Room::~Room()
 {
+}
+
+void Room::SetBuildMac(const std::string& oClientMac, const std::string& oServerMac)
+{
+	m_oClientMac = oClientMac;
+	m_oServerMac = oServerMac;
 }
