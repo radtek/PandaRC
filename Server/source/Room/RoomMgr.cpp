@@ -108,15 +108,21 @@ void RoomMgr::OnReceive(ENetEvent event)
 	{
 	case NETCMD::eLOGIN:
 		PROTO::LOGIN login = *(PROTO::LOGIN*)event.packet;
-		if (GetUser(login.mac_addr) == NULL)
+		User* poUser = GetUser(login.mac_addr);
+		if (poUser == NULL)
 		{
-			User* poUser = CreateUser(login.mac_addr);
+			poUser = CreateUser(login.mac_addr);
 			poUser->SetMacAddr(login.mac_addr);
-			event.peer->data = (void*)poUser;
 		}
+		if (poUser->GetENetPeer() == NULL)
+		{
+			event.peer->data = (void*)poUser;
+			poUser->SetEnetPeer(event.peer);
+			XLog(LEVEL_ERROR, "Mac addr %s login successful\n", login.mac_addr);
+		} 
 		else
 		{
-			XLog(LEVEL_ERROR, "Client %s allready login\n", login.mac_addr);
+			XLog(LEVEL_ERROR, "Mac addr %s allready login\n", login.mac_addr);
 		}
 		enet_packet_destroy(event.packet);
 		break;
@@ -133,6 +139,7 @@ void RoomMgr::OnReceive(ENetEvent event)
 		enet_packet_destroy(event.packet);
 		break;
 	case NETCMD::eUNBUILD:
+		//RemoveRoom()
 		enet_packet_destroy(event.packet);
 		break;
 	default:

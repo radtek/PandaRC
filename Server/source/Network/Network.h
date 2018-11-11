@@ -1,9 +1,8 @@
 #pragma once
 #include "enet/enet.h"
 #include "Common/DataStruct/Thread.h"
+#include "Common/Platform.h"
 #include "Network/NetInterface.h"
-
-#include <stdint.h>
 
 class Network
 {
@@ -12,6 +11,7 @@ public:
 	virtual ~Network();
 	bool Init(uint16_t uPort);
 	void SetNetInterface(NetInterface* poNetInterface);
+	bool SendMsg(ENetPeer* poENetPeer, int nChannel, int nFlag, const char* pData, int nLen);
 
 protected:
 	static void WorkerThread(void* param);

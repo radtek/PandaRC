@@ -43,6 +43,17 @@ void Network::SetNetInterface(NetInterface* poNetInterface)
 	m_poNetInterface = poNetInterface;
 }
 
+bool Network::SendMsg(ENetPeer* poENetPeer, int nChannel, int nFlag, const char* pData, int nLen)
+{
+	if (m_poEnetServer == NULL)
+	{
+		return false;
+	}
+	ENetPacket* poPacket = enet_packet_create(pData, nLen, nFlag);
+	enet_peer_send(poENetPeer, 0, poPacket);
+	enet_host_flush(m_poEnetServer);
+}
+
 void Network::WorkerThread(void* param)
 {
 	Network* poNetwork = (Network*)param;
