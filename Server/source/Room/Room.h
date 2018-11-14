@@ -6,6 +6,7 @@ class Room
 public:
 	Room(int nRoomID);
 	virtual ~Room();
+	int GetRoomID() { return m_nRoomID; }
 	void SetBuildMac(const std::string& oClientMac, const std::string& oServerMac);
 
 private:

@@ -78,8 +78,8 @@
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>E:\PandaRC\3rd\enet-master\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>enet.lib;winmm.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>E:\PandaRC\3rd\enet-master\Debug;E:\PandaRC\Libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>enet.lib;winmm.lib;ws2_32.lib;liblogger.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>LIBCMTD;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
@@ -158,13 +158,14 @@
     <ClInclude Include="..\Common\DataStruct\XTime.h" />
     <ClInclude Include="..\Common\Platform.h" />
     <ClInclude Include="..\Common\PlatformHeader.h" />
-    <ClInclude Include="Source\Network\Cmd.h" />
+    <ClInclude Include="..\Common\Protocol\Cmd.h" />
+    <ClInclude Include="..\Common\Protocol\Protocol.h" />
     <ClInclude Include="source\Network\NetInterface.h" />
     <ClInclude Include="source\Network\Network.h" />
-    <ClInclude Include="Source\Network\Protocol.h" />
     <ClInclude Include="source\Room\Room.h" />
     <ClInclude Include="source\Room\RoomMgr.h" />
     <ClInclude Include="Source\Room\User.h" />
+    <ClInclude Include="Source\Context.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Common\DataStruct\XString.cpp" />

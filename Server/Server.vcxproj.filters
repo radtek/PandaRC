@@ -16,6 +16,9 @@
     <Filter Include="Network">
       <UniqueIdentifier>{cebf6a7b-aef5-4f2e-a905-6ec3e21eb4b5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Common\Protocol">
+      <UniqueIdentifier>{0b9e3566-7c01-4c4f-9d71-77e65d3b859d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\3rd\enet-master\include\enet\callbacks.h">
@@ -156,11 +159,12 @@
     <ClInclude Include="Source\Room\User.h">
       <Filter>Room</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Network\Protocol.h">
-      <Filter>Network</Filter>
+    <ClInclude Include="Source\Context.h" />
+    <ClInclude Include="..\Common\Protocol\Protocol.h">
+      <Filter>Common\Protocol</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Network\Cmd.h">
-      <Filter>Network</Filter>
+    <ClInclude Include="..\Common\Protocol\Cmd.h">
+      <Filter>Common\Protocol</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

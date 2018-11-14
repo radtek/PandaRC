@@ -1,9 +1,13 @@
 #pragma once
-#include "Common/Platform.h"
 #include "enet/enet.h"
+#include "Common/Platform.h"
 
 class User
 {
+public:
+	typedef std::list<int> RoomList;
+	typedef RoomList::iterator RoomIter;
+
 public:
 	User();
 	virtual ~User() {};
@@ -14,7 +18,11 @@ public:
 	ENetPeer* GetENetPeer() { return m_poENetPeer; }
 	void SetEnetPeer(ENetPeer* poENetPeer) { m_poENetPeer = poENetPeer; }
 
+	RoomList& GetRoomList() { return m_oRoomList; }
+
 private:
 	ENetPeer* m_poENetPeer;
 	std::string m_oMacAddr;
+
+	RoomList m_oRoomList;
 };

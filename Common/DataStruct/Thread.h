@@ -5,10 +5,10 @@
 
 typedef void (*ThreadFn_T)(void* pParam);
 
-class MThread 
+class Thread 
 {
 public:
-	MThread()
+	Thread()
 	{
 		m_Handle = 0;
 		m_pArg = NULL;
@@ -37,7 +37,7 @@ public:
 		}
 		assert(nRet == 0);
 #else
-		m_Handle = (HANDLE)_beginthreadex(NULL, 0, MThread::MainLoop, this, 0, NULL);
+		m_Handle = (HANDLE)_beginthreadex(NULL, 0, Thread::MainLoop, this, 0, NULL);
 		assert(m_Handle != NULL);
 #endif
 		return true;
@@ -76,14 +76,14 @@ private:
 #else
 	static uint32_t __stdcall MainLoop(void *pParam)
 	{
-		MThread* pSelf = (MThread*)pParam;
+		Thread* pSelf = (Thread*)pParam;
 		pSelf->m_ThreadFn(pSelf->m_pArg);
 		return 0;
 	}
 #endif
 
 private:
-	DISALLOW_COPY_AND_ASSIGN(MThread);
+	DISALLOW_COPY_AND_ASSIGN(Thread);
 
 	THREAD m_Handle;
 	ThreadFn_T m_ThreadFn;

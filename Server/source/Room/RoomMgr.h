@@ -27,9 +27,9 @@ public:
 	void RemoveUser(const std::string& oMacAddr);
 
 public:
-	virtual void OnConnect(ENetEvent event);
-	virtual void OnReceive(ENetEvent event);
-	virtual void OnDisconnect(ENetEvent event);
+	virtual void OnConnect(ENetEvent& event);
+	virtual void OnReceive(ENetEvent& event);
+	virtual void OnDisconnect(ENetEvent& event);
 
 protected:
 	int GenRoomID();
