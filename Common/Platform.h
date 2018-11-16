@@ -6,16 +6,16 @@
 
 namespace Platform
 {
-	inline const char* GetWorkDir(char* pBuf, int nLen)
-	{
-#if defined(_WIN32)
-		GetCurrentDirectory(nLen, pBuf);
-		return pBuf;
-#else
-		return getcwd(pBuf, nLen); 
-		return pBuf;
-#endif
-	}
+//	inline const char* GetWorkDir(char* pBuf, int nLen)
+//	{
+//#if defined(_WIN32)
+//		GetCurrentDirectory(nLen, pBuf);
+//		return pBuf;
+//#else
+//		return getcwd(pBuf, nLen); 
+//		return pBuf;
+//#endif
+//	}
 
 	inline bool FileExist(const char* psFile)
 	{
@@ -67,45 +67,45 @@ namespace Platform
 		return sMsgBuf;
 	}
 
-	inline LONG WINAPI MyUnhandledFilter(struct _EXCEPTION_POINTERS* lpExceptionInfo)
-	{
-		LONG ret = EXCEPTION_EXECUTE_HANDLER;
-		TCHAR szFileName[64];
-		SYSTEMTIME st;
-		::GetLocalTime(&st);
+	//inline LONG WINAPI MyUnhandledFilter(struct _EXCEPTION_POINTERS* lpExceptionInfo)
+	//{
+	//	LONG ret = EXCEPTION_EXECUTE_HANDLER;
+	//	TCHAR szFileName[64];
+	//	SYSTEMTIME st;
+	//	::GetLocalTime(&st);
 
-		TCHAR szFileFullPath[256];
-		::GetModuleFileName(NULL, static_cast<LPTSTR>(szFileFullPath), 256);
-		std::string szProcessName(szFileFullPath);
-		int nPos = (int)szProcessName.rfind('\\');
-		szProcessName = szProcessName.substr(nPos + 1);
-		wsprintf(szFileName, TEXT("%s-%d-%02d-%02d-%02d-%02d-%02d.dmp"), szProcessName.c_str(), st.wYear, st.wMonth, st.wDay, st.wHour, st.wMinute, st.wSecond);
+	//	TCHAR szFileFullPath[256];
+	//	::GetModuleFileName(NULL, static_cast<LPTSTR>(szFileFullPath), 256);
+	//	std::string szProcessName(szFileFullPath);
+	//	int nPos = (int)szProcessName.rfind('\\');
+	//	szProcessName = szProcessName.substr(nPos + 1);
+	//	wsprintf(szFileName, TEXT("%s-%d-%02d-%02d-%02d-%02d-%02d.dmp"), szProcessName.c_str(), st.wYear, st.wMonth, st.wDay, st.wHour, st.wMinute, st.wSecond);
 
-		HANDLE hFile = ::CreateFile(szFileName, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-		if (hFile != INVALID_HANDLE_VALUE)
-		{
-			MINIDUMP_EXCEPTION_INFORMATION ExInfo;
-			ExInfo.ThreadId = ::GetCurrentThreadId();
-			ExInfo.ExceptionPointers = lpExceptionInfo;
-			ExInfo.ClientPointers = false;
-			// write the dump
-			BOOL bOK = MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(), hFile, MiniDumpNormal, &ExInfo, NULL, NULL);
-			if (bOK)
-			{
-				printf("Create Dump File Success!\n");
-			}
-			else
-			{
-				printf("MiniDumpWriteDump Failed: %d\n", GetLastError());
-			}
-			::CloseHandle(hFile);
-		}
-		else
-		{
-			printf("Create File %s Failed %d\n", szFileName, GetLastError());
-		}
-		return ret;
-	}
+	//	HANDLE hFile = ::CreateFile(szFileName, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	//	if (hFile != INVALID_HANDLE_VALUE)
+	//	{
+	//		MINIDUMP_EXCEPTION_INFORMATION ExInfo;
+	//		ExInfo.ThreadId = ::GetCurrentThreadId();
+	//		ExInfo.ExceptionPointers = lpExceptionInfo;
+	//		ExInfo.ClientPointers = false;
+	//		// write the dump
+	//		BOOL bOK = MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(), hFile, MiniDumpNormal, &ExInfo, NULL, NULL);
+	//		if (bOK)
+	//		{
+	//			printf("Create Dump File Success!\n");
+	//		}
+	//		else
+	//		{
+	//			printf("MiniDumpWriteDump Failed: %d\n", GetLastError());
+	//		}
+	//		::CloseHandle(hFile);
+	//	}
+	//	else
+	//	{
+	//		printf("Create File %s Failed %d\n", szFileName, GetLastError());
+	//	}
+	//	return ret;
+	//}
 #endif
 };
 

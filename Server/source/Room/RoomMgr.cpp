@@ -1,7 +1,7 @@
 #include "Room/RoomMgr.h"
 #include "Include/Logger/Logger.hpp"
 #include "Context.h"
-#include "Network/Network.h"
+#include "Common/Network/Network.h"
 
 RoomMgr::RoomMgr()
 {
@@ -130,7 +130,7 @@ void RoomMgr::OnReceive(ENetEvent& event)
 			XLog(LEVEL_ERROR, "Mac addr %s allready login\n", login.mac_addr);
 		}
 		enet_packet_destroy(event.packet);
-		gpoContext->poNetwork->SendMsg(event.peer, 0, ENET_PACKET_FLAG_RELIABLE, &loginret);
+		gpoContext->poNetwork->Send2Client(event.peer, 0, ENET_PACKET_FLAG_RELIABLE, &loginret);
 		break;
 	}
 	case NSNETCMD::eBUILD_REQ:
@@ -153,7 +153,7 @@ void RoomMgr::OnReceive(ENetEvent& event)
 			poUserServer->GetRoomList().push_back(poRoom->GetRoomID());
 			buildret.roomid = poRoom->GetRoomID();
 		}
-		gpoContext->poNetwork->SendMsg(event.peer, 0, ENET_PACKET_FLAG_RELIABLE, &buildret);
+		gpoContext->poNetwork->Send2Client(event.peer, 0, ENET_PACKET_FLAG_RELIABLE, &buildret);
 		enet_packet_destroy(event.packet);
 		break;
 	}
@@ -172,7 +172,7 @@ void RoomMgr::OnReceive(ENetEvent& event)
 			unbuildret.code = 0;
 			SAFE_DELETE(poRoom);
 		}
-		gpoContext->poNetwork->SendMsg(event.peer, 0, ENET_PACKET_FLAG_RELIABLE, &unbuildret);
+		gpoContext->poNetwork->Send2Client(event.peer, 0, ENET_PACKET_FLAG_RELIABLE, &unbuildret);
 		enet_packet_destroy(event.packet);
 		break;
 	}

@@ -126,9 +126,9 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
-      <AdditionalLibraryDirectories>$(QTDIR)\lib;E:\PandaRC\3rd\enet-master\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;E:\PandaRC\3rd\enet-master\Debug;E:\PandaRC\Libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>qtmaind.lib;Qt5Widgetsd.lib;Qt5Cored.lib;Qt5Networkd.lib;Qt5Guid.lib;enet.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>qtmaind.lib;Qt5Widgetsd.lib;Qt5Cored.lib;Qt5Networkd.lib;Qt5Guid.lib;enet.lib;winmm.lib;liblogger.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <QtMoc>
       <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
@@ -210,6 +210,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Common\DataStruct\XString.cpp" />
+    <ClCompile Include="..\Common\Network\Network.cpp" />
     <ClCompile Include="desktip-ipc\DesktopServerProto.cpp" />
     <ClCompile Include="desktip-ipc\UpdateHandlerClient.cpp" />
     <ClCompile Include="desktip-ipc\UpdateHandlerServer.cpp" />
@@ -274,10 +275,7 @@
     <ClCompile Include="log-writer\ProfileLogger.cpp" />
     <ClCompile Include="log-writer\WinFile.cpp" />
     <ClCompile Include="log-writer\WinFileChannel.cpp" />
-    <ClCompile Include="Logger\Logger.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="NetUtil\NetAPI.cpp" />
-    <ClCompile Include="NetUtil\Packet.cpp" />
     <ClCompile Include="PandaRC.cpp" />
     <ClCompile Include="QMyThread.cpp" />
     <ClCompile Include="region\RectSerializer.cpp" />
@@ -303,7 +301,6 @@
     <ClCompile Include="thread\Thread.cpp" />
     <ClCompile Include="thread\ThreadCollector.cpp" />
     <ClCompile Include="thread\ZombieKiller.cpp" />
-    <ClCompile Include="UDPNet\UDPNet.cpp" />
     <ClCompile Include="util\AnsiStringStorage.cpp" />
     <ClCompile Include="util\BrokenHandleException.cpp" />
     <ClCompile Include="util\Command.cpp" />
@@ -408,9 +405,6 @@
     <ResourceCompile Include="PandaRC.rc" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="UDPNet\UDPNet.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="..\3rd\enet-master\include\enet\callbacks.h" />
     <ClInclude Include="..\3rd\enet-master\include\enet\enet.h" />
     <ClInclude Include="..\3rd\enet-master\include\enet\list.h" />
@@ -450,6 +444,8 @@
     <ClInclude Include="..\Common\DataStruct\XMath.h" />
     <ClInclude Include="..\Common\DataStruct\XString.h" />
     <ClInclude Include="..\Common\DataStruct\XTime.h" />
+    <ClInclude Include="..\Common\Network\NetInterface.h" />
+    <ClInclude Include="..\Common\Network\Network.h" />
     <ClInclude Include="..\Common\Platform.h" />
     <ClInclude Include="..\Common\PlatformHeader.h" />
     <ClInclude Include="desktip-ipc\DesktopServerProto.h" />
@@ -516,9 +512,6 @@
     <ClInclude Include="log-writer\ProfileLogger.h" />
     <ClInclude Include="log-writer\WinFile.h" />
     <ClInclude Include="log-writer\WinFileChannel.h" />
-    <ClInclude Include="Logger\Logger.h" />
-    <ClInclude Include="NetUtil\NetAPI.h" />
-    <ClInclude Include="NetUtil\Packet.h" />
     <QtMoc Include="QMyThread.h" />
     <ClInclude Include="region\Dimension.h" />
     <ClInclude Include="region\Point.h" />

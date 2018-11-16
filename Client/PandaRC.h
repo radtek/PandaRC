@@ -3,9 +3,8 @@
 #include <QtWidgets/QMainWindow>
 #include "ui_PandaRC.h"
 
-#include "enet/enet.h"
 #include "QMyThread.h"
-#include "UDPNet/UDPNet.h"
+#include "Common/Network/Network.h"
 
 class PandaRC : public QMainWindow
 {
@@ -13,7 +12,6 @@ class PandaRC : public QMainWindow
 
 public:
 	PandaRC(QWidget *parent = Q_NULLPTR);
-	bool initENet();
 
 public slots:
 	void onBtnSend();
@@ -30,12 +28,9 @@ public:
 	QMyThread* getUpdateThread() { return &m_myThread; }
 
 private:
-	UDPNet* m_pUDPNet;
-
-	ENetHost* m_enetClient;
-	ENetPeer* m_enetPeer;
-
 	QMyThread m_myThread;
 	QPixmap* m_pixmap;
 	QPainter* m_painter;
+
+	Network m_oNetwork;
 };

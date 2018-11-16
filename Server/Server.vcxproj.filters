@@ -13,11 +13,11 @@
     <Filter Include="Common\DataStruct">
       <UniqueIdentifier>{45c04604-62a4-4c8b-88a6-390e522f1f4b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Network">
-      <UniqueIdentifier>{cebf6a7b-aef5-4f2e-a905-6ec3e21eb4b5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Common\Protocol">
       <UniqueIdentifier>{0b9e3566-7c01-4c4f-9d71-77e65d3b859d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Network">
+      <UniqueIdentifier>{b5dadd6e-f98b-4c83-a17d-86b7f637d2f4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -150,12 +150,6 @@
     <ClInclude Include="..\Common\PlatformHeader.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="source\Network\Network.h">
-      <Filter>Network</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Network\NetInterface.h">
-      <Filter>Network</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Room\User.h">
       <Filter>Room</Filter>
     </ClInclude>
@@ -165,6 +159,12 @@
     </ClInclude>
     <ClInclude Include="..\Common\Protocol\Cmd.h">
       <Filter>Common\Protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Network\NetInterface.h">
+      <Filter>Common\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Network\Network.h">
+      <Filter>Common\Network</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -178,11 +178,11 @@
     <ClCompile Include="..\Common\DataStruct\XString.cpp">
       <Filter>Common\DataStruct</Filter>
     </ClCompile>
-    <ClCompile Include="source\Network\Network.cpp">
-      <Filter>Network</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Room\User.cpp">
       <Filter>Room</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\Network\Network.cpp">
+      <Filter>Common\Network</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

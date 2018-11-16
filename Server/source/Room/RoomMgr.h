@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Network/NetInterface.h"
+#include "Common/Network/NetInterface.h"
 #include "Common/Platform.h"
 #include "Room/Room.h"
 #include "Room/User.h"

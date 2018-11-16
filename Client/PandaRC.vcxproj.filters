@@ -24,12 +24,6 @@
       <Extensions>moc;h;cpp</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
-    <Filter Include="Source Files\UDPNet">
-      <UniqueIdentifier>{a1675b93-6a96-458b-8045-3b48c50c8504}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\NetUtil">
-      <UniqueIdentifier>{bf7818de-a997-448a-8f1b-b7d4b456a214}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Common">
       <UniqueIdentifier>{b1077ff0-b639-40d1-8213-d146b072cb87}</UniqueIdentifier>
     </Filter>
@@ -69,11 +63,11 @@
     <Filter Include="Source Files\log-writer">
       <UniqueIdentifier>{2b177a7b-0bb7-4e9f-be6e-a70e53a81c61}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Logger">
-      <UniqueIdentifier>{8eb9e421-08ec-4f2c-90a5-3906c1d8ea39}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\enet">
       <UniqueIdentifier>{2c9f1e42-e364-4d74-b8ed-94eeb918caea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Common\Network">
+      <UniqueIdentifier>{7f3cb274-572f-4eaf-acc7-ea4c35ad9c41}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -83,17 +77,8 @@
     <ClCompile Include="PandaRC.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UDPNet\UDPNet.cpp">
-      <Filter>Source Files\UDPNet</Filter>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\qrc_PandaRC.cpp">
       <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="NetUtil\NetAPI.cpp">
-      <Filter>Source Files\NetUtil</Filter>
-    </ClCompile>
-    <ClCompile Include="NetUtil\Packet.cpp">
-      <Filter>Source Files\NetUtil</Filter>
     </ClCompile>
     <ClCompile Include="desktop\Win32MirrorScreenDriver.cpp">
       <Filter>Source Files\desktop</Filter>
@@ -590,9 +575,6 @@
     <ClCompile Include="log-writer\Channel.cpp">
       <Filter>Source Files\log-writer</Filter>
     </ClCompile>
-    <ClCompile Include="Logger\Logger.cpp">
-      <Filter>Source Files\Logger</Filter>
-    </ClCompile>
     <ClCompile Include="desktop\UpdateHandlerImpl.cpp">
       <Filter>Source Files\desktop</Filter>
     </ClCompile>
@@ -605,11 +587,11 @@
     <ClCompile Include="..\Common\DataStruct\XString.cpp">
       <Filter>Source Files\Common\DataStruct</Filter>
     </ClCompile>
+    <ClCompile Include="..\Common\Network\Network.cpp">
+      <Filter>Source Files\Common\Network</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="UDPNet\UDPNet.h">
-      <Filter>Source Files\UDPNet</Filter>
-    </QtMoc>
     <QtMoc Include="PandaRC.h">
       <Filter>Source Files</Filter>
     </QtMoc>
@@ -633,12 +615,6 @@
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_PandaRC.h">
       <Filter>Generated Files</Filter>
-    </ClInclude>
-    <ClInclude Include="NetUtil\NetAPI.h">
-      <Filter>Source Files\NetUtil</Filter>
-    </ClInclude>
-    <ClInclude Include="NetUtil\Packet.h">
-      <Filter>Source Files\NetUtil</Filter>
     </ClInclude>
     <ClInclude Include="desktop\Win32MirrorScreenDriver.h">
       <Filter>Source Files\desktop</Filter>
@@ -1207,9 +1183,6 @@
     <ClInclude Include="log-writer\ByteArrayOutputStream.h">
       <Filter>Source Files\log-writer</Filter>
     </ClInclude>
-    <ClInclude Include="Logger\Logger.h">
-      <Filter>Source Files\Logger</Filter>
-    </ClInclude>
     <ClInclude Include="desktop\UpdateHandler.h">
       <Filter>Source Files\desktop</Filter>
     </ClInclude>
@@ -1338,6 +1311,12 @@
     </ClInclude>
     <ClInclude Include="..\3rd\enet-master\include\enet\win32.h">
       <Filter>Source Files\enet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Network\NetInterface.h">
+      <Filter>Source Files\Common\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Network\Network.h">
+      <Filter>Source Files\Common\Network</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

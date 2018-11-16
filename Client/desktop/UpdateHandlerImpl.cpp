@@ -24,6 +24,7 @@
 
 #include "UpdateHandlerImpl.h"
 #include "util/Exception.h"
+#include "Include/Logger/Logger.hpp"
 
 UpdateHandlerImpl::UpdateHandlerImpl(UpdateListener *externalUpdateListener, ScreenDriverFactory *scrDriverFactory)
 	: m_externalUpdateListener(externalUpdateListener), m_fullUpdateRequested(false)
@@ -125,7 +126,7 @@ void UpdateHandlerImpl::applyNewScreenProperties()
 			WindowsEvent waitEvent; // No way to made it abortable.
 			waitEvent.waitForEvent(1000);
 		}
-		glog.info(_T("Screen properties changed, applying new screen properties, total tries = %d"), applyTryCount);
+		XLog(LEVEL_DEBUG, "Screen properties changed, applying new screen properties, total tries = %d\n", applyTryCount);
 		applyResult = m_screenDriver->applyNewScreenProperties();
 		applyTryCount--;
 	} while (applyTryCount > 0 && !applyResult);
