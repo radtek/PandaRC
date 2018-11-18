@@ -4,7 +4,7 @@
 #include "ui_PandaRC.h"
 
 #include "QMyThread.h"
-#include "Common/Network/Network.h"
+#include "QNetThread.h"
 
 class PandaRC : public QMainWindow
 {
@@ -31,6 +31,5 @@ private:
 	QMyThread m_myThread;
 	QPixmap* m_pixmap;
 	QPainter* m_painter;
-
-	Network m_oNetwork;
+	QNetThread m_netThread;
 };

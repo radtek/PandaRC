@@ -590,12 +590,18 @@
     <ClCompile Include="..\Common\Network\Network.cpp">
       <Filter>Source Files\Common\Network</Filter>
     </ClCompile>
+    <ClCompile Include="QNetThread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="PandaRC.h">
       <Filter>Source Files</Filter>
     </QtMoc>
     <QtMoc Include="QMyThread.h">
+      <Filter>Source Files</Filter>
+    </QtMoc>
+    <QtMoc Include="QNetThread.h">
       <Filter>Source Files</Filter>
     </QtMoc>
   </ItemGroup>
@@ -1317,6 +1323,15 @@
     </ClInclude>
     <ClInclude Include="..\Common\Network\Network.h">
       <Filter>Source Files\Common\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Network\Cmd.h">
+      <Filter>Source Files\Common\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Network\Protocol.h">
+      <Filter>Source Files\Common\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Misc.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

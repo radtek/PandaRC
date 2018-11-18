@@ -1,8 +1,8 @@
 #pragma once
 #include "enet/enet.h"
+#include "Common/Network/Protocol.h"
 #include "Common/Network/NetInterface.h"
 #include "Common/Platform.h"
-#include "Common/Protocol/Protocol.h"
 
 class Network
 {
@@ -10,11 +10,10 @@ public:
 	Network();
 	virtual ~Network();
 
-	bool Init();
-	bool Listen(uint16_t uPort);
+	bool InitAsServer(uint16_t uListenPort);
+	bool InitAsClient();
 	bool Connect(const std::string& oIP, uint16_t uPort);
-
-	void Start();
+	void Update(uint32_t nMSTime);
 
 public:
 	void SetNetInterface(NetInterface* poNetInterface);

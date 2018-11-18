@@ -2,6 +2,7 @@
 #include <qmath.h>
 #include <qpainter.h>
 
+#include "Misc.h"
 #include "Include/Logger/Logger.hpp"
 #include "desktip-ipc/UpdateHandlerServer.h"
 
@@ -13,20 +14,27 @@ PandaRC::PandaRC(QWidget *parent)
 	ui.setupUi(this);
 	Logger::Instance()->Init();
 
-	m_myThread.start();
-	pHandlerSrv = new UpdateHandlerServer(this);
-	connect(&m_myThread, SIGNAL(paintDataChanged()), this, SLOT(onPaintDataChanged()));
+	//m_myThread.start();
+	//pHandlerSrv = new UpdateHandlerServer(this);
+	//connect(&m_myThread, SIGNAL(paintDataChanged()), this, SLOT(onPaintDataChanged()));
 
 	m_pixmap = NULL;
 	m_painter = NULL;
+	m_netThread.init();
+	m_netThread.start();
 }
 
 void PandaRC::onBtnSend()
 {
+	m_netThread.connect("127.0.0.1", 10001);
 }
 
 void PandaRC::onBtnRecv()
 {
+	NSPROTO::LOGIN_REQ login;
+	std::string strMac = NSMisc::getHostMac();
+	strcpy(login.mac_addr, strMac.c_str());
+	m_netThread.sendMsg(0, ENET_PACKET_FLAG_RELIABLE, &login);
 }
 
 void PandaRC::onPaintDataChanged()

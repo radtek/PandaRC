@@ -13,9 +13,6 @@
     <Filter Include="Common\DataStruct">
       <UniqueIdentifier>{45c04604-62a4-4c8b-88a6-390e522f1f4b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Common\Protocol">
-      <UniqueIdentifier>{0b9e3566-7c01-4c4f-9d71-77e65d3b859d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Common\Network">
       <UniqueIdentifier>{b5dadd6e-f98b-4c83-a17d-86b7f637d2f4}</UniqueIdentifier>
     </Filter>
@@ -154,18 +151,13 @@
       <Filter>Room</Filter>
     </ClInclude>
     <ClInclude Include="Source\Context.h" />
-    <ClInclude Include="..\Common\Protocol\Protocol.h">
-      <Filter>Common\Protocol</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Common\Protocol\Cmd.h">
-      <Filter>Common\Protocol</Filter>
-    </ClInclude>
     <ClInclude Include="..\Common\Network\NetInterface.h">
       <Filter>Common\Network</Filter>
     </ClInclude>
     <ClInclude Include="..\Common\Network\Network.h">
       <Filter>Common\Network</Filter>
     </ClInclude>
+    <ClInclude Include="source\Server.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\main.cpp" />
@@ -184,5 +176,6 @@
     <ClCompile Include="..\Common\Network\Network.cpp">
       <Filter>Common\Network</Filter>
     </ClCompile>
+    <ClCompile Include="source\Server.cpp" />
   </ItemGroup>
 </Project>

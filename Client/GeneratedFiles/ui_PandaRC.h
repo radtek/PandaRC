@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'PandaRC.ui'
 **
-** Created by: Qt User Interface Compiler version 5.11.0
+** Created by: Qt User Interface Compiler version 5.11.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -60,8 +60,8 @@ public:
     void retranslateUi(QMainWindow *PandaRCClass)
     {
         PandaRCClass->setWindowTitle(QApplication::translate("PandaRCClass", "PandaRC", nullptr));
-        btnSend->setText(QApplication::translate("PandaRCClass", "\345\217\221\351\200\201", nullptr));
-        btnRecv->setText(QApplication::translate("PandaRCClass", "\346\216\245\346\224\266", nullptr));
+        btnSend->setText(QApplication::translate("PandaRCClass", "\350\277\236\346\216\245", nullptr));
+        btnRecv->setText(QApplication::translate("PandaRCClass", "\345\217\221\351\200\201", nullptr));
     } // retranslateUi
 
 };

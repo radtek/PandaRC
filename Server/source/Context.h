@@ -1,10 +1,10 @@
 #pragma once
-#include "Common/Network/Network.h"
 #include "Room/RoomMgr.h"
+#include "Server.h"
 
 struct Context
 {
-	Network* poNetwork;
+	Server* poServer;
 	RoomMgr* poRoomMgr;
 };
 

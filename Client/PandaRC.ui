@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>发送</string>
+     <string>连接</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btnRecv">
@@ -37,7 +37,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>接收</string>
+     <string>发送</string>
     </property>
    </widget>
   </widget>

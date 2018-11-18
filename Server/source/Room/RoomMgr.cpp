@@ -97,7 +97,7 @@ void RoomMgr::OnReceive(ENetEvent& event)
 		return;
 	}
 
-	NSPROTO::HEAD head = *(NSPROTO::HEAD*)event.packet;
+	NSPROTO::HEAD head = *(NSPROTO::HEAD*)event.packet->data;
 	if (event.packet->dataLength != head.size)
 	{
 		enet_packet_destroy(event.packet);
@@ -109,7 +109,7 @@ void RoomMgr::OnReceive(ENetEvent& event)
 	{
 	case NSNETCMD::eLOGIN_REQ:
 	{
-		NSPROTO::LOGIN_REQ login = *(NSPROTO::LOGIN_REQ*)event.packet;
+		NSPROTO::LOGIN_REQ login = *(NSPROTO::LOGIN_REQ*)event.packet->data;
 		User* poUser = GetUser(login.mac_addr);
 		if (poUser == NULL)
 		{
@@ -122,7 +122,7 @@ void RoomMgr::OnReceive(ENetEvent& event)
 			event.peer->data = (void*)poUser;
 			poUser->SetEnetPeer(event.peer);
 			loginret.code = 0;
-			XLog(LEVEL_ERROR, "Mac addr %s login successful\n", login.mac_addr);
+			XLog(LEVEL_INFO, "Mac addr %s login successful\n", login.mac_addr);
 		}
 		else
 		{
@@ -130,12 +130,12 @@ void RoomMgr::OnReceive(ENetEvent& event)
 			XLog(LEVEL_ERROR, "Mac addr %s allready login\n", login.mac_addr);
 		}
 		enet_packet_destroy(event.packet);
-		gpoContext->poNetwork->Send2Client(event.peer, 0, ENET_PACKET_FLAG_RELIABLE, &loginret);
+		gpoContext->poServer->GetNetwork()->Send2Client(event.peer, 0, ENET_PACKET_FLAG_RELIABLE, &loginret);
 		break;
 	}
 	case NSNETCMD::eBUILD_REQ:
 	{
-		NSPROTO::BUILD_REQ build = *(NSPROTO::BUILD_REQ*)event.packet;
+		NSPROTO::BUILD_REQ build = *(NSPROTO::BUILD_REQ*)event.packet->data;
 		User* poUserClient = GetUser(build.mac_client);
 		User* poUserServer = GetUser(build.mac_server);
 
@@ -153,13 +153,13 @@ void RoomMgr::OnReceive(ENetEvent& event)
 			poUserServer->GetRoomList().push_back(poRoom->GetRoomID());
 			buildret.roomid = poRoom->GetRoomID();
 		}
-		gpoContext->poNetwork->Send2Client(event.peer, 0, ENET_PACKET_FLAG_RELIABLE, &buildret);
+		gpoContext->poServer->GetNetwork()->Send2Client(event.peer, 0, ENET_PACKET_FLAG_RELIABLE, &buildret);
 		enet_packet_destroy(event.packet);
 		break;
 	}
 	case NSNETCMD::eUNBUILD_REQ:
 	{
-		NSPROTO::UNBUILD_REQ unbuild = *(NSPROTO::UNBUILD_REQ*)event.packet;
+		NSPROTO::UNBUILD_REQ unbuild = *(NSPROTO::UNBUILD_REQ*)event.packet->data;
 		Room* poRoom = GetRoom(unbuild.roomid);
 		NSPROTO::UNBUILD_RET unbuildret;
 		if (poRoom == NULL)
@@ -172,7 +172,7 @@ void RoomMgr::OnReceive(ENetEvent& event)
 			unbuildret.code = 0;
 			SAFE_DELETE(poRoom);
 		}
-		gpoContext->poNetwork->Send2Client(event.peer, 0, ENET_PACKET_FLAG_RELIABLE, &unbuildret);
+		gpoContext->poServer->GetNetwork()->Send2Client(event.peer, 0, ENET_PACKET_FLAG_RELIABLE, &unbuildret);
 		enet_packet_destroy(event.packet);
 		break;
 	}
