@@ -52,6 +52,50 @@ namespace NSPROTO
 		CONSTRUCT(UNBUILD_RET, NSNETCMD::eUNBUILD_RET);
 		int code;	//0³É¹¦; 1Ê§°Ü
 	};
+
+	struct FRAME_SYNC : public HEAD
+	{
+		FRAME_SYNC()
+		{
+			size = sizeof(FRAME_SYNC)-sizeof(dataPtr);
+			cmd = NSNETCMD::eFRAME_SYNC;
+			left = 0;
+			top = 0;
+			width = 0;
+			height = 0;
+			dataSize = 0;
+			dataPtr = NULL;
+		}
+		~FRAME_SYNC()
+		{
+			if (dataPtr != NULL)
+			{
+				free(dataPtr);
+				dataPtr = NULL;
+			}
+		}
+		int left;
+		int top;
+		int width;
+		int height;
+
+		int dataSize;
+		uint8_t* dataPtr;
+
+		void setData(uint8_t* _dataPtr, int _dataSize)
+		{
+			dataSize = _dataSize;
+			dataPtr = (uint8_t*)realloc(dataPtr, size + dataSize);
+			memcpy(dataPtr, (uint8_t*)this, size);
+			memcpy(dataPtr + size, _dataPtr, dataSize);
+			size += dataSize;
+		}
+		void getData(uint8_t** _dataPtr, int& _dataSize)
+		{
+			*_dataPtr = dataPtr;
+			_dataSize = dataSize;
+		}
+	};
 }
 
 

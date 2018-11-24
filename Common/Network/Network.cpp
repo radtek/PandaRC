@@ -130,7 +130,20 @@ bool Network::Send2Server(int nChannel, int nPacketFlag, NSPROTO::PROTO* poProto
 	}
 	ENetPacket* poPacket = enet_packet_create((void*)poProto, poProto->size, nPacketFlag);
 	enet_peer_send(m_poClientPeer, 0, poPacket);
-	enet_host_flush(m_poEnetClient);
+	//enet_host_flush(m_poEnetClient);
+	return true;
+}
+
+bool Network::Send2ServerRaw(int nChannel, int nPacketFlag, uint8_t* pData, int nSize)
+{
+
+	if (m_poClientPeer == NULL || m_poEnetClient == NULL)
+	{
+		return false;
+	}
+	ENetPacket* poPacket = enet_packet_create((void*)pData, nSize, nPacketFlag);
+	enet_peer_send(m_poClientPeer, 0, poPacket);
+	//enet_host_flush(m_poEnetClient);
 	return true;
 }
 
@@ -142,7 +155,19 @@ bool Network::Send2Client(ENetPeer* poENetPeer, int nChannel, int nPacketFlag, N
 	}
 	ENetPacket* poPacket = enet_packet_create((void*)poProto, poProto->size, nPacketFlag);
 	enet_peer_send(poENetPeer, 0, poPacket);
-	enet_host_flush(m_poEnetServer);
+	//enet_host_flush(m_poEnetServer);
+	return true;
+}
+
+bool Network::Send2ClientRaw(ENetPeer* poENetPeer, int nChannel, int nPacketFlag, uint8_t* pData, int nSize)
+{
+	if (m_poEnetServer == NULL || poENetPeer == NULL)
+	{
+		return false;
+	}
+	ENetPacket* poPacket = enet_packet_create((void*)pData, nSize, nPacketFlag);
+	enet_peer_send(poENetPeer, 0, poPacket);
+	//enet_host_flush(m_poEnetServer);
 	return true;
 }
 
@@ -216,7 +241,7 @@ void Network::Update(uint32_t nMSTime)
 				{
 					m_poNetInterface->OnReceive(event);
 				}
-				//enet_packet_destroy(event.packet);
+				enet_packet_destroy(event.packet);
 				break;
 
 			case ENET_EVENT_TYPE_DISCONNECT:

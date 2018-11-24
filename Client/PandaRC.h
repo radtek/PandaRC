@@ -3,7 +3,7 @@
 #include <QtWidgets/QMainWindow>
 #include "ui_PandaRC.h"
 
-#include "QMyThread.h"
+#include "QFrameThread.h"
 #include "QNetThread.h"
 
 class PandaRC : public QMainWindow
@@ -25,11 +25,12 @@ private:
 	Ui::PandaRCClass ui;
 
 public:
-	QMyThread* getUpdateThread() { return &m_myThread; }
+	QNetThread* getNetThread() { return &m_netThread; }
+	QFrameThread* getFrameThread() { return m_frameThread; }
 
 private:
-	QMyThread m_myThread;
 	QPixmap* m_pixmap;
 	QPainter* m_painter;
 	QNetThread m_netThread;
+	QFrameThread* m_frameThread;
 };

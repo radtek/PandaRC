@@ -14,14 +14,15 @@ PandaRC::PandaRC(QWidget *parent)
 	ui.setupUi(this);
 	Logger::Instance()->Init();
 
-	//m_myThread.start();
+	//m_frameThread.start();
 	//pHandlerSrv = new UpdateHandlerServer(this);
-	//connect(&m_myThread, SIGNAL(paintDataChanged()), this, SLOT(onPaintDataChanged()));
+	//connect(&m_frameThread, SIGNAL(paintDataChanged()), this, SLOT(onPaintDataChanged()));
 
 	m_pixmap = NULL;
 	m_painter = NULL;
 	m_netThread.init();
 	m_netThread.start();
+	m_frameThread = new QFrameThread(NULL ,this);
 }
 
 void PandaRC::onBtnSend()
@@ -40,7 +41,7 @@ void PandaRC::onBtnRecv()
 void PandaRC::onPaintDataChanged()
 {
 	do {
-		PDEVENT* pd = m_myThread.getFrame();
+		PDEVENT* pd = m_frameThread->getFrame();
 		if (pd == NULL)
 		{
 			break;
@@ -56,8 +57,8 @@ void PandaRC::onPaintDataChanged()
 				m_pixmap = new QPixmap(dim.width, dim.height);
 				m_painter = new QPainter(m_pixmap);
 			}
-			uchar* pBuffer = (uchar*)frame->fb.getBuffer();
 			int nBytesRow = frame->fb.getBytesPerRow();
+			uchar* pBuffer = (uchar*)frame->fb.getBuffer();
 			QImage oImg(pBuffer, frame->rect.getWidth(), frame->rect.getHeight(), nBytesRow, QImage::Format_RGB32);
 			m_painter->drawImage(QPoint(frame->rect.left, frame->rect.top), oImg);
 			delete pd;

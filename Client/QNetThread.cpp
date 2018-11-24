@@ -32,3 +32,9 @@ bool QNetThread::sendMsg(int nChannel, int nPacketFlag, NSPROTO::PROTO* poProto)
 	AutoLock al(&m_oMutex);
 	return m_oNetwork.Send2Server(nChannel, nPacketFlag, poProto);
 }
+
+bool QNetThread::sendMsgRaw(int nChannel, int nPacketFlag, uint8_t* pData, int nSize)
+{
+	AutoLock al(&m_oMutex);
+	return m_oNetwork.Send2ServerRaw(nChannel, nPacketFlag, pData, nSize);
+}

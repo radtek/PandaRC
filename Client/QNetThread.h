@@ -18,6 +18,7 @@ public:
 	void terminate() { m_bTerminate = true; }
 	bool connect(const std::string& strIP, uint16_t uPort);
 	bool sendMsg(int nChannel, int nPacketFlag, NSPROTO::PROTO* poProto);
+	bool sendMsgRaw(int nChannel, int nPacketFlag, uint8_t* pData, int nSize);
 
 protected:
 	bool m_bTerminate;

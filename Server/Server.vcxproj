@@ -72,6 +72,9 @@
     <IncludePath>E:\PandaRC\3rd\enet-master\include;E:\PandaRC;E:\PandaRC\Server\Source;$(IncludePath)</IncludePath>
     <OutDir>..\Win32\Debug\</OutDir>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>..\Win32\Debug\</OutDir>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>

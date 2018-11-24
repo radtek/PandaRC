@@ -18,7 +18,9 @@ public:
 public:
 	void SetNetInterface(NetInterface* poNetInterface);
 	bool Send2Server(int nChannel, int nPacketFlag, NSPROTO::PROTO* poProto);
+	bool Send2ServerRaw(int nChannel, int nPacketFlag, uint8_t* pData, int nSize);
 	bool Send2Client(ENetPeer* poENetPeer, int nChannel, int nPacketFlag, NSPROTO::PROTO* poProto);
+	bool Send2ClientRaw(ENetPeer* poENetPeer, int nChannel, int nPacketFlag, uint8_t* pData, int nSize);
 	void CloseServerPeer(ENetPeer* poENetPeer);
 	void CloseClientPeer();
 

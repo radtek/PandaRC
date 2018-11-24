@@ -58,7 +58,7 @@ void UpdateHandlerServer::onUpdate()
 		pd->rect = *rect;
 		pd->fb.setProperties(rect, &(fb->getPixelFormat()));
 		pd->fb.copyFrom(fb, rect->left, rect->top);
-		((PandaRC*)m_parent)->getUpdateThread()->addFrame(pd);
+		((PandaRC*)m_parent)->getFrameThread()->addFrame(pd);
 	}
 
 	vecRect.clear();
@@ -70,7 +70,7 @@ void UpdateHandlerServer::onUpdate()
 		pd->rect = *rect;
 		pd->fb.setProperties(rect, &(fb->getPixelFormat()));
 		pd->fb.copyFrom(fb, rect->left, rect->top);
-		((PandaRC*)m_parent)->getUpdateThread()->addFrame(pd);
+		((PandaRC*)m_parent)->getFrameThread()->addFrame(pd);
 	}
 
 	// Send cursor position if it has been changed.
@@ -100,7 +100,7 @@ void UpdateHandlerServer::onUpdate()
 	}
 	if (cursor != NULL)
 	{
-		((PandaRC*)m_parent)->getUpdateThread()->addFrame(cursor);
+		((PandaRC*)m_parent)->getFrameThread()->addFrame(cursor);
 	}
 
 	//AutoLock al(m_forwGate);
@@ -162,7 +162,7 @@ void UpdateHandlerServer::extractReply()
 	pd->rect = fb->getDimension().getRect();
 	pd->fb.setProperties(&pd->rect, &(fb->getPixelFormat()));
 	pd->fb.copyFrom(fb, pd->rect.left, pd->rect.top);
-	((PandaRC*)m_parent)->getUpdateThread()->addFrame(pd);
+	((PandaRC*)m_parent)->getFrameThread()->addFrame(pd);
 
 	//backGate->writeUInt8(updCont.screenSizeChanged);
 	//if (updCont.screenSizeChanged) {

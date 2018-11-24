@@ -581,9 +581,6 @@
     <ClCompile Include="desktop\UpdateHandler.cpp">
       <Filter>Source Files\desktop</Filter>
     </ClCompile>
-    <ClCompile Include="QMyThread.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\Common\DataStruct\XString.cpp">
       <Filter>Source Files\Common\DataStruct</Filter>
     </ClCompile>
@@ -593,15 +590,18 @@
     <ClCompile Include="QNetThread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="QFrameThread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="PandaRC.h">
       <Filter>Source Files</Filter>
     </QtMoc>
-    <QtMoc Include="QMyThread.h">
+    <QtMoc Include="QNetThread.h">
       <Filter>Source Files</Filter>
     </QtMoc>
-    <QtMoc Include="QNetThread.h">
+    <QtMoc Include="QFrameThread.h">
       <Filter>Source Files</Filter>
     </QtMoc>
   </ItemGroup>
