@@ -11,7 +11,7 @@ public:
 	typedef std::unordered_map<int, Room*> RoomMap;
 	typedef RoomMap::iterator RoomIter;
 
-	typedef std::unordered_map<std::string, User*> UserMap;
+	typedef std::unordered_map<int, User*> UserMap;
 	typedef UserMap::iterator UserIter;
 
 public:
@@ -22,9 +22,9 @@ public:
 	Room* GetRoom(int nRoomID);
 	void RemoveRoom(int nRoomID);
 
-	User* CreateUser(const std::string& oMacAddr);
-	User* GetUser(const std::string& oMacAddr);
-	void RemoveUser(const std::string& oMacAddr);
+	User* CreateUser(int nUserID);
+	User* GetUser(int nUserID);
+	void RemoveUser(int nuserID);
 
 public:
 	virtual void OnConnect(ENetEvent& event);

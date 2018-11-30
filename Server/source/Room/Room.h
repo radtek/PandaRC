@@ -7,10 +7,14 @@ public:
 	Room(int nRoomID);
 	virtual ~Room();
 	int GetRoomID() { return m_nRoomID; }
-	void SetBuildMac(const std::string& oClientMac, const std::string& oServerMac);
+
+	void SetBuildUser(int nClientUserID, int nServerUserID);
+	int GetClientUserID() { return m_nClientUserID; }
+	int GetServerUserID() { return m_nServerUserID; }
+	void SendToClient(uint8_t* pData, int nLen);
 
 private:
 	int m_nRoomID;
-	std::string m_oClientMac;
-	std::string m_oServerMac;
+	int m_nClientUserID;
+	int m_nServerUserID;
 };

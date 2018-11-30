@@ -69,6 +69,11 @@
     <Filter Include="Source Files\Common\Network">
       <UniqueIdentifier>{7f3cb274-572f-4eaf-acc7-ea4c35ad9c41}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+      <ParseFiles>true</ParseFiles>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -593,6 +598,9 @@
     <ClCompile Include="QFrameThread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ClientViewer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="PandaRC.h">
@@ -604,9 +612,15 @@
     <QtMoc Include="QFrameThread.h">
       <Filter>Source Files</Filter>
     </QtMoc>
+    <QtMoc Include="ClientViewer.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="PandaRC.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="ClientViewer.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

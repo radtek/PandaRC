@@ -211,6 +211,7 @@
   <ItemGroup>
     <ClCompile Include="..\Common\DataStruct\XString.cpp" />
     <ClCompile Include="..\Common\Network\Network.cpp" />
+    <ClCompile Include="ClientViewer.cpp" />
     <ClCompile Include="desktip-ipc\DesktopServerProto.cpp" />
     <ClCompile Include="desktip-ipc\UpdateHandlerClient.cpp" />
     <ClCompile Include="desktip-ipc\UpdateHandlerServer.cpp" />
@@ -397,6 +398,7 @@
     <QtMoc Include="PandaRC.h" />
   </ItemGroup>
   <ItemGroup>
+    <QtUic Include="ClientViewer.ui" />
     <QtUic Include="PandaRC.ui" />
   </ItemGroup>
   <ItemGroup>
@@ -451,6 +453,16 @@
     <ClInclude Include="..\Common\Network\Protocol.h" />
     <ClInclude Include="..\Common\Platform.h" />
     <ClInclude Include="..\Common\PlatformHeader.h" />
+    <QtMoc Include="ClientViewer.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\Libs;.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;.\UDPNet;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">UNICODE;_UNICODE;WIN32;WIN64;QT_WIDGETS_LIB;QT_CORE_LIB;QT_NETWORK_LIB;QT_GUI_LIB;_MBCS</Define>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\Libs;.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;.\UDPNet;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">UNICODE;_UNICODE;WIN32;WIN64;QT_WIDGETS_LIB;QT_CORE_LIB;QT_NETWORK_LIB;QT_GUI_LIB;_MBCS</Define>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;.\UDPNet;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">UNICODE;_UNICODE;WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_WIDGETS_LIB;QT_CORE_LIB;QT_NETWORK_LIB;QT_GUI_LIB</Define>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;.\UDPNet;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UNICODE;_UNICODE;WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_WIDGETS_LIB;QT_CORE_LIB;QT_NETWORK_LIB;QT_GUI_LIB</Define>
+    </QtMoc>
     <ClInclude Include="desktip-ipc\DesktopServerProto.h" />
     <ClInclude Include="desktip-ipc\UpdateHandlerClient.h" />
     <ClInclude Include="desktip-ipc\UpdateHandlerServer.h" />

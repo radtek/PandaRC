@@ -1,4 +1,5 @@
 #include "Room/Room.h"
+#include "Context.h"
 
 Room::Room(int nRoomID)
 {
@@ -7,10 +8,24 @@ Room::Room(int nRoomID)
 
 Room::~Room()
 {
+	User* poServerUser = gpoContext->poRoomMgr->GetUser(m_nServerUserID);
+	if (poServerUser != NULL)
+	{
+		poServerUser->RemoveClientRoomID(m_nRoomID);
+	}
 }
 
-void Room::SetBuildMac(const std::string& oClientMac, const std::string& oServerMac)
+void Room::SetBuildUser(int nClientUserID, int nServerUserID)
 {
-	m_oClientMac = oClientMac;
-	m_oServerMac = oServerMac;
+	m_nClientUserID = nClientUserID;
+	m_nServerUserID = nServerUserID;
+}
+
+void Room::SendToClient(uint8_t* pData, int nLen)
+{
+	User* poClientUser = gpoContext->poRoomMgr->GetUser(m_nClientUserID);
+	if (poClientUser != NULL)
+	{
+		gpoContext->poServer->GetNetwork()->Send2ClientRaw(poClientUser->GetENetPeer(), 0, ENET_PACKET_FLAG_RELIABLE, pData, nLen);
+	}
 }

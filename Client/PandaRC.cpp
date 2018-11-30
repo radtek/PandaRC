@@ -1,12 +1,12 @@
 #include "PandaRC.h"
 #include <qmath.h>
 #include <qpainter.h>
+#include <qmessagebox>
+#include <QCloseEvent>
 
 #include "Misc.h"
 #include "Include/Logger/Logger.hpp"
 #include "desktip-ipc/UpdateHandlerServer.h"
-
-UpdateHandlerServer* pHandlerSrv;
 
 PandaRC::PandaRC(QWidget *parent)
 	: QMainWindow(parent)
@@ -14,28 +14,42 @@ PandaRC::PandaRC(QWidget *parent)
 	ui.setupUi(this);
 	Logger::Instance()->Init();
 
-	//m_frameThread.start();
-	//pHandlerSrv = new UpdateHandlerServer(this);
-	//connect(&m_frameThread, SIGNAL(paintDataChanged()), this, SLOT(onPaintDataChanged()));
-
 	m_pixmap = NULL;
 	m_painter = NULL;
-	m_netThread.init();
-	m_netThread.start();
+
+	m_netThread = new QNetThread(NULL, this);
+	m_netThread->init();
+	m_netThread->start();
 	m_frameThread = new QFrameThread(NULL ,this);
+	m_frameThread->start();
+	m_handlerSrv = NULL;
+	m_clientViewerRect.setRect(0, 0, 800, 600);
+
+	m_nUserID = 0;
+
 }
 
-void PandaRC::onBtnSend()
+void PandaRC::onBtnLogin()
 {
-	m_netThread.connect("127.0.0.1", 10001);
+	m_netThread->connect("127.0.0.1", 10001, PandaRC::connectedCallback, this);
 }
 
-void PandaRC::onBtnRecv()
+void PandaRC::onBtnBuild()
 {
-	NSPROTO::LOGIN_REQ login;
-	std::string strMac = NSMisc::getHostMac();
-	strcpy(login.mac_addr, strMac.c_str());
-	m_netThread.sendMsg(0, ENET_PACKET_FLAG_RELIABLE, &login);
+	std::string key = "test";
+	ClientViewer* pView = new ClientViewer(this);
+	m_clientViewerMap[key] = pView;
+	pView->SetKey(key);
+	if (m_clientViewerRect.width() != -1)
+	{
+		pView->setGeometry(m_clientViewerRect);
+	}
+	else
+	{
+		pView->showMaximized();
+	}
+	pView->show();
+	
 }
 
 void PandaRC::onPaintDataChanged()
@@ -121,3 +135,79 @@ void PandaRC::paintEvent(QPaintEvent *event)
 	//}
 
 }
+
+void PandaRC::closeEvent(QCloseEvent *event)
+{
+	m_netThread->terminate();
+	m_frameThread->terminate();
+}
+
+void PandaRC::onViewerClose(const std::string& key)
+{
+	ClientViewer* pViewer = m_clientViewerMap.find(key)->second;
+	QPoint pos = pViewer->pos();
+	QSize size = pViewer->size();
+	m_clientViewerRect.setX(pos.x());
+	m_clientViewerRect.setY(pos.y());
+	m_clientViewerRect.setWidth(size.width());
+	m_clientViewerRect.setHeight(size.height());
+	m_clientViewerMap.erase(key);
+}
+
+void PandaRC::loginReq()
+{
+	NSPROTO::LOGIN_REQ login;
+	login.userid = 0;
+	std::string strMac = NSMisc::getHostMac();
+	strcpy(login.mac_addr, strMac.c_str());
+	m_netThread->sendMsg(0, ENET_PACKET_FLAG_RELIABLE, &login);
+}
+
+void PandaRC::onLoginRet(NSPROTO::PROTO* proto)
+{
+	NSPROTO::LOGIN_RET loginret = *(NSPROTO::LOGIN_RET*)proto;
+	m_nUserID = loginret.userid;
+}
+
+void PandaRC::buildReq()
+{
+	NSPROTO::BUILD_REQ build;
+	build.server_userid = 1;
+	build.client_userid = 2;
+	m_netThread->sendMsg(0, ENET_PACKET_FLAG_RELIABLE, &build);
+}
+
+void PandaRC::onBuildRet(int roomID, int service)
+{
+	m_clientRoomList.push_back(roomID);
+	if (service == 1 && m_handlerSrv == NULL)
+	{
+		m_handlerSrv = new UpdateHandlerServer(this);
+	}
+}
+
+void PandaRC::onUnbuildRet(int roomID, int service)
+{
+	if (service == 1)
+	{
+		for (RoomIter iter = m_clientRoomList.begin(); iter != m_clientRoomList.end(); iter++)
+		{
+			if (*iter == roomID)
+			{
+				m_clientRoomList.erase(iter);
+				break;
+			}
+		}
+		if (m_clientRoomList.size() <= 0)
+		{
+			SAFE_DELETE(m_handlerSrv);
+		}
+	}
+}
+
+void PandaRC::connectedCallback(void* param)
+{
+	PandaRC* pPandaRC = (PandaRC*)param;
+	pPandaRC->loginReq();
+}
+

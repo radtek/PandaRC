@@ -56,7 +56,6 @@ public:
 
 private:
 	virtual void onUpdate();
-
 	void applyNewScreenProperties();
 
 	UpdateKeeper m_updateKeeper;

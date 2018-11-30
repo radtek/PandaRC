@@ -23,8 +23,8 @@ class Ui_PandaRCClass
 {
 public:
     QWidget *centralWidget;
-    QPushButton *btnSend;
-    QPushButton *btnRecv;
+    QPushButton *btnLogin;
+    QPushButton *btnBuild;
     QMenuBar *menuBar;
     QStatusBar *statusBar;
 
@@ -32,27 +32,27 @@ public:
     {
         if (PandaRCClass->objectName().isEmpty())
             PandaRCClass->setObjectName(QStringLiteral("PandaRCClass"));
-        PandaRCClass->resize(600, 400);
+        PandaRCClass->resize(229, 374);
         centralWidget = new QWidget(PandaRCClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
-        btnSend = new QPushButton(centralWidget);
-        btnSend->setObjectName(QStringLiteral("btnSend"));
-        btnSend->setGeometry(QRect(0, 0, 75, 23));
-        btnRecv = new QPushButton(centralWidget);
-        btnRecv->setObjectName(QStringLiteral("btnRecv"));
-        btnRecv->setGeometry(QRect(0, 30, 75, 23));
+        btnLogin = new QPushButton(centralWidget);
+        btnLogin->setObjectName(QStringLiteral("btnLogin"));
+        btnLogin->setGeometry(QRect(50, 20, 131, 41));
+        btnBuild = new QPushButton(centralWidget);
+        btnBuild->setObjectName(QStringLiteral("btnBuild"));
+        btnBuild->setGeometry(QRect(50, 80, 131, 41));
         PandaRCClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(PandaRCClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 600, 23));
+        menuBar->setGeometry(QRect(0, 0, 229, 23));
         PandaRCClass->setMenuBar(menuBar);
         statusBar = new QStatusBar(PandaRCClass);
         statusBar->setObjectName(QStringLiteral("statusBar"));
         PandaRCClass->setStatusBar(statusBar);
 
         retranslateUi(PandaRCClass);
-        QObject::connect(btnSend, SIGNAL(clicked()), PandaRCClass, SLOT(onBtnSend()));
-        QObject::connect(btnRecv, SIGNAL(clicked()), PandaRCClass, SLOT(onBtnRecv()));
+        QObject::connect(btnBuild, SIGNAL(clicked()), PandaRCClass, SLOT(onBtnBuild()));
+        QObject::connect(btnLogin, SIGNAL(clicked()), PandaRCClass, SLOT(onBtnLogin()));
 
         QMetaObject::connectSlotsByName(PandaRCClass);
     } // setupUi
@@ -60,8 +60,8 @@ public:
     void retranslateUi(QMainWindow *PandaRCClass)
     {
         PandaRCClass->setWindowTitle(QApplication::translate("PandaRCClass", "PandaRC", nullptr));
-        btnSend->setText(QApplication::translate("PandaRCClass", "\350\277\236\346\216\245", nullptr));
-        btnRecv->setText(QApplication::translate("PandaRCClass", "\345\217\221\351\200\201", nullptr));
+        btnLogin->setText(QApplication::translate("PandaRCClass", "\347\231\273\345\275\225", nullptr));
+        btnBuild->setText(QApplication::translate("PandaRCClass", "\345\273\272\347\253\213", nullptr));
     } // retranslateUi
 
 };

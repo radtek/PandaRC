@@ -1,7 +1,7 @@
 #include "Room/RoomMgr.h"
-#include "Include/Logger/Logger.hpp"
 #include "Context.h"
 #include "Common/Network/Network.h"
+#include "Include/Logger/Logger.hpp"
 
 RoomMgr::RoomMgr()
 {
@@ -53,16 +53,16 @@ void RoomMgr::RemoveRoom(int nRoomID)
 }
 
 
-User* RoomMgr::CreateUser(const std::string& oMacAddr)
+User* RoomMgr::CreateUser(int nID)
 {
-	User* poUser = new User();
-	m_oUserMap[oMacAddr] = poUser;
+	User* poUser = new User(nID);
+	m_oUserMap[nID] = poUser;
 	return poUser;
 }
 
-User* RoomMgr::GetUser(const std::string& oMacAddr)
+User* RoomMgr::GetUser(int nID)
 {
-	UserIter iter = m_oUserMap.find(oMacAddr);
+	UserIter iter = m_oUserMap.find(nID);
 	if (iter != m_oUserMap.end())
 	{
 		return iter->second;
@@ -70,17 +70,15 @@ User* RoomMgr::GetUser(const std::string& oMacAddr)
 	return NULL;
 }
 
-void RoomMgr::RemoveUser(const std::string& oMacAddr)
+void RoomMgr::RemoveUser(int nID)
 {
-	UserIter iter = m_oUserMap.find(oMacAddr);
+	UserIter iter = m_oUserMap.find(nID);
 	if (iter != m_oUserMap.end())
 	{
 		delete iter->second;
 		m_oUserMap.erase(iter);
 	}
 }
-
-
 
 
 void RoomMgr::OnConnect(ENetEvent& event)
@@ -110,10 +108,11 @@ void RoomMgr::OnReceive(ENetEvent& event)
 	case NSNETCMD::eLOGIN_REQ:
 	{
 		NSPROTO::LOGIN_REQ login = *(NSPROTO::LOGIN_REQ*)event.packet->data;
-		User* poUser = GetUser(login.mac_addr);
+		User* poUser = GetUser(login.userid);
 		if (poUser == NULL)
 		{
-			poUser = CreateUser(login.mac_addr);
+			int nUserID = User::GenID();
+			poUser = CreateUser(nUserID);
 			poUser->SetMacAddr(login.mac_addr);
 		}
 		NSPROTO::LOGIN_RET loginret;
@@ -122,12 +121,14 @@ void RoomMgr::OnReceive(ENetEvent& event)
 			event.peer->data = (void*)poUser;
 			poUser->SetEnetPeer(event.peer);
 			loginret.code = 0;
-			XLog(LEVEL_INFO, "Mac addr %s login successful\n", login.mac_addr);
+			loginret.userid = poUser->GetID();
+			XLog(LEVEL_INFO, "User:%d mac addr:%s login successful\n", poUser->GetID(), login.mac_addr);
 		}
 		else
 		{
 			loginret.code = 1;
-			XLog(LEVEL_ERROR, "Mac addr %s allready login\n", login.mac_addr);
+			loginret.userid = poUser->GetID();
+			XLog(LEVEL_ERROR, "User:%d mac addr:%s allready login\n", poUser->GetID(), login.mac_addr);
 		}
 		enet_packet_destroy(event.packet);
 		gpoContext->poServer->GetNetwork()->Send2Client(event.peer, 0, ENET_PACKET_FLAG_RELIABLE, &loginret);
@@ -136,24 +137,26 @@ void RoomMgr::OnReceive(ENetEvent& event)
 	case NSNETCMD::eBUILD_REQ:
 	{
 		NSPROTO::BUILD_REQ build = *(NSPROTO::BUILD_REQ*)event.packet->data;
-		User* poUserClient = GetUser(build.mac_client);
-		User* poUserServer = GetUser(build.mac_server);
+		User* poUserClient = GetUser(build.client_userid);
+		User* poUserServer = GetUser(build.server_userid);
 
 		NSPROTO::BUILD_RET buildret;
 		if (poUserClient == NULL || poUserServer == NULL)
 		{
 			buildret.roomid = 0;
-			XLog(LEVEL_ERROR, "Build error client:0x%u server:0x%u\n", (void*)poUserClient, (void*)poUserServer);
+			XLog(LEVEL_ERROR, "Build error client:0x%x server:0x%x\n", (void*)poUserClient, (void*)poUserServer);
 		}
 		else
 		{
 			Room* poRoom = CreateRoom();
-			poRoom->SetBuildMac(build.mac_client, build.mac_server);
-			poUserClient->GetRoomList().push_back(poRoom->GetRoomID());
-			poUserServer->GetRoomList().push_back(poRoom->GetRoomID());
+			poRoom->SetBuildUser(build.client_userid, build.server_userid);
+			poUserServer->GetClientRoomList().push_back(poRoom->GetRoomID());
 			buildret.roomid = poRoom->GetRoomID();
 		}
-		gpoContext->poServer->GetNetwork()->Send2Client(event.peer, 0, ENET_PACKET_FLAG_RELIABLE, &buildret);
+		buildret.service = 1;
+		gpoContext->poServer->GetNetwork()->Send2Client(poUserServer->GetENetPeer(), 0, ENET_PACKET_FLAG_RELIABLE, &buildret);
+		buildret.service = 2;
+		gpoContext->poServer->GetNetwork()->Send2Client(poUserClient->GetENetPeer(), 0, ENET_PACKET_FLAG_RELIABLE, &buildret);
 		enet_packet_destroy(event.packet);
 		break;
 	}
@@ -165,14 +168,49 @@ void RoomMgr::OnReceive(ENetEvent& event)
 		if (poRoom == NULL)
 		{
 			unbuildret.code = 1;
+			unbuild.roomid = unbuild.roomid;
+			gpoContext->poServer->GetNetwork()->Send2Client(event.peer, 0, ENET_PACKET_FLAG_RELIABLE, &unbuildret);
 			XLog(LEVEL_ERROR, "Unbuild room not exist:%d\n", unbuild.roomid);
 		}
 		else
 		{
 			unbuildret.code = 0;
+			unbuild.roomid = unbuild.roomid;
+			User* pClientUser = GetUser(poRoom->GetClientUserID());
+			User* pServerUser = GetUser(poRoom->GetServerUserID());
+			pServerUser->RemoveClientRoomID(unbuild.roomid);
+			unbuildret.service = 1;
+			gpoContext->poServer->GetNetwork()->Send2Client(pServerUser->GetENetPeer(), 0, ENET_PACKET_FLAG_RELIABLE, &unbuildret);
+			unbuildret.service = 2;
+			gpoContext->poServer->GetNetwork()->Send2Client(pClientUser->GetENetPeer(), 0, ENET_PACKET_FLAG_RELIABLE, &unbuildret);
 			SAFE_DELETE(poRoom);
 		}
-		gpoContext->poServer->GetNetwork()->Send2Client(event.peer, 0, ENET_PACKET_FLAG_RELIABLE, &unbuildret);
+		enet_packet_destroy(event.packet);
+		break;
+	}
+	case NSNETCMD::eFRAME_SYNC:
+	{
+		NSPROTO::FRAME_SYNC frame = *(NSPROTO::FRAME_SYNC*)event.packet->data;
+		User* poServer = GetUser(frame.userid);
+		if (poServer == NULL)
+		{
+			XLog(LEVEL_ERROR, "Server user not exist:%d\n", frame.userid);
+		}
+		else
+		{
+			User::RoomList& oRoomList = poServer->GetClientRoomList();
+			for (User::RoomIter iter = oRoomList.begin(); iter != oRoomList.end(); iter++)
+			{
+				Room* poRoom = GetRoom(*iter);
+				if (poRoom != NULL)
+				{
+					int size = 0;
+					uint8_t* data = NULL;
+					frame.getData(&data, size);
+					poRoom->SendToClient(data, size);
+				}
+			}
+		}
 		enet_packet_destroy(event.packet);
 		break;
 	}
@@ -191,7 +229,7 @@ void RoomMgr::OnDisconnect(ENetEvent& event)
 	}
 	User* poUser = (User*)event.peer->data;
 	poUser->SetEnetPeer(NULL);
-	User::RoomList oRoomList = poUser->GetRoomList();
+	User::RoomList oRoomList = poUser->GetClientRoomList();
 	for (User::RoomIter iter = oRoomList.begin(); iter != oRoomList.end(); iter++)
 	{
 		Room* poRoom = GetRoom(*iter);

@@ -98,7 +98,11 @@ bool Network::Connect(const std::string& oIP, uint16_t uPort)
 	}
 	if (enet_host_service(m_poEnetClient, &event, 3000) > 0 && event.type == ENET_EVENT_TYPE_CONNECT)
 	{
-		XLog(LEVEL_INFO, "Connection to %s:%d succeeded.\n", oIP.c_str(), uPort);
+		XLog(LEVEL_INFO, "Connection to %s:%d successful\n", oIP.c_str(), uPort);
+		if (m_poNetInterface != NULL)
+		{
+			m_poNetInterface->OnConnect(event);
+		}
 		return true;
 	}
 	enet_peer_reset(m_poClientPeer);
@@ -187,7 +191,7 @@ void Network::Update(uint32_t nMSTime)
 			switch (event.type)
 			{
 			case ENET_EVENT_TYPE_CONNECT:
-				XLog(LEVEL_INFO, "Server a new client from %x:%u.\n", event.peer->address.host, event.peer->address.port);
+				XLog(LEVEL_INFO, "Server: a new client from %d:%u.\n", event.peer->address.host, event.peer->address.port);
 				/* Store any relevant client information here. */
 				if (m_poNetInterface != NULL)
 				{
@@ -196,7 +200,7 @@ void Network::Update(uint32_t nMSTime)
 				}
 				break;
 			case ENET_EVENT_TYPE_RECEIVE:
-				XLog(LEVEL_INFO, "Server a packet of length %u was received from %x on channel:%u.\n", event.packet->dataLength, event.peer->data, event.channelID);
+				XLog(LEVEL_INFO, "Server: a packet of length %u was received from 0x%x on channel:%u.\n", event.packet->dataLength, event.peer->data, event.channelID);
 				/* Clean up the packet now that we're done using it. */
 				if (m_poNetInterface != NULL)
 				{
@@ -206,7 +210,7 @@ void Network::Update(uint32_t nMSTime)
 				break;
 
 			case ENET_EVENT_TYPE_DISCONNECT:
-				XLog(LEVEL_INFO, "Server %x disconnected.\n", event.peer->data);
+				XLog(LEVEL_INFO, "Server: 0x%x disconnected\n", event.peer->data);
 				/* Reset the peer's client information. */
 				if (m_poNetInterface != NULL)
 				{
@@ -226,7 +230,7 @@ void Network::Update(uint32_t nMSTime)
 			switch (event.type)
 			{
 			case ENET_EVENT_TYPE_CONNECT:
-				XLog(LEVEL_INFO, "Client a new client from %x:%u.\n", event.peer->address.host, event.peer->address.port);
+				XLog(LEVEL_INFO, "Client: a new client from %u:%u\n", event.peer->address.host, event.peer->address.port);
 				/* Store any relevant client information here. */
 				if (m_poNetInterface != NULL)
 				{
@@ -235,7 +239,7 @@ void Network::Update(uint32_t nMSTime)
 				}
 				break;
 			case ENET_EVENT_TYPE_RECEIVE:
-				XLog(LEVEL_INFO, "Client a packet of length %u was received from %x on channel:%u.\n", event.packet->dataLength, event.peer->data, event.channelID);
+				XLog(LEVEL_INFO, "Client: a packet of length %u was received from 0x%x on channel:%u\n", event.packet->dataLength, event.peer->data, event.channelID);
 				/* Clean up the packet now that we're done using it. */
 				if (m_poNetInterface != NULL)
 				{
@@ -245,7 +249,7 @@ void Network::Update(uint32_t nMSTime)
 				break;
 
 			case ENET_EVENT_TYPE_DISCONNECT:
-				XLog(LEVEL_INFO, "Client %x disconnected.\n", event.peer->data);
+				XLog(LEVEL_INFO, "Client: 0x%x disconnected\n", event.peer->data);
 				/* Reset the peer's client information. */
 				if (m_poNetInterface != NULL)
 				{

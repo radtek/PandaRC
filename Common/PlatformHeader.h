@@ -26,7 +26,7 @@
 #ifdef _WIN32
 
 //#include <Ws2tcpip.h>
-//#include <WinSock2.h>
+#include <WinSock2.h> //必须在<windows.h>前
 #include <windows.h>
 #include <process.h>
 #include <dbghelp.h>

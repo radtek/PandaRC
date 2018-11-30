@@ -6,38 +6,38 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
-    <height>400</height>
+    <width>229</width>
+    <height>374</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>PandaRC</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QPushButton" name="btnSend">
+   <widget class="QPushButton" name="btnLogin">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>75</width>
-      <height>23</height>
+      <x>50</x>
+      <y>20</y>
+      <width>131</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
-     <string>连接</string>
+     <string>登录</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="btnRecv">
+   <widget class="QPushButton" name="btnBuild">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>30</y>
-      <width>75</width>
-      <height>23</height>
+      <x>50</x>
+      <y>80</y>
+      <width>131</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
-     <string>发送</string>
+     <string>建立</string>
     </property>
    </widget>
   </widget>
@@ -46,7 +46,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>600</width>
+     <width>229</width>
      <height>23</height>
     </rect>
    </property>
@@ -59,40 +59,40 @@
  </resources>
  <connections>
   <connection>
-   <sender>btnSend</sender>
+   <sender>btnBuild</sender>
    <signal>clicked()</signal>
    <receiver>PandaRCClass</receiver>
-   <slot>onBtnSend()</slot>
+   <slot>onBtnBuild()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>41</x>
-     <y>58</y>
+     <x>81</x>
+     <y>118</y>
     </hint>
     <hint type="destinationlabel">
-     <x>206</x>
-     <y>72</y>
+     <x>81</x>
+     <y>176</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>btnRecv</sender>
+   <sender>btnLogin</sender>
    <signal>clicked()</signal>
    <receiver>PandaRCClass</receiver>
-   <slot>onBtnRecv()</slot>
+   <slot>onBtnLogin()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>88</x>
-     <y>118</y>
+     <x>118</x>
+     <y>58</y>
     </hint>
     <hint type="destinationlabel">
-     <x>209</x>
-     <y>127</y>
+     <x>118</x>
+     <y>171</y>
     </hint>
    </hints>
   </connection>
  </connections>
  <slots>
-  <slot>onBtnSend()</slot>
-  <slot>onBtnRecv()</slot>
+  <slot>onBtnLogin()</slot>
+  <slot>onBtnBuild()</slot>
  </slots>
 </ui>

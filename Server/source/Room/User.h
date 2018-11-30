@@ -9,8 +9,11 @@ public:
 	typedef RoomList::iterator RoomIter;
 
 public:
-	User();
+	User(int nID);
 	virtual ~User() {};
+
+	int GetID() { return m_nID; }
+	static int GenID();
 
 	std::string& GetMacAddr() { return m_oMacAddr; }
 	void SetMacAddr(const std::string& oMacAddr) { m_oMacAddr = oMacAddr; }
@@ -18,11 +21,12 @@ public:
 	ENetPeer* GetENetPeer() { return m_poENetPeer; }
 	void SetEnetPeer(ENetPeer* poENetPeer) { m_poENetPeer = poENetPeer; }
 
-	RoomList& GetRoomList() { return m_oRoomList; }
+	RoomList& GetClientRoomList() { return m_oClientRoomList; }
+	void RemoveClientRoomID(int nRoomID);
 
 private:
-	ENetPeer* m_poENetPeer;
+	int m_nID;
 	std::string m_oMacAddr;
-
-	RoomList m_oRoomList;
+	ENetPeer* m_poENetPeer;
+	RoomList m_oClientRoomList;
 };
