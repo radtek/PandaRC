@@ -12,13 +12,14 @@ public:
 	~ClientViewer();
 
 public:
-	void SetKey(const std::string& key) { m_key = key;  }
+	void setUserID(int userID) { m_userID = userID;  }
+	int getUserID() { return m_userID; }
 
 protected:
+	void paintEvent(QPaintEvent *event);
 	void closeEvent(QCloseEvent *event);
 
 private:
 	Ui::ClientViewer ui;
-
-	std::string m_key;
+	int m_userID;
 };

@@ -19,6 +19,7 @@ class PDEVENT
 {
 public:
 	PDEVENT(int8_t _type): type(_type) {}
+	virtual ~PDEVENT() {}
 	int8_t type;
 };
 
@@ -26,6 +27,8 @@ class PDFRAME : public PDEVENT
 {
 public:
 	PDFRAME(int8_t _type): PDEVENT(_type) {}
+	virtual ~PDFRAME() {}
+	int8_t type;
 	Rect rect;
 	FrameBuffer fb;
 };
@@ -34,6 +37,7 @@ class PDCURSOR : public PDEVENT
 {
 public:
 	PDCURSOR(int8_t _type): PDEVENT(_type) {}
+	virtual ~PDCURSOR() {}
 	Point pos;
 	bool posChange;
 	

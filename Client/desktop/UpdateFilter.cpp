@@ -71,7 +71,8 @@ void UpdateFilter::filter(UpdateContainer *updateContainer)
 
 	toCheck.getRectVector(&rects);
 	// Grabbing
-	XLog(LEVEL_DEBUG, "grabbing region, %d rectangles\n", (int)rects.size());
+	//XLog(LEVEL_DEBUG, "grabbing region, %d rectangles\n", (int)rects.size());
+
 	//ProcessorTimes pt1 = glog.checkPoint(_T("grabbing region"));
 	try {
 		m_grabOptimizator.grab(&toCheck, m_screenDriver);

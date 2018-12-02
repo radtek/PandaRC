@@ -36,10 +36,9 @@ void PandaRC::onBtnLogin()
 
 void PandaRC::onBtnBuild()
 {
-	std::string key = "test";
 	ClientViewer* pView = new ClientViewer(this);
-	m_clientViewerMap[key] = pView;
-	pView->SetKey(key);
+	m_clientViewerMap[1] = pView;
+	pView->setUserID(1);
 	if (m_clientViewerRect.width() != -1)
 	{
 		pView->setGeometry(m_clientViewerRect);
@@ -49,7 +48,7 @@ void PandaRC::onBtnBuild()
 		pView->showMaximized();
 	}
 	pView->show();
-	
+	buildReq();
 }
 
 void PandaRC::onPaintDataChanged()
@@ -142,16 +141,16 @@ void PandaRC::closeEvent(QCloseEvent *event)
 	m_frameThread->terminate();
 }
 
-void PandaRC::onViewerClose(const std::string& key)
+void PandaRC::onViewerClose(int userID)
 {
-	ClientViewer* pViewer = m_clientViewerMap.find(key)->second;
+	ClientViewer* pViewer = m_clientViewerMap.find(userID)->second;
 	QPoint pos = pViewer->pos();
 	QSize size = pViewer->size();
 	m_clientViewerRect.setX(pos.x());
 	m_clientViewerRect.setY(pos.y());
 	m_clientViewerRect.setWidth(size.width());
 	m_clientViewerRect.setHeight(size.height());
-	m_clientViewerMap.erase(key);
+	m_clientViewerMap.erase(userID);
 }
 
 void PandaRC::loginReq()
@@ -163,10 +162,14 @@ void PandaRC::loginReq()
 	m_netThread->sendMsg(0, ENET_PACKET_FLAG_RELIABLE, &login);
 }
 
-void PandaRC::onLoginRet(NSPROTO::PROTO* proto)
+void PandaRC::onLoginRet(NSPROTO::LOGIN_RET* proto)
 {
-	NSPROTO::LOGIN_RET loginret = *(NSPROTO::LOGIN_RET*)proto;
-	m_nUserID = loginret.userid;
+	m_nUserID = proto->userid;
+}
+
+void PandaRC::onFrameSync(NSPROTO::FRAME_SYNC* proto)
+{
+	XLog(LEVEL_INFO, "%d\n", proto->dataSize);
 }
 
 void PandaRC::buildReq()
@@ -179,10 +182,17 @@ void PandaRC::buildReq()
 
 void PandaRC::onBuildRet(int roomID, int service)
 {
-	m_clientRoomList.push_back(roomID);
-	if (service == 1 && m_handlerSrv == NULL)
+	if (service == 1)
 	{
-		m_handlerSrv = new UpdateHandlerServer(this);
+		m_asServerRoomMap[roomID] = time(NULL);
+		if (m_handlerSrv == NULL)
+		{
+			m_handlerSrv = new UpdateHandlerServer(this);
+		}
+	}
+	else if (service == 2)
+	{
+		m_asClientRoomMap[roomID] = time(NULL);
 	}
 }
 
@@ -190,18 +200,15 @@ void PandaRC::onUnbuildRet(int roomID, int service)
 {
 	if (service == 1)
 	{
-		for (RoomIter iter = m_clientRoomList.begin(); iter != m_clientRoomList.end(); iter++)
-		{
-			if (*iter == roomID)
-			{
-				m_clientRoomList.erase(iter);
-				break;
-			}
-		}
-		if (m_clientRoomList.size() <= 0)
+		m_asServerRoomMap.erase(roomID);
+		if (m_asServerRoomMap.size() <= 0)
 		{
 			SAFE_DELETE(m_handlerSrv);
 		}
+	}
+	else if (service == 2)
+	{
+		m_asClientRoomMap.erase(roomID);
 	}
 }
 

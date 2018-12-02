@@ -163,7 +163,7 @@ void MirrorScreenDriver::execute()
 	unsigned long currentCounter = 0;
 
 	while (!isTerminating()) {
-		m_updateTimeout.waitForEvent(30);
+		m_updateTimeout.waitForEvent(60);
 
 		{
 			AutoLock al(m_fbMutex);

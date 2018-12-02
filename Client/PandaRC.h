@@ -17,16 +17,17 @@ class PandaRC : public QMainWindow
 	Q_OBJECT
 
 public:
-	typedef std::list<int> RoomList;
-	typedef RoomList::iterator RoomIter;
+	typedef std::unordered_map<int, int> RoomMap;
+	typedef RoomMap::iterator RoomIter;
 
-	typedef std::unordered_map<std::string, ClientViewer*> ViewerMap;
+	typedef std::unordered_map<int, ClientViewer*> ViewerMap;
 	typedef ViewerMap::iterator ViewerIter;
 
 public:
 	PandaRC(QWidget *parent = Q_NULLPTR);
-	void onViewerClose(const std::string& key);
+	void onViewerClose(int userID);
 	static void connectedCallback(void* param);
+	int getUserID() { return m_nUserID; }
 
 public slots:
 	void onBtnLogin();
@@ -46,9 +47,10 @@ public:
 	///////////////网络请求//////////////
 	void loginReq();
 	void buildReq();
-	void onLoginRet(NSPROTO::PROTO* proto);
+	void onLoginRet(NSPROTO::LOGIN_RET* proto);
 	void onBuildRet(int roomID, int service);
 	void onUnbuildRet(int roomID, int service);
+	void onFrameSync(NSPROTO::FRAME_SYNC* proto);
 
 private:
 	QPixmap* m_pixmap;
@@ -57,8 +59,9 @@ private:
 	QFrameThread* m_frameThread;
 	UpdateHandlerServer* m_handlerSrv;
 
-	RoomList m_clientRoomList;		//作为服务器时用
-	ViewerMap m_clientViewerMap;	//作为客户端时用
+	RoomMap m_asServerRoomMap;		//作为服务器的房间表
+	RoomMap m_asClientRoomMap;		//作为客户端的房间表
+	ViewerMap m_clientViewerMap;	//客户端显示窗口
 	QRect m_clientViewerRect;
 
 	int m_nUserID;

@@ -75,25 +75,27 @@ bool GrabOptimizator::grab(const Region *grabRegion, ScreenDriver *grabber)
 
 		if (boundsRectT <= estimatedFragTime) {
 			__int64 realBoundsRectTime = grabOneRect(&boundsRect, grabber);
-			XLog(LEVEL_DEBUG, "Bounds rectangle grab has been preferred:"
-				" bounds rectangle time = %d,"
-				" estimated fragment time = %d,"
-				" estimated bounds rect time = %d\n",
-				(int)realBoundsRectTime, (int)estimatedFragTime,
-				(int)boundsRectT);
+			//XLog(LEVEL_DEBUG, "Bounds rectangle grab has been preferred:"
+			//	" bounds rectangle time = %d,"
+			//	" estimated fragment time = %d,"
+			//	" estimated bounds rect time = %d\n",
+			//	(int)realBoundsRectTime, (int)estimatedFragTime,
+			//	(int)boundsRectT);
+
 			// TEST:
 			//glog.debug(_T("Test: fragment grab time = %d"),
 			//           (int)grabFragments(&rects, grabber));
 		}
 		else {
 			__int64 realFragTime = grabFragments(&rects, grabber);
-			XLog(LEVEL_DEBUG, "Fragment grab has been preferred:"
-				" fragment time = %d, estimated fragment time = %d,"
-				" estimated bounds rect time = %d\n",
-				(int)realFragTime, (int)estimatedFragTime, (int)boundsRectT);
-				// TEST:
-				//glog.debug(_T("Test: bounds rectangle time = %d"),
-				//           (int)grabOneRect(&boundsRect, grabber));
+			//XLog(LEVEL_DEBUG, "Fragment grab has been preferred:"
+			//	" fragment time = %d, estimated fragment time = %d,"
+			//	" estimated bounds rect time = %d\n",
+			//	(int)realFragTime, (int)estimatedFragTime, (int)boundsRectT);
+
+			// TEST:
+			//glog.debug(_T("Test: bounds rectangle time = %d"),
+			//           (int)grabOneRect(&boundsRect, grabber));
 		}
 	}
 	else {
@@ -344,39 +346,38 @@ void GrabOptimizator::removeFirstElementsFromFragmentStats()
 
 void GrabOptimizator::logStatistic()
 {
-	XLog(LEVEL_DEBUG, "GrabOptimizator::m_wholeS : %d\n",
-		m_wholeS);
+	//XLog(LEVEL_DEBUG, "GrabOptimizator::m_wholeS : %d\n", m_wholeS);
 
-	StringStorage value;
-	StringStorage statString;
-	for (std::list<double>::iterator iter = m_wholeTElements.begin();
-		iter != m_wholeTElements.end();
-		iter++) {
-		value.format(_T(" %.2f;"), *iter);
-		statString.appendString(value.getString());
-	}
-	double avgWholeT = m_wholeTElements.size() != 0 ?
-		m_wholeTSum / m_wholeTElements.size() : 0;
-	XLog(LEVEL_DEBUG, "GrabOptimizator::m_wholeT average: %.2f;"
-		" GrabOptimizator::m_wholeTSum: %.2f;"
-		" GrabOptimizator::m_wholeTElements: %s\n",
-		avgWholeT,
-		m_wholeTSum,
-		statString.getString());
+	//StringStorage value;
+	//StringStorage statString;
+	//for (std::list<double>::iterator iter = m_wholeTElements.begin();
+	//	iter != m_wholeTElements.end();
+	//	iter++) {
+	//	value.format(_T(" %.2f;"), *iter);
+	//	statString.appendString(value.getString());
+	//}
+	//double avgWholeT = m_wholeTElements.size() != 0 ?
+	//	m_wholeTSum / m_wholeTElements.size() : 0;
+	//XLog(LEVEL_DEBUG, "GrabOptimizator::m_wholeT average: %.2f;"
+	//	" GrabOptimizator::m_wholeTSum: %.2f;"
+	//	" GrabOptimizator::m_wholeTElements: %s\n",
+	//	avgWholeT,
+	//	m_wholeTSum,
+	//	statString.getString());
 
-	statString.setString(_T(""));
-	for (std::list<double>::iterator iter = m_gElements.begin();
-		iter != m_gElements.end();
-		iter++) {
-		value.format(_T(" %.2f;"), *iter);
-		statString.appendString(value.getString());
-	}
-	double avgG = m_gElements.size() != 0 ?
-		m_gSum / m_gElements.size() : 0;
-	XLog(LEVEL_DEBUG, "GrabOptimizator::m_g average: %.2f;"
-		" GrabOptimizator::m_gSum: %.2f;"
-		" GrabOptimizator::m_gElements: %s;\n",
-		avgG,
-		m_gSum,
-		statString.getString());
+	//statString.setString(_T(""));
+	//for (std::list<double>::iterator iter = m_gElements.begin();
+	//	iter != m_gElements.end();
+	//	iter++) {
+	//	value.format(_T(" %.2f;"), *iter);
+	//	statString.appendString(value.getString());
+	//}
+	//double avgG = m_gElements.size() != 0 ?
+	//	m_gSum / m_gElements.size() : 0;
+	//XLog(LEVEL_DEBUG, "GrabOptimizator::m_g average: %.2f;"
+	//	" GrabOptimizator::m_gSum: %.2f;"
+	//	" GrabOptimizator::m_gElements: %s;\n",
+	//	avgG,
+	//	m_gSum,
+	//	statString.getString());
 }

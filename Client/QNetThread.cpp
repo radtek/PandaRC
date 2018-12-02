@@ -87,7 +87,7 @@ void QNetThread::OnReceive(ENetEvent& event)
 	}
 
 	NSPROTO::HEAD head = *(NSPROTO::HEAD*)event.packet->data;
-	if (event.packet->dataLength != head.size)
+	if (head.cmd != NSNETCMD::eFRAME_SYNC && event.packet->dataLength != head.size)
 	{
 		XLog(LEVEL_ERROR, "Packet size error cmd:%d size:%d\n", head.cmd, head.size);
 		return;
@@ -129,6 +129,13 @@ void QNetThread::OnReceive(ENetEvent& event)
 				PandaRC* pPandRC = (PandaRC*)m_parentWidget;
 				pPandRC->onUnbuildRet(unbuildret.roomid, unbuildret.service);
 			}
+			break;
+		}
+		case NSNETCMD::eFRAME_SYNC:
+		{
+			NSPROTO::FRAME_SYNC* framesync = (NSPROTO::FRAME_SYNC*)event.packet->data;
+			PandaRC* pPandRC = (PandaRC*)m_parentWidget;
+			pPandRC->onFrameSync(framesync);
 			break;
 		}
 		default:
