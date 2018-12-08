@@ -52,6 +52,7 @@ bool Network::InitAsServer(uint16_t uListenPort)
 		XLog(LEVEL_ERROR, "An error occurred while trying to create an ENet server host.\n");
 		return false;
 	}
+	enet_host_compress_with_range_coder(m_poEnetServer);
 	XLog(LEVEL_DEBUG, "Listen at port:%d\n", uListenPort);
 	return true;
 }
@@ -73,6 +74,7 @@ bool Network::InitAsClient()
 		XLog(LEVEL_ERROR, "An error occurred while trying to create an ENet client host.\n");
 		return false;
 	}
+	enet_host_compress_with_range_coder(m_poEnetClient);
 	return true;
 }
 
@@ -133,8 +135,8 @@ bool Network::Send2Server(int nChannel, int nPacketFlag, NSPROTO::PROTO* poProto
 		return false;
 	}
 	ENetPacket* poPacket = enet_packet_create((void*)poProto, poProto->size, nPacketFlag);
-	enet_peer_send(m_poClientPeer, 0, poPacket);
-	//enet_host_flush(m_poEnetClient);
+	enet_peer_send(m_poClientPeer, nChannel, poPacket);
+	enet_host_flush(m_poEnetClient);
 	return true;
 }
 
@@ -146,8 +148,8 @@ bool Network::Send2ServerRaw(int nChannel, int nPacketFlag, uint8_t* pData, int 
 		return false;
 	}
 	ENetPacket* poPacket = enet_packet_create((void*)pData, nSize, nPacketFlag);
-	enet_peer_send(m_poClientPeer, 0, poPacket);
-	//enet_host_flush(m_poEnetClient);
+	enet_peer_send(m_poClientPeer, nChannel, poPacket);
+	enet_host_flush(m_poEnetClient);
 	return true;
 }
 
@@ -158,8 +160,8 @@ bool Network::Send2Client(ENetPeer* poENetPeer, int nChannel, int nPacketFlag, N
 		return false;
 	}
 	ENetPacket* poPacket = enet_packet_create((void*)poProto, poProto->size, nPacketFlag);
-	enet_peer_send(poENetPeer, 0, poPacket);
-	//enet_host_flush(m_poEnetServer);
+	enet_peer_send(poENetPeer, nChannel, poPacket);
+	enet_host_flush(m_poEnetServer);
 	return true;
 }
 
@@ -170,8 +172,8 @@ bool Network::Send2ClientRaw(ENetPeer* poENetPeer, int nChannel, int nPacketFlag
 		return false;
 	}
 	ENetPacket* poPacket = enet_packet_create((void*)pData, nSize, nPacketFlag);
-	enet_peer_send(poENetPeer, 0, poPacket);
-	//enet_host_flush(m_poEnetServer);
+	enet_peer_send(poENetPeer, nChannel, poPacket);
+	enet_host_flush(m_poEnetServer);
 	return true;
 }
 

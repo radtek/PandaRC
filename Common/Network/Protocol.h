@@ -9,7 +9,7 @@ namespace NSPROTO
 
 	struct PROTO 
 	{
-		uint16_t size;
+		uint32_t size;
 	};
 	struct HEAD : public PROTO
 	{
@@ -64,12 +64,14 @@ namespace NSPROTO
 		{
 			size = sizeof(FRAME_SYNC)-sizeof(dataPtr);
 			cmd = NSNETCMD::eFRAME_SYNC;
-			userid = 0;
+			srv_uid = 0;
 			left = 0;
 			top = 0;
 			width = 0;
 			height = 0;
-			dataSize = 0;
+			bitsPerPixel = 0;
+
+			bufferSize = 0;
 			dataPtr = NULL;
 		}
 		~FRAME_SYNC()
@@ -80,27 +82,29 @@ namespace NSPROTO
 				dataPtr = NULL;
 			}
 		}
-		int userid;
+		int srv_uid;
 		int left;
 		int top;
 		int width;
 		int height;
+		unsigned short bitsPerPixel;
 
-		int dataSize;
+		int bufferSize;
 		uint8_t* dataPtr;
 
-		void setData(uint8_t* _dataPtr, int _dataSize)
+		void setBuffer(const uint8_t* _buffer, int _bufferSize)
 		{
-			dataSize = _dataSize;
-			dataPtr = (uint8_t*)realloc(dataPtr, size + dataSize);
-			memcpy(dataPtr, (uint8_t*)this, size);
-			memcpy(dataPtr + size, _dataPtr, dataSize);
-			size += dataSize;
+			int oldSize = size;
+			bufferSize = _bufferSize;
+			size += bufferSize;
+			dataPtr = (uint8_t*)realloc(dataPtr, size);
+			memcpy(dataPtr, (uint8_t*)this, oldSize);
+			memcpy(dataPtr + oldSize, _buffer, bufferSize);
 		}
 		void getData(uint8_t** _dataPtr, int& _dataSize)
 		{
 			*_dataPtr = dataPtr;
-			_dataSize = dataSize;
+			_dataSize = size;
 		}
 	};
 }

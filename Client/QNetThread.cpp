@@ -33,7 +33,7 @@ void QNetThread::run()
 {
 	while(!m_bTerminate)
 	{
-		m_updateTimeout.waitForEvent(60);
+		m_updateTimeout.waitForEvent(1);
 		AutoLock al(&m_oMutex);
 		m_oNetwork.Update(0);
 	}
@@ -87,7 +87,7 @@ void QNetThread::OnReceive(ENetEvent& event)
 	}
 
 	NSPROTO::HEAD head = *(NSPROTO::HEAD*)event.packet->data;
-	if (head.cmd != NSNETCMD::eFRAME_SYNC && event.packet->dataLength != head.size)
+	if (event.packet->dataLength != head.size)
 	{
 		XLog(LEVEL_ERROR, "Packet size error cmd:%d size:%d\n", head.cmd, head.size);
 		return;

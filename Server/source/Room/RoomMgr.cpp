@@ -96,7 +96,7 @@ void RoomMgr::OnReceive(ENetEvent& event)
 	}
 
 	NSPROTO::HEAD head = *(NSPROTO::HEAD*)event.packet->data;
-	if (head.cmd != NSNETCMD::eFRAME_SYNC && event.packet->dataLength != head.size)
+	if (event.packet->dataLength != head.size)
 	{
 		enet_packet_destroy(event.packet);
 		XLog(LEVEL_ERROR, "Packet size error cmd:%d size:%d\n", head.cmd, head.size);
@@ -191,10 +191,10 @@ void RoomMgr::OnReceive(ENetEvent& event)
 	case NSNETCMD::eFRAME_SYNC:
 	{
 		NSPROTO::FRAME_SYNC* frame = (NSPROTO::FRAME_SYNC*)event.packet->data;
-		User* poServer = GetUser(frame->userid);
+		User* poServer = GetUser(frame->srv_uid);
 		if (poServer == NULL)
 		{
-			XLog(LEVEL_ERROR, "Server user not exist:%d\n", frame->userid);
+			XLog(LEVEL_ERROR, "Server user not exist:%d\n", frame->srv_uid);
 		}
 		else
 		{
@@ -204,7 +204,7 @@ void RoomMgr::OnReceive(ENetEvent& event)
 				Room* poRoom = GetRoom(*iter);
 				if (poRoom != NULL)
 				{
-					poRoom->SendToClient(event.packet->data, event.packet->dataLength);
+					poRoom->SendToClient(event.packet->data, event.packet->dataLength, 1);
 				}
 			}
 		}

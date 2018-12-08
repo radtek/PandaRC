@@ -9,6 +9,9 @@
 #include "enet/time.h"
 #include "enet/enet.h"
 
+//#define ENET_DEBUG
+//#define ENET_DEBUG_COMPRESS
+
 static size_t commandSizes [ENET_PROTOCOL_COMMAND_COUNT] =
 {
     0,

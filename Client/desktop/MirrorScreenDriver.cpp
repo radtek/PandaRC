@@ -162,8 +162,9 @@ void MirrorScreenDriver::execute()
 	Rect changedRect;
 	unsigned long currentCounter = 0;
 
+	int frame = 1000 / 10;
 	while (!isTerminating()) {
-		m_updateTimeout.waitForEvent(60);
+		m_updateTimeout.waitForEvent(frame);
 
 		{
 			AutoLock al(m_fbMutex);

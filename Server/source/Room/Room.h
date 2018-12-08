@@ -11,7 +11,7 @@ public:
 	void SetBuildUser(int nClientUserID, int nServerUserID);
 	int GetClientUserID() { return m_nClientUserID; }
 	int GetServerUserID() { return m_nServerUserID; }
-	void SendToClient(uint8_t* pData, int nLen);
+	void SendToClient(uint8_t* pData, int nLen, int nChannel);
 
 private:
 	int m_nRoomID;

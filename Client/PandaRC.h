@@ -32,7 +32,6 @@ public:
 public slots:
 	void onBtnLogin();
 	void onBtnBuild();
-	void onPaintDataChanged();
 
 protected:
 	void paintEvent(QPaintEvent *event);

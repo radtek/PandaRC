@@ -21,11 +21,11 @@ void Room::SetBuildUser(int nClientUserID, int nServerUserID)
 	m_nServerUserID = nServerUserID;
 }
 
-void Room::SendToClient(uint8_t* pData, int nLen)
+void Room::SendToClient(uint8_t* pData, int nLen, int nChannel)
 {
 	User* poClientUser = gpoContext->poRoomMgr->GetUser(m_nClientUserID);
 	if (poClientUser != NULL)
 	{
-		gpoContext->poServer->GetNetwork()->Send2ClientRaw(poClientUser->GetENetPeer(), 0, ENET_PACKET_FLAG_RELIABLE, pData, nLen);
+		gpoContext->poServer->GetNetwork()->Send2ClientRaw(poClientUser->GetENetPeer(), nChannel, ENET_PACKET_FLAG_RELIABLE, pData, nLen);
 	}
 }

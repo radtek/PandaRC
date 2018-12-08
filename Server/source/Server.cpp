@@ -21,6 +21,6 @@ void Server::Start()
 {
 	while (!m_bTerminate)
 	{
-		m_oNetwork.Update(10);
+		m_oNetwork.Update(1);
 	}
 }

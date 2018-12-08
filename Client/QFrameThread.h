@@ -13,6 +13,7 @@ enum PDEVENT_TYPE
 {
 	eFRAME = 1,	
 	eCURSOR = 2,
+	eFRAME_T = 3,
 };
 
 class PDEVENT
@@ -31,6 +32,26 @@ public:
 	int8_t type;
 	Rect rect;
 	FrameBuffer fb;
+};
+
+class PDFRAME_T : public PDEVENT
+{
+public:
+	PDFRAME_T(int8_t _type): PDEVENT(_type) 
+	{
+		buffer = NULL;
+	}
+	virtual ~PDFRAME_T() 
+	{
+		if (buffer != NULL)
+		{
+			free(buffer);
+			buffer = NULL;
+		}
+	}
+	int8_t type;
+	Rect rect;
+	uchar* buffer;
 };
 
 class PDCURSOR : public PDEVENT
@@ -58,22 +79,27 @@ public:
 	virtual ~QFrameThread();
 	virtual void run();
 
+	void updateServer();
+	void updateClient();
+
 signals:
 	void paintDataChanged();
 
 public:
 	void notify() { m_updateTimeout.notify(); }
-	void addFrame(PDEVENT* pd);
-	PDEVENT* getFrame();
-	PDEVENT* peekFrame();
+	void addServerFrame(PDEVENT* pd);
+	void addClientFrame(PDEVENT* pd);
+	PDEVENT* getClientFrame();
 
 protected:
 	WindowsEvent m_updateTimeout;
-	std::queue<PDEVENT*> m_pdList;
-	std::queue<PDEVENT*> m_oneFrame;
+	std::queue<PDEVENT*> m_pdServerList;
+	std::queue<PDEVENT*> m_pdClientList;
+	std::queue<PDEVENT*> m_oneClientFrame;
+
 	LocalMutex m_pdMutex;
+	QWidget* m_parentWidget;
 
 	QPixmap* m_pixmap;
 	QPainter* m_painter;
-	QWidget* m_parentWidget;
 };

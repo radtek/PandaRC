@@ -601,6 +601,9 @@
     <ClCompile Include="ClientViewer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GLClientViewer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="PandaRC.h">
@@ -615,12 +618,18 @@
     <QtMoc Include="ClientViewer.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="GLClientViewer.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="PandaRC.ui">
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="ClientViewer.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="GLClientViewer.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
