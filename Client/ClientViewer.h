@@ -21,7 +21,7 @@ struct DISPDATA
 	QRect rect;
 };
 
-class ClientViewer : public QGLWidget
+class ClientViewer : public QWidget
 {
 	Q_OBJECT
 
@@ -38,9 +38,9 @@ protected:
 	void paintEvent(QPaintEvent *event);
 	void closeEvent(QCloseEvent *event);
 
-	void initializeGL(); //初始化当前的opengl环境
-	void resizeGL(int w, int h); //主要用来对渲染区域的高度和宽度进行一些变化处理
-	void paintGL(); //绘制
+	//void initializeGL(); //初始化当前的opengl环境
+	//void resizeGL(int w, int h); //主要用来对渲染区域的高度和宽度进行一些变化处理
+	//void paintGL(); //绘制
 
 public slots:
 	void onPaintDataChanged();

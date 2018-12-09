@@ -2,7 +2,7 @@
 #include "PandaRC.h"
 
 ClientViewer::ClientViewer(QWidget *parent)
-	: QGLWidget(parent, NULL, Qt::Window)
+	: QWidget(parent, Qt::Window)
 {
 	ui.setupUi(this);
 	m_painter = NULL;
@@ -164,33 +164,33 @@ void ClientViewer::onPaintDataChanged()
 }
 
 
-void ClientViewer::initializeGL()
-{
-	glShadeModel(GL_FLAT);//设置阴影平滑模式
-	glClearColor(0.5, 1.0, 0.2, 0);//改变窗口的背景颜色，不过我这里貌似设置后并没有什么效果
-	glClearDepth(1.0);//设置深度缓存
-	glEnable(GL_DEPTH_TEST);//允许深度测试
-	glDepthFunc(GL_LEQUAL);//设置深度测试类型
-	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);//进行透视校正
-}
-
-void ClientViewer::resizeGL(int w, int h)
-{
-	if (h == 0)
-	{
-		h = 1;//防止一条边为0
-	}
-	glViewport(0, 0, (GLint)w, (GLint)h);//重置当前视口，本身不是重置窗口的，只不过是这里被Qt给封装好了
-	glMatrixMode(GL_PROJECTION);//选择投影矩阵
-	glLoadIdentity();//重置选择好的投影矩阵
-					 // gluPerspective(45.0, (GLfloat)width/(GLfloat)height, 0.1, 100.0);//建立透视投影矩阵
-					 //glMatirxMode(GL_MODELVIEW);//以下2句和上面出现的解释一样
-	glLoadIdentity();
-}
-
-void ClientViewer::paintGL()
-{
-	//glClear()函数在这里就是对initializeGL()函数中设置的颜色和缓存深度等起作用
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glLoadIdentity();//重置当前的模型观察矩阵？不是很理解！
-}
+//void ClientViewer::initializeGL()
+//{
+//	glShadeModel(GL_FLAT);//设置阴影平滑模式
+//	glClearColor(0.5, 1.0, 0.2, 0);//改变窗口的背景颜色，不过我这里貌似设置后并没有什么效果
+//	glClearDepth(1.0);//设置深度缓存
+//	glEnable(GL_DEPTH_TEST);//允许深度测试
+//	glDepthFunc(GL_LEQUAL);//设置深度测试类型
+//	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);//进行透视校正
+//}
+//
+//void ClientViewer::resizeGL(int w, int h)
+//{
+//	if (h == 0)
+//	{
+//		h = 1;//防止一条边为0
+//	}
+//	glViewport(0, 0, (GLint)w, (GLint)h);//重置当前视口，本身不是重置窗口的，只不过是这里被Qt给封装好了
+//	glMatrixMode(GL_PROJECTION);//选择投影矩阵
+//	glLoadIdentity();//重置选择好的投影矩阵
+//					 // gluPerspective(45.0, (GLfloat)width/(GLfloat)height, 0.1, 100.0);//建立透视投影矩阵
+//					 //glMatirxMode(GL_MODELVIEW);//以下2句和上面出现的解释一样
+//	glLoadIdentity();
+//}
+//
+//void ClientViewer::paintGL()
+//{
+//	//glClear()函数在这里就是对initializeGL()函数中设置的颜色和缓存深度等起作用
+//	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//	glLoadIdentity();//重置当前的模型观察矩阵？不是很理解！
+//}

@@ -36,7 +36,7 @@ void PandaRC::onBtnLogin()
 
 void PandaRC::onBtnBuild()
 {
-	ClientViewer* pView = new ClientViewer(this);
+	GLClientViewer* pView = new GLClientViewer(this);
 	m_clientViewerMap[1] = pView;
 	pView->setUserID(1);
 	if (m_clientViewerRect.width() != -1)
@@ -77,7 +77,7 @@ void PandaRC::closeEvent(QCloseEvent *event)
 
 void PandaRC::onViewerClose(int userID)
 {
-	ClientViewer* pViewer = m_clientViewerMap.find(userID)->second;
+	GLClientViewer* pViewer = m_clientViewerMap.find(userID)->second;
 	QPoint pos = pViewer->pos();
 	QSize size = pViewer->size();
 	m_clientViewerRect.setX(pos.x());

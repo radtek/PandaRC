@@ -6,6 +6,7 @@
 #include "QFrameThread.h"
 #include "QNetThread.h"
 #include "ClientViewer.h"
+#include "GLClientViewer.h"
 
 #include <list>
 #include <unordered_map>
@@ -20,7 +21,7 @@ public:
 	typedef std::unordered_map<int, int> RoomMap;
 	typedef RoomMap::iterator RoomIter;
 
-	typedef std::unordered_map<int, ClientViewer*> ViewerMap;
+	typedef std::unordered_map<int, GLClientViewer*> ViewerMap;
 	typedef ViewerMap::iterator ViewerIter;
 
 public:
