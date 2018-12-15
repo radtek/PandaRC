@@ -41,17 +41,14 @@ void GLClientViewer::resizeGL(int w, int h)
 	glLoadIdentity();
 }
 
-void GLClientViewer::paintGL()
+void GLClientViewer::paintEvent(QPaintEvent *event)
 {
-	////glClear()函数在这里就是对initializeGL()函数中设置的颜色和缓存深度等起作用
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	//glLoadIdentity();//重置当前的模型观察矩阵？不是很理解！
-
 	if (m_pixmap == NULL)
 	{
 		return;
 	}
-	QPainter painter(this);
+	QPainter painter;
+	painter.begin(this);
 
 	const QSize& screenSize = size();
 	const QSize& bufferSize = m_pixmap->size();
@@ -65,44 +62,43 @@ void GLClientViewer::paintGL()
 		painter.eraseRect(0, 0, screenSize.width(), screenSize.height());
 		painter.drawPixmap(0, 0, *m_pixmap);
 	}
+	painter.end();
 }
 
 void GLClientViewer::closeEvent(QCloseEvent *event)
 {
-	PandaRC* pandaRC = (PandaRC*)m_painter;
+	PandaRC* pandaRC = (PandaRC*)m_parent;
 	pandaRC->onViewerClose(m_userID);
 }
 
 void GLClientViewer::onFrameSync(NSPROTO::FRAME_SYNC* proto)
 {
 	PandaRC* pandaRC = (PandaRC*)m_parent;
+	int frameSize = sizeof(NSPROTO::FRAME_SYNC::FRAME) - sizeof(uint8_t*);
 
-	PDFRAME* pd = new PDFRAME(PDEVENT_TYPE::eFRAME);
-	pd->rect.left = proto->left;
-	pd->rect.top = proto->top;
-	pd->rect.setWidth(proto->width);
-	pd->rect.setHeight(proto->height);
-	pd->fb.setDimension(&Dimension(proto->width, proto->height));
+	int offsetSize = 0;
+	for (int i = 0; i < proto->frameNum; i++)
+	{
+		NSPROTO::FRAME_SYNC::FRAME* frame = (NSPROTO::FRAME_SYNC::FRAME*)((uchar*)(&proto->dataPtr) + offsetSize);
 
-	PixelFormat pixFmt = pd->fb.getPixelFormat();
-	pixFmt.bitsPerPixel = proto->bitsPerPixel;
-	pd->fb.setPixelFormat(&pixFmt);
+		PDFRAME* pd = new PDFRAME(PDEVENT_TYPE::eFRAME);
+		pd->rect.left = frame->left;
+		pd->rect.top = frame->top;
+		pd->rect.setWidth(frame->width);
+		pd->rect.setHeight(frame->height);
+		pd->fb.setDimension(&Dimension(frame->width, frame->height));
 
-	uchar* buffer = new uchar[proto->bufferSize];
-	memcpy(buffer, (uchar*)(&proto->dataPtr), proto->bufferSize);
-	pd->fb.setBuffer((void*)buffer);
-	pandaRC->getFrameThread()->addClientFrame(pd);
+		PixelFormat pixFmt = pd->fb.getPixelFormat();
+		pixFmt.bitsPerPixel = frame->bitsPerPixel;
+		pd->fb.setPixelFormat(&pixFmt);
 
+		uchar* buffer = new uchar[frame->bufferSize];
+		memcpy(buffer, (uchar*)(&frame->bufferPtr), frame->bufferSize);
+		pd->fb.setBuffer((void*)buffer);
+		pandaRC->getFrameThread()->addClientFrame(pd);
 
-	//PDFRAME_T* pdt = new PDFRAME_T(PDEVENT_TYPE::eFRAME_T);
-	//pdt->rect.left = proto->left;
-	//pdt->rect.top = proto->top;
-	//pdt->rect.setWidth(proto->width);
-	//pdt->rect.setHeight(proto->height);
-	//uchar* buffer = (uchar*)realloc(NULL, proto->bufferSize);
-	//memcpy(buffer, (uchar*)(&proto->dataPtr), proto->bufferSize);
-	//pdt->buffer = buffer;
-	//pandaRC->getFrameThread()->addClientFrame(pdt);
+		offsetSize += frameSize + frame->bufferSize;
+	}
 }
 
 void GLClientViewer::onPaintDataChanged()
@@ -164,30 +160,5 @@ void GLClientViewer::onPaintDataChanged()
 		delete pd;
 
 	} while (true);
-
-	//do {
-	//	PDEVENT* pd = pandaRC->getFrameThread()->getClientFrame();
-	//	if (pd == NULL)
-	//	{
-	//		break;
-	//	}
-	//	switch (pd->type)
-	//	{
-	//		case PDEVENT_TYPE::eFRAME_T:
-	//		{
-	//			PDFRAME_T* frame = (PDFRAME_T*)pd;
-	//			if (m_pixmap == NULL)
-	//			{
-	//				m_pixmap = new QPixmap(frame->rect.getWidth(), frame->rect.getHeight());
-	//				m_painter = new QPainter(m_pixmap);
-	//			}
-	//			QImage img = QImage(frame->buffer, frame->rect.getWidth(), frame->rect.getHeight(), QImage::Format_RGB32);
-	//			m_painter->drawImage(QPoint(frame->rect.left, frame->rect.top), img);
-	//			break;
-	//		}
-	//	}
-	//	delete pd;
-
-	//} while (true);
 	update();
 }

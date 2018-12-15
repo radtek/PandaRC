@@ -53,7 +53,7 @@ bool Network::InitAsServer(uint16_t uListenPort)
 		return false;
 	}
 	enet_host_compress_with_range_coder(m_poEnetServer);
-	XLog(LEVEL_DEBUG, "Listen at port:%d\n", uListenPort);
+	XLog(LEVEL_INFO, "Listen at port:%d\n", uListenPort);
 	return true;
 }
 
@@ -98,7 +98,7 @@ bool Network::Connect(const std::string& oIP, uint16_t uPort)
 		XLog(LEVEL_ERROR, "No available peers for initiating an ENet connection.\n");
 		return false;
 	}
-	if (enet_host_service(m_poEnetClient, &event, 3000) > 0 && event.type == ENET_EVENT_TYPE_CONNECT)
+	if (enet_host_service(m_poEnetClient, &event, 5000) > 0 && event.type == ENET_EVENT_TYPE_CONNECT)
 	{
 		XLog(LEVEL_INFO, "Connection to %s:%d successful\n", oIP.c_str(), uPort);
 		if (m_poNetInterface != NULL)

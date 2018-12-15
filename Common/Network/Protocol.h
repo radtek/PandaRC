@@ -2,6 +2,8 @@
 #pragma pack(push, 1)
 #include "Cmd.h"
 #include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
 
 namespace NSPROTO
 {
@@ -60,18 +62,23 @@ namespace NSPROTO
 
 	struct FRAME_SYNC : public HEAD
 	{
+		typedef struct
+		{
+			int left;
+			int top;
+			int width;
+			int height;
+			int bitsPerPixel;
+			int bufferSize;
+			uint8_t* bufferPtr;
+		}FRAME;
+
 		FRAME_SYNC()
 		{
 			size = sizeof(FRAME_SYNC)-sizeof(dataPtr);
 			cmd = NSNETCMD::eFRAME_SYNC;
 			srv_uid = 0;
-			left = 0;
-			top = 0;
-			width = 0;
-			height = 0;
-			bitsPerPixel = 0;
-
-			bufferSize = 0;
+			frameNum = 0;
 			dataPtr = NULL;
 		}
 		~FRAME_SYNC()
@@ -83,23 +90,34 @@ namespace NSPROTO
 			}
 		}
 		int srv_uid;
-		int left;
-		int top;
-		int width;
-		int height;
-		unsigned short bitsPerPixel;
-
-		int bufferSize;
+		uint16_t frameNum;
 		uint8_t* dataPtr;
 
-		void setBuffer(const uint8_t* _buffer, int _bufferSize)
+		void setBuffer(int left, int top, int width, int height, int bitsPerPixel, const uint8_t* _buffer, int _bufferSize)
 		{
 			int oldSize = size;
-			bufferSize = _bufferSize;
-			size += bufferSize;
+
+			FRAME frame;
+			frame.left = left;
+			frame.top = top;
+			frame.width = width;
+			frame.height = height;
+			frame.bitsPerPixel = bitsPerPixel;
+			frame.bufferSize = _bufferSize;
+			int frameSize = sizeof(frame)-sizeof(frame.bufferPtr);
+
+			size += frameSize + frame.bufferSize;
 			dataPtr = (uint8_t*)realloc(dataPtr, size);
-			memcpy(dataPtr, (uint8_t*)this, oldSize);
-			memcpy(dataPtr + oldSize, _buffer, bufferSize);
+			if (frameNum == 0)
+			{
+				memcpy(dataPtr, (uint8_t*)this, oldSize);
+			}
+			memcpy(dataPtr + oldSize, &frame, frameSize);
+			memcpy(dataPtr + oldSize + frameSize, _buffer, _bufferSize);
+
+			FRAME_SYNC& sync = *(FRAME_SYNC*)dataPtr;
+			sync.size = size;
+			sync.frameNum = ++frameNum;
 		}
 		void getData(uint8_t** _dataPtr, int& _dataSize)
 		{

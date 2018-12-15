@@ -23,7 +23,7 @@ PandaRC::PandaRC(QWidget *parent)
 	m_frameThread = new QFrameThread(NULL ,this);
 	m_frameThread->start();
 	m_handlerSrv = NULL;
-	m_clientViewerRect.setRect(0, 0, 800, 600);
+	m_clientViewerRect.setRect(100, 100, 800, 600);
 
 	m_nUserID = 0;
 
@@ -31,7 +31,7 @@ PandaRC::PandaRC(QWidget *parent)
 
 void PandaRC::onBtnLogin()
 {
-	m_netThread->connect("127.0.0.1", 10001, PandaRC::connectedCallback, this);
+	m_netThread->connect("192.168.95.128", 10009, PandaRC::connectedCallback, this);
 }
 
 void PandaRC::onBtnBuild()
@@ -77,7 +77,12 @@ void PandaRC::closeEvent(QCloseEvent *event)
 
 void PandaRC::onViewerClose(int userID)
 {
-	GLClientViewer* pViewer = m_clientViewerMap.find(userID)->second;
+	ViewerIter iter = m_clientViewerMap.find(userID);
+	if (iter == m_clientViewerMap.end())
+	{
+		return;
+	}
+	GLClientViewer* pViewer = iter->second;
 	QPoint pos = pViewer->pos();
 	QSize size = pViewer->size();
 	m_clientViewerRect.setX(pos.x());

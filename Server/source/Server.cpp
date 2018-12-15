@@ -14,7 +14,7 @@ Server::~Server()
 bool Server::Init()
 {
 	m_oNetwork.SetNetInterface(gpoContext->poRoomMgr);
-	return m_oNetwork.InitAsServer(10001);
+	return m_oNetwork.InitAsServer(10009);
 }
 
 void Server::Start()

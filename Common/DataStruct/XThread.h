@@ -30,7 +30,7 @@ public:
 			pthread_attr_init(pAttr);
 			pthread_attr_setdetachstate(pAttr, PTHREAD_CREATE_DETACHED);
 		}
-		int nRet = pthread_create(&m_Handle, pAttr, Thread::MainLoop, (void*)this);
+		int nRet = pthread_create(&m_Handle, pAttr, XThread::MainLoop, (void*)this);
 		if (pAttr != NULL)
 		{
 			pthread_attr_destroy(pAttr);
@@ -69,7 +69,7 @@ private:
 #ifdef __linux
 	static void* MainLoop(void *pParam)
 	{
-		Thread* pSelf = (Thread*)pParam;
+		XThread* pSelf = (XThread*)pParam;
 		pSelf->m_ThreadFn(pSelf->m_pArg);
 		return (void*)0;
 	}

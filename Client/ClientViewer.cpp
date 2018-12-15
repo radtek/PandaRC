@@ -48,21 +48,27 @@ void ClientViewer::onFrameSync(NSPROTO::FRAME_SYNC* proto)
 {
 	PandaRC* pandaRC = (PandaRC*)parentWidget();
 
-	PDFRAME* pd = new PDFRAME(PDEVENT_TYPE::eFRAME);
-	pd->rect.left = proto->left;
-	pd->rect.top = proto->top;
-	pd->rect.setWidth(proto->width);
-	pd->rect.setHeight(proto->height);
-	pd->fb.setDimension(&Dimension(proto->width, proto->height));
+	for (int i = 0; i < proto->frameNum; i++)
+	{
+		int frameSize = sizeof(NSPROTO::FRAME_SYNC::FRAME) - sizeof(uint8_t*);
+		NSPROTO::FRAME_SYNC::FRAME* frame = (NSPROTO::FRAME_SYNC::FRAME*)((uchar*)(&proto->dataPtr) + frameSize*i);
+		PDFRAME* pd = new PDFRAME(PDEVENT_TYPE::eFRAME);
+		pd->rect.left = frame->left;
+		pd->rect.top = frame->top;
+		pd->rect.setWidth(frame->width);
+		pd->rect.setHeight(frame->height);
+		pd->fb.setDimension(&Dimension(frame->width, frame->height));
 
-	PixelFormat pixFmt = pd->fb.getPixelFormat();
-	pixFmt.bitsPerPixel = proto->bitsPerPixel;
-	pd->fb.setPixelFormat(&pixFmt);
+		PixelFormat pixFmt = pd->fb.getPixelFormat();
+		pixFmt.bitsPerPixel = frame->bitsPerPixel;
+		pd->fb.setPixelFormat(&pixFmt);
 
-	uchar* buffer = new uchar[proto->bufferSize];
-	memcpy(buffer, (uchar*)(&proto->dataPtr), proto->bufferSize);
-	pd->fb.setBuffer((void*)buffer);
-	pandaRC->getFrameThread()->addClientFrame(pd);
+		uchar* buffer = new uchar[frame->bufferSize];
+		memcpy(buffer, (uchar*)(&frame->bufferPtr), frame->bufferSize);
+		pd->fb.setBuffer((void*)buffer);
+		pandaRC->getFrameThread()->addClientFrame(pd);
+	}
+	;
 
 
 	//PDFRAME_T* pdt = new PDFRAME_T(PDEVENT_TYPE::eFRAME_T);

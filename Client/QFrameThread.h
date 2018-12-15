@@ -8,6 +8,7 @@
 #include "region/Point.h"
 #include "rfb/FrameBuffer.h"
 #include "thread/LocalMutex.h"
+#include "Common/Network/Network.h"
 
 enum PDEVENT_TYPE
 {
@@ -90,6 +91,9 @@ public:
 	void addServerFrame(PDEVENT* pd);
 	void addClientFrame(PDEVENT* pd);
 	PDEVENT* getClientFrame();
+
+protected:
+	void combindFrame(NSPROTO::FRAME_SYNC& sync, PDEVENT* pd);
 
 protected:
 	WindowsEvent m_updateTimeout;

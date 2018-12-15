@@ -23,3 +23,7 @@ Debug
 /.vs/PandaRC/v14/*.suo
 /.svn
 /Libs/*.lib
+/Client/Bin/*.exe
+/Client/Bin/*.ilk
+/Server/Bin/*.exe
+/Server/Bin/*.ilk
