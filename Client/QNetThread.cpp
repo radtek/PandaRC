@@ -93,56 +93,10 @@ void QNetThread::OnReceive(ENetEvent& event)
 		return;
 	}
 
-	switch (head.cmd)
-	{
-		case NSNETCMD::eLOGIN_RET:
-		{
-			NSPROTO::LOGIN_RET loginret = *(NSPROTO::LOGIN_RET*)event.packet->data;
-			if (loginret.code == 0)
-			{
-				XLog(LEVEL_INFO, "Login successful:%d\n", loginret.userid);
-				PandaRC* pPandRC = (PandaRC*)m_parentWidget;
-				pPandRC->onLoginRet(&loginret);
-			}
-			else
-			{
-				XLog(LEVEL_INFO, "Login fail\n");
-			}
-			break;
-		}
-		case NSNETCMD::eBUILD_RET:
-		{
-			NSPROTO::BUILD_RET buildret = *(NSPROTO::BUILD_RET*)event.packet->data;
-			XLog(LEVEL_INFO, "Build room ret roomid:%d\n", buildret.roomid);
-			if (buildret.roomid > 0)
-			{
-				PandaRC* pPandRC = (PandaRC*)m_parentWidget;
-				pPandRC->onBuildRet(buildret.roomid, buildret.service);
-			}
-			break;
-		}
-		case NSNETCMD::eUNBUILD_RET:
-		{
-			NSPROTO::UNBUILD_RET unbuildret = *(NSPROTO::UNBUILD_RET*)event.packet->data;
-			if (unbuildret.code == 0)
-			{
-				PandaRC* pPandRC = (PandaRC*)m_parentWidget;
-				pPandRC->onUnbuildRet(unbuildret.roomid, unbuildret.service);
-			}
-			break;
-		}
-		case NSNETCMD::eFRAME_SYNC:
-		{
-			NSPROTO::FRAME_SYNC* framesync = (NSPROTO::FRAME_SYNC*)event.packet->data;
-			PandaRC* pPandRC = (PandaRC*)m_parentWidget;
-			pPandRC->onFrameSync(framesync);
-			break;
-		}
-		default:
-		{
-			break;
-		}
-	}
+	PandaRC* pandRC = (PandaRC*)m_parentWidget;
+	NETMSG* msg = new NETMSG(event.packet->data, event.packet->dataLength);
+	pandRC->onReceiveNetMsg(msg);
+
 }
 
 void QNetThread::OnDisconnect(ENetEvent& event)

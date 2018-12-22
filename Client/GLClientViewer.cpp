@@ -1,5 +1,6 @@
 #include "GLClientViewer.h"
 #include "PandaRC.h"
+#include "Misc.h"
 
 GLClientViewer::GLClientViewer(QWidget *parent)
 	: QGLWidget()
@@ -8,6 +9,9 @@ GLClientViewer::GLClientViewer(QWidget *parent)
 	m_parent = parent;
 	m_pixmap = NULL;
 	m_painter = NULL;
+
+	m_roomID = 0;
+	m_userID = 0;
 	
 	PandaRC* pandaRC = (PandaRC*)m_parent;
 	connect(pandaRC->getFrameThread(), SIGNAL(paintDataChanged()), this, SLOT(onPaintDataChanged()));
@@ -92,10 +96,20 @@ void GLClientViewer::onFrameSync(NSPROTO::FRAME_SYNC* proto)
 		pixFmt.bitsPerPixel = frame->bitsPerPixel;
 		pd->fb.setPixelFormat(&pixFmt);
 
-		uchar* buffer = new uchar[frame->bufferSize];
-		memcpy(buffer, (uchar*)(&frame->bufferPtr), frame->bufferSize);
-		pd->fb.setBuffer((void*)buffer);
-		pandaRC->getFrameThread()->addClientFrame(pd);
+		int uncompressSize = 0;
+		uint8_t* uncompressBuffer = NULL;
+		bool res = NSMisc::zipUncompress((uchar*)(&frame->bufferPtr), frame->bufferSize, &uncompressBuffer, uncompressSize);
+		if (res)
+		{
+			uchar* buffer = new uchar[uncompressSize];
+			memcpy(buffer, uncompressBuffer, uncompressSize);
+			pd->fb.setBuffer((void*)buffer);
+			pandaRC->getFrameThread()->addClientFrame(pd);
+		}
+		else
+		{
+			XLog(LEVEL_INFO, "uncompress fail %d->%d\n", res, frame->bufferSize, uncompressSize);
+		}
 
 		offsetSize += frameSize + frame->bufferSize;
 	}

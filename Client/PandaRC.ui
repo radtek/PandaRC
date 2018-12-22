@@ -18,7 +18,7 @@
     <property name="geometry">
      <rect>
       <x>50</x>
-      <y>20</y>
+      <y>80</y>
       <width>131</width>
       <height>41</height>
      </rect>
@@ -31,13 +31,23 @@
     <property name="geometry">
      <rect>
       <x>50</x>
-      <y>80</y>
+      <y>140</y>
       <width>131</width>
       <height>41</height>
      </rect>
     </property>
     <property name="text">
      <string>建立</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="leUserID">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>49</y>
+      <width>131</width>
+      <height>21</height>
+     </rect>
     </property>
    </widget>
   </widget>

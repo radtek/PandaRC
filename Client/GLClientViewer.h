@@ -17,6 +17,8 @@ public:
 public:
 	void setUserID(int userID) { m_userID = userID;  }
 	int getUserID() { return m_userID; }
+	void setRoomID(int roomID) { m_roomID = roomID; }
+	int getRoomID() { return m_roomID; }
 	void onFrameSync(NSPROTO::FRAME_SYNC* proto);
 
 protected:
@@ -33,6 +35,8 @@ private:
 	QWidget* m_parent;
 
 	int m_userID;
+	int m_roomID;
+
 	QPixmap* m_pixmap;
 	QPainter* m_painter;
 };

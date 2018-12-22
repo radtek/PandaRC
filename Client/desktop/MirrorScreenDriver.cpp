@@ -162,7 +162,7 @@ void MirrorScreenDriver::execute()
 	Rect changedRect;
 	unsigned long currentCounter = 0;
 
-	int frame = 1000 / 10;
+	int frame = 1000 / 5;
 	while (!isTerminating()) {
 		m_updateTimeout.waitForEvent(frame);
 

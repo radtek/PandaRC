@@ -111,8 +111,7 @@ void RoomMgr::OnReceive(ENetEvent& event)
 		User* poUser = GetUser(login.userid);
 		if (poUser == NULL)
 		{
-			int nUserID = User::GenID();
-			poUser = CreateUser(nUserID);
+			poUser = CreateUser(login.userid);
 			poUser->SetMacAddr(login.mac_addr);
 		}
 		NSPROTO::LOGIN_RET loginret;
@@ -162,25 +161,28 @@ void RoomMgr::OnReceive(ENetEvent& event)
 	}
 	case NSNETCMD::eUNBUILD_REQ:
 	{
-		NSPROTO::UNBUILD_REQ unbuild = *(NSPROTO::UNBUILD_REQ*)event.packet->data;
-		Room* poRoom = GetRoom(unbuild.roomid);
+		NSPROTO::UNBUILD_REQ unbuildreq = *(NSPROTO::UNBUILD_REQ*)event.packet->data;
+		Room* poRoom = GetRoom(unbuildreq.roomid);
 		NSPROTO::UNBUILD_RET unbuildret;
 		if (poRoom == NULL)
 		{
 			unbuildret.code = 1;
-			unbuild.roomid = unbuild.roomid;
+			unbuildret.roomid = unbuildreq.roomid;
 			gpoContext->poServer->GetNetwork()->Send2Client(event.peer, 0, ENET_PACKET_FLAG_RELIABLE, &unbuildret);
-			XLog(LEVEL_ERROR, "Unbuild room not exist:%d\n", unbuild.roomid);
+			XLog(LEVEL_ERROR, "Unbuild room not exist:%d\n", unbuildreq.roomid);
 		}
 		else
 		{
 			unbuildret.code = 0;
-			unbuild.roomid = unbuild.roomid;
+			unbuildret.roomid = unbuildreq.roomid;
+
 			User* pClientUser = GetUser(poRoom->GetClientUserID());
 			User* pServerUser = GetUser(poRoom->GetServerUserID());
-			pServerUser->RemoveClientRoomID(unbuild.roomid);
+			pServerUser->RemoveClientRoomID(unbuildreq.roomid);
+
 			unbuildret.service = 1;
 			gpoContext->poServer->GetNetwork()->Send2Client(pServerUser->GetENetPeer(), 0, ENET_PACKET_FLAG_RELIABLE, &unbuildret);
+
 			unbuildret.service = 2;
 			gpoContext->poServer->GetNetwork()->Send2Client(pClientUser->GetENetPeer(), 0, ENET_PACKET_FLAG_RELIABLE, &unbuildret);
 			SAFE_DELETE(poRoom);

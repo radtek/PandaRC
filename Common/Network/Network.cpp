@@ -136,7 +136,7 @@ bool Network::Send2Server(int nChannel, int nPacketFlag, NSPROTO::PROTO* poProto
 	}
 	ENetPacket* poPacket = enet_packet_create((void*)poProto, poProto->size, nPacketFlag);
 	enet_peer_send(m_poClientPeer, nChannel, poPacket);
-	enet_host_flush(m_poEnetClient);
+	//enet_host_flush(m_poEnetClient);
 	return true;
 }
 
@@ -149,7 +149,7 @@ bool Network::Send2ServerRaw(int nChannel, int nPacketFlag, uint8_t* pData, int 
 	}
 	ENetPacket* poPacket = enet_packet_create((void*)pData, nSize, nPacketFlag);
 	enet_peer_send(m_poClientPeer, nChannel, poPacket);
-	enet_host_flush(m_poEnetClient);
+	//enet_host_flush(m_poEnetClient);
 	return true;
 }
 
@@ -161,7 +161,7 @@ bool Network::Send2Client(ENetPeer* poENetPeer, int nChannel, int nPacketFlag, N
 	}
 	ENetPacket* poPacket = enet_packet_create((void*)poProto, poProto->size, nPacketFlag);
 	enet_peer_send(poENetPeer, nChannel, poPacket);
-	enet_host_flush(m_poEnetServer);
+	//enet_host_flush(m_poEnetServer);
 	return true;
 }
 
@@ -173,7 +173,7 @@ bool Network::Send2ClientRaw(ENetPeer* poENetPeer, int nChannel, int nPacketFlag
 	}
 	ENetPacket* poPacket = enet_packet_create((void*)pData, nSize, nPacketFlag);
 	enet_peer_send(poENetPeer, nChannel, poPacket);
-	enet_host_flush(m_poEnetServer);
+	//enet_host_flush(m_poEnetServer);
 	return true;
 }
 

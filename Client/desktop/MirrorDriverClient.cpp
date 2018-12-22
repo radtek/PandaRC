@@ -22,6 +22,7 @@
 //-------------------------------------------------------------------------
 //
 
+#include "util/Exception.h"
 #include "MirrorDriverClient.h"
 #include "win-system/Environment.h"
 #include <assert.h>
@@ -57,15 +58,15 @@ MirrorDriverClient::MirrorDriverClient()
 
 MirrorDriverClient::~MirrorDriverClient()
 {
-	//try {
-	//  terminate();
-	//  wait();
+	try {
+	  terminate();
+	  wait();
+	  dispose();
 
-	//  dispose();
-	//} catch (Exception &e) {
-	//  glog.error(_T("An error occured during the")
-	//             _T(" mirror driver deinitialization: %s"), e.getMessage());
-	//}
+	} catch (Exception &e) {
+	  //XLog(LEVEL_ERROR, "An error occured during the mirror driver deinitialization: %s\n", e.getMessage());
+
+	}
 }
 
 void MirrorDriverClient::dispose()
@@ -398,7 +399,7 @@ bool MirrorDriverClient::processMessage(UINT message,
 
 void MirrorDriverClient::onTerminate()
 {
-	PostMessage(m_propertyChangeListenerWindow.getHWND(), WM_QUIT, 0, 0);
+	//PostMessage(m_propertyChangeListenerWindow.getHWND(), WM_QUIT, 0, 0);
 }
 
 void MirrorDriverClient::execute()

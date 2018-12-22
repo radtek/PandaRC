@@ -11,8 +11,27 @@
 #include <list>
 #include <unordered_map>
 
-class UpdateHandlerServer;
+//ÍøÂç°ü
+struct NETMSG
+{
+	uint8_t* data;
+	int size;
 
+	NETMSG(uint8_t* _data, int _size)
+	{
+		data = (uint8_t*)XALLOC(NULL, _size);
+		memcpy(data, _data, _size);
+		size = _size;
+	}
+
+	~NETMSG()
+	{
+		SAFE_FREE(data);
+		size = 0;
+	}
+};
+
+class UpdateHandlerServer;
 class PandaRC : public QMainWindow
 {
 	Q_OBJECT
@@ -23,6 +42,9 @@ public:
 
 	typedef std::unordered_map<int, GLClientViewer*> ViewerMap;
 	typedef ViewerMap::iterator ViewerIter;
+
+	typedef std::list<NETMSG*> NetMsgList;
+	typedef NetMsgList::iterator NetMsgIter;
 
 public:
 	PandaRC(QWidget *parent = Q_NULLPTR);
@@ -37,6 +59,7 @@ public slots:
 protected:
 	void paintEvent(QPaintEvent *event);
 	void closeEvent(QCloseEvent *event);
+	void timerEvent(QTimerEvent *event);
 
 private:
 	Ui::PandaRCClass ui;
@@ -44,12 +67,20 @@ private:
 public:
 	QNetThread* getNetThread() { return m_netThread; }
 	QFrameThread* getFrameThread() { return m_frameThread; }
+
 	///////////////ÍøÂçÇëÇó//////////////
+	void onReceiveNetMsg(NETMSG* msg);
+	void dispatchNetMsg();
+
 	void loginReq();
-	void buildReq();
 	void onLoginRet(NSPROTO::LOGIN_RET* proto);
+
+	void buildReq();
 	void onBuildRet(int roomID, int service);
+
+	void UnbuildReq(int roomID);
 	void onUnbuildRet(int roomID, int service);
+
 	void onFrameSync(NSPROTO::FRAME_SYNC* proto);
 
 private:
@@ -65,4 +96,8 @@ private:
 	QRect m_clientViewerRect;
 
 	int m_nUserID;
+	bool m_bLogin;
+
+	NetMsgList m_netMsgList;
+	LocalMutex m_netMsgMutex;
 };

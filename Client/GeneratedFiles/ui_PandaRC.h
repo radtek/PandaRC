@@ -11,6 +11,7 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
@@ -25,6 +26,7 @@ public:
     QWidget *centralWidget;
     QPushButton *btnLogin;
     QPushButton *btnBuild;
+    QLineEdit *leUserID;
     QMenuBar *menuBar;
     QStatusBar *statusBar;
 
@@ -37,10 +39,13 @@ public:
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         btnLogin = new QPushButton(centralWidget);
         btnLogin->setObjectName(QStringLiteral("btnLogin"));
-        btnLogin->setGeometry(QRect(50, 20, 131, 41));
+        btnLogin->setGeometry(QRect(50, 80, 131, 41));
         btnBuild = new QPushButton(centralWidget);
         btnBuild->setObjectName(QStringLiteral("btnBuild"));
-        btnBuild->setGeometry(QRect(50, 80, 131, 41));
+        btnBuild->setGeometry(QRect(50, 140, 131, 41));
+        leUserID = new QLineEdit(centralWidget);
+        leUserID->setObjectName(QStringLiteral("leUserID"));
+        leUserID->setGeometry(QRect(50, 49, 131, 21));
         PandaRCClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(PandaRCClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));

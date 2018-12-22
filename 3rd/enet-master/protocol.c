@@ -10,7 +10,7 @@
 #include "enet/time.h"
 #include "enet/enet.h"
 
-#define ENET_DEBUG
+//#define ENET_DEBUG
 //#define ENET_DEBUG_COMPRESS
 
 static size_t commandSizes[ENET_PROTOCOL_COMMAND_COUNT] =
@@ -641,14 +641,20 @@ enet_protocol_handle_send_unreliable_fragment(ENetHost * host, ENetPeer * peer, 
 
 	if (command->header.channelID >= peer->channelCount ||
 		(peer->state != ENET_PEER_STATE_CONNECTED && peer->state != ENET_PEER_STATE_DISCONNECT_LATER))
+	{
+		//printf("enet_protocol_handle_send_unreliable_fragment 00\n");
 		return -1;
+	}
 
 	fragmentLength = ENET_NET_TO_HOST_16(command->sendFragment.dataLength);
 	*currentData += fragmentLength;
 	if (fragmentLength > host->maximumPacketSize ||
 		*currentData < host->receivedData ||
 		*currentData > & host->receivedData[host->receivedDataLength])
+	{
+		//printf("enet_protocol_handle_send_unreliable_fragment 01\n");
 		return -1;
+	}
 
 	channel = &peer->channels[command->header.channelID];
 	reliableSequenceNumber = command->header.reliableSequenceNumber;
@@ -661,11 +667,17 @@ enet_protocol_handle_send_unreliable_fragment(ENetHost * host, ENetPeer * peer, 
 		reliableWindow += ENET_PEER_RELIABLE_WINDOWS;
 
 	if (reliableWindow < currentWindow || reliableWindow >= currentWindow + ENET_PEER_FREE_RELIABLE_WINDOWS - 1)
+	{
+		//printf("reliableWindow:%d currentWindow:%d\n", reliableWindow, currentWindow);
 		return 0;
+	}
 
-	if (reliableSequenceNumber == channel->incomingReliableSequenceNumber &&
-		startSequenceNumber <= channel->incomingUnreliableSequenceNumber)
+	if (reliableSequenceNumber == channel->incomingReliableSequenceNumber && startSequenceNumber <= channel->incomingUnreliableSequenceNumber)
+	{
+		//printf("reliableSequenceNumber:%d startSequenceNumber:%d incomingReliableSequenceNumber:%d incomingUnreliableSequenceNumber:%d\n"
+			//, reliableSequenceNumber, startSequenceNumber, channel->incomingReliableSequenceNumber, channel->incomingUnreliableSequenceNumber);
 		return 0;
+	}
 
 	fragmentNumber = ENET_NET_TO_HOST_32(command->sendFragment.fragmentNumber);
 	fragmentCount = ENET_NET_TO_HOST_32(command->sendFragment.fragmentCount);
@@ -677,7 +689,10 @@ enet_protocol_handle_send_unreliable_fragment(ENetHost * host, ENetPeer * peer, 
 		totalLength > host->maximumPacketSize ||
 		fragmentOffset >= totalLength ||
 		fragmentLength > totalLength - fragmentOffset)
+	{
+		//printf("enet_protocol_handle_send_unreliable_fragment 02\n");
 		return -1;
+	}
 
 	for (currentCommand = enet_list_previous(enet_list_end(&channel->incomingUnreliableCommands));
 		currentCommand != enet_list_end(&channel->incomingUnreliableCommands);
@@ -708,7 +723,10 @@ enet_protocol_handle_send_unreliable_fragment(ENetHost * host, ENetPeer * peer, 
 			if ((incomingCommand->command.header.command & ENET_PROTOCOL_COMMAND_MASK) != ENET_PROTOCOL_COMMAND_SEND_UNRELIABLE_FRAGMENT ||
 				totalLength != incomingCommand->packet->dataLength ||
 				fragmentCount != incomingCommand->fragmentCount)
+			{
+				//printf("enet_protocol_handle_send_unreliable_fragment 03\n");
 				return -1;
+			}
 
 			startCommand = incomingCommand;
 			break;
@@ -719,7 +737,10 @@ enet_protocol_handle_send_unreliable_fragment(ENetHost * host, ENetPeer * peer, 
 	{
 		startCommand = enet_peer_queue_incoming_command(peer, command, NULL, totalLength, ENET_PACKET_FLAG_UNRELIABLE_FRAGMENT, fragmentCount);
 		if (startCommand == NULL)
+		{
+			//printf("enet_protocol_handle_send_unreliable_fragment 04\n");
 			return -1;
+		}
 	}
 
 	if ((startCommand->fragments[fragmentNumber / 32] & (1 << (fragmentNumber % 32))) == 0)
@@ -739,6 +760,7 @@ enet_protocol_handle_send_unreliable_fragment(ENetHost * host, ENetPeer * peer, 
 			enet_peer_dispatch_incoming_unreliable_commands(peer, channel);
 	}
 
+	//printf("enet_protocol_handle_send_unreliable_fragment 05\n");
 	return 0;
 }
 
@@ -990,7 +1012,10 @@ enet_protocol_handle_incoming_commands(ENetHost * host, ENetEvent * event)
 	enet_uint8 sessionID;
 
 	if (host->receivedDataLength < (size_t) & ((ENetProtocolHeader *)0)->sentTime)
+	{
+		//printf("enet_protocol_handle_incoming_commands 00\n");
 		return 0;
+	}
 
 	header = (ENetProtocolHeader *)host->receivedData;
 
@@ -1001,13 +1026,20 @@ enet_protocol_handle_incoming_commands(ENetHost * host, ENetEvent * event)
 
 	headerSize = (flags & ENET_PROTOCOL_HEADER_FLAG_SENT_TIME ? sizeof(ENetProtocolHeader) : (size_t) & ((ENetProtocolHeader *)0)->sentTime);
 	if (host->checksum != NULL)
+	{
 		headerSize += sizeof(enet_uint32);
+	}
 
 	if (peerID == ENET_PROTOCOL_MAXIMUM_PEER_ID)
+	{
 		peer = NULL;
+	}
 	else
 		if (peerID >= host->peerCount)
+		{
+			//printf("enet_protocol_handle_incoming_commands 01\n");
 			return 0;
+		}
 		else
 		{
 			peer = &host->peers[peerID];
@@ -1019,14 +1051,20 @@ enet_protocol_handle_incoming_commands(ENetHost * host, ENetEvent * event)
 					peer->address.host != ENET_HOST_BROADCAST) ||
 					(peer->outgoingPeerID < ENET_PROTOCOL_MAXIMUM_PEER_ID &&
 						sessionID != peer->incomingSessionID))
+			{
+				//printf("enet_protocol_handle_incoming_commands 02\n");
 				return 0;
+			}
 		}
 
 	if (flags & ENET_PROTOCOL_HEADER_FLAG_COMPRESSED)
 	{
 		size_t originalSize;
 		if (host->compressor.context == NULL || host->compressor.decompress == NULL)
+		{
+			//printf("enet_protocol_handle_incoming_commands 03\n");
 			return 0;
+		}
 
 		originalSize = host->compressor.decompress(host->compressor.context,
 			host->receivedData + headerSize,
@@ -1034,7 +1072,10 @@ enet_protocol_handle_incoming_commands(ENetHost * host, ENetEvent * event)
 			host->packetData[1] + headerSize,
 			sizeof(host->packetData[1]) - headerSize);
 		if (originalSize <= 0 || originalSize > sizeof(host->packetData[1]) - headerSize)
+		{
+			//printf("enet_protocol_handle_incoming_commands 04\n");
 			return 0;
+		}
 
 		memcpy(host->packetData[1], header, headerSize);
 		host->receivedData = host->packetData[1];
@@ -1053,7 +1094,10 @@ enet_protocol_handle_incoming_commands(ENetHost * host, ENetEvent * event)
 		buffer.dataLength = host->receivedDataLength;
 
 		if (host->checksum(&buffer, 1) != desiredChecksum)
+		{
+			//printf("enet_protocol_handle_incoming_commands 05\n");
 			return 0;
+		}
 	}
 
 	if (peer != NULL)
@@ -1090,6 +1134,7 @@ enet_protocol_handle_incoming_commands(ENetHost * host, ENetEvent * event)
 
 		command->header.reliableSequenceNumber = ENET_NET_TO_HOST_16(command->header.reliableSequenceNumber);
 
+		//printf("cmd:%d\n", commandNumber);
 		switch (commandNumber)
 		{
 		case ENET_PROTOCOL_COMMAND_ACKNOWLEDGE:
@@ -1193,6 +1238,7 @@ commandError:
 	if (event != NULL && event->type != ENET_EVENT_TYPE_NONE)
 		return 1;
 
+	//printf("enet_protocol_handle_incoming_commands 06\n");
 	return 0;
 }
 
@@ -1216,7 +1262,7 @@ enet_protocol_receive_incoming_commands(ENetHost * host, ENetEvent * event)
 
 		if (receivedLength < 0)
 		{
-			printf("enet_protocol_receive_incoming_commands00 : %d\n", receivedLength);
+			//printf("enet_protocol_receive_incoming_commands00 : %d\n", receivedLength);
 			return -1;
 		}
 
@@ -1242,7 +1288,7 @@ enet_protocol_receive_incoming_commands(ENetHost * host, ENetEvent * event)
 				continue;
 
 			case -1:
-				printf("enet_protocol_receive_incoming_commands01\n");
+				//printf("enet_protocol_receive_incoming_commands01\n");
 				return -1;
 
 			default:
@@ -1256,7 +1302,7 @@ enet_protocol_receive_incoming_commands(ENetHost * host, ENetEvent * event)
 			return 1;
 
 		case -1:
-			printf("enet_protocol_receive_incoming_commands02 : handel\n");
+			//printf("enet_protocol_receive_incoming_commands02 : handel\n");
 			return -1;
 
 		default:
@@ -1264,7 +1310,7 @@ enet_protocol_receive_incoming_commands(ENetHost * host, ENetEvent * event)
 		}
 	}
 
-	printf("enet_protocol_receive_incoming_commands03\n");
+	//printf("enet_protocol_receive_incoming_commands03\n");
 	return -1;
 }
 

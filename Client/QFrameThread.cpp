@@ -1,9 +1,10 @@
 #include "Common/DataStruct/XMath.h"
 
 #include "Include/Logger/Logger.hpp"
-#include "PandaRC.h"
 #include "QFrameThread.h"
 #include "thread/AutoLock.h"
+#include "PandaRC.h"
+#include "Misc.h"
 
 QFrameThread::QFrameThread(QObject *parent, QWidget* parentWidget):QThread(parent)
 {
@@ -20,7 +21,7 @@ QFrameThread::~QFrameThread()
 
 void QFrameThread::run()
 {
-	int frame = 1000 / 10;
+	int frame = 1000 / 5;
 	for (;;)
 	{
 		m_updateTimeout.waitForEvent(frame);
@@ -37,7 +38,18 @@ void QFrameThread::combindFrame(NSPROTO::FRAME_SYNC& sync, PDEVENT* pd)
 	{
 		PDFRAME* fm = (PDFRAME*)pd;
 		sync.srv_uid = pandaRC->getUserID();
-		sync.setBuffer(fm->rect.left, fm->rect.top, fm->rect.getWidth(), fm->rect.getHeight(), fm->fb.getPixelFormat().bitsPerPixel, (uint8_t*)fm->fb.getBuffer(), fm->fb.getBufferSize());
+
+		int compressSize = 0;
+		uint8_t* compressBuffer = NULL;
+		bool res = NSMisc::zipCompress((uint8_t*)fm->fb.getBuffer(), fm->fb.getBufferSize(), &compressBuffer, compressSize);
+		if (res)
+		{
+			sync.setBuffer(fm->rect.left, fm->rect.top, fm->rect.getWidth(), fm->rect.getHeight(), fm->fb.getPixelFormat().bitsPerPixel, compressBuffer, compressSize);
+		}
+		else
+		{
+			XLog(LEVEL_INFO, "compress fail %d->%d\n", res, fm->fb.getBufferSize(), compressSize);
+		}
 	}
 }
 
@@ -59,7 +71,7 @@ void QFrameThread::updateServer()
 		int size = 0;
 		uint8_t* data = NULL;
 		sync.getData(&data, size);
-		pandaRC->getNetThread()->sendMsgRaw(1, ENET_PACKET_FLAG_UNRELIABLE_FRAGMENT, data, size);;
+		pandaRC->getNetThread()->sendMsgRaw(1, ENET_PACKET_FLAG_RELIABLE, data, size);;
 	}
 }
 

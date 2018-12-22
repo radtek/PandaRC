@@ -506,7 +506,7 @@ enet_socket_receive(ENetSocket socket,
 		return -1;
 	}
 #endif
-	printf("enet_socket_receive length:%d\n", recvLength);
+	//printf("enet_socket_receive length:%d\n", recvLength);
 
 	if (address != NULL)
 	{
