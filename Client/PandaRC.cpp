@@ -99,15 +99,7 @@ void PandaRC::onViewerClose(int userID)
 	}
 
 	GLClientViewer* pViewer = iter->second;
-	QPoint pos = pViewer->pos();
-	QSize size = pViewer->size();
-	m_clientViewerRect.setX(pos.x());
-	m_clientViewerRect.setY(pos.y());
-	m_clientViewerRect.setWidth(size.width());
-	m_clientViewerRect.setHeight(size.height());
 	m_clientViewerMap.erase(userID);
-
-
 	UnbuildReq(pViewer->getRoomID());
 }
 
@@ -189,15 +181,7 @@ void PandaRC::onBuildRet(int roomID, int service)
 		m_clientViewerMap[1] = pView;
 		pView->setUserID(1);
 		pView->setRoomID(roomID);
-
-		if (m_clientViewerRect.width() != -1)
-		{
-			pView->setGeometry(m_clientViewerRect);
-		}
-		else
-		{
-			pView->showMaximized();
-		}
+		pView->setGeometry(m_clientViewerRect);
 		pView->show();
 	}
 }

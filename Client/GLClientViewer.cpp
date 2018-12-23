@@ -15,10 +15,13 @@ GLClientViewer::GLClientViewer(QWidget *parent)
 	
 	PandaRC* pandaRC = (PandaRC*)m_parent;
 	connect(pandaRC->getFrameThread(), SIGNAL(paintDataChanged()), this, SLOT(onPaintDataChanged()));
+	setAttribute(Qt::WA_DeleteOnClose, true);
 }
 
 GLClientViewer::~GLClientViewer()
 {
+	PandaRC* pandaRC = (PandaRC*)m_parent;
+	disconnect(pandaRC->getFrameThread(), SIGNAL(paintDataChanged()), this, SLOT(onPaintDataChanged()));
 }
 
 void GLClientViewer::initializeGL()
@@ -137,7 +140,7 @@ void GLClientViewer::onPaintDataChanged()
 				}
 				int nBytesRow = frame->fb.getBytesPerRow();
 				uchar* pBuffer = (uchar*)frame->fb.getBuffer();
-				QImage oImg(pBuffer, frame->rect.getWidth(), frame->rect.getHeight(), nBytesRow, QImage::Format_RGB32);
+				QImage oImg(pBuffer, frame->rect.getWidth(), frame->rect.getHeight(), nBytesRow, QImage::Format_RGB16);
 				m_painter->drawImage(QPoint(frame->rect.left, frame->rect.top), oImg);
 				break;
 			}

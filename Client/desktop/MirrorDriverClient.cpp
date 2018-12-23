@@ -243,7 +243,8 @@ void MirrorDriverClient::initScreenPropertiesByCurrent()
 	// a pixel format will use.
 	// So, a fixed pixel format looks good.
 	m_pixelFormat.initBigEndianByNative();
-	m_pixelFormat.bitsPerPixel = 32;
+	//m_pixelFormat.bitsPerPixel = 32;
+	m_pixelFormat.bitsPerPixel = 16;
 	m_pixelFormat.redMax = 255;
 	m_pixelFormat.redShift = 16;
 	m_pixelFormat.greenMax = 255;
