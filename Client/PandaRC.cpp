@@ -183,6 +183,7 @@ void PandaRC::onBuildRet(int roomID, int service)
 		pView->setRoomID(roomID);
 		pView->setGeometry(m_clientViewerRect);
 		pView->show();
+		pView->onPaintDataChanged();
 	}
 }
 
