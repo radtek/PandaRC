@@ -52,8 +52,8 @@ void PandaRC::onBtnLogin()
 
 	m_nUserID = nUserID;
 	//m_netThread->connect("192.168.95.128", 10009, PandaRC::connectedCallback, this);
-	//m_netThread->connect("120.92.10.82", 10009, PandaRC::connectedCallback, this);
-	m_netThread->connect("127.0.0.1", 10009, PandaRC::connectedCallback, this);
+	m_netThread->connect("120.92.10.82", 10009, PandaRC::connectedCallback, this);
+	//m_netThread->connect("127.0.0.1", 10009, PandaRC::connectedCallback, this);
 }
 
 void PandaRC::onBtnBuild()
