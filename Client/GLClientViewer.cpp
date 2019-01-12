@@ -1,6 +1,7 @@
 #include "GLClientViewer.h"
 #include "PandaRC.h"
 #include "Misc.h"
+#include <qevent.h>
 
 GLClientViewer::GLClientViewer(QWidget *parent)
 	: QGLWidget()
@@ -16,6 +17,7 @@ GLClientViewer::GLClientViewer(QWidget *parent)
 	PandaRC* pandaRC = (PandaRC*)m_parent;
 	connect(pandaRC->getFrameThread(), SIGNAL(paintDataChanged()), this, SLOT(onPaintDataChanged()));
 	setAttribute(Qt::WA_DeleteOnClose, true);
+	//setMouseTracking(true);
 }
 
 GLClientViewer::~GLClientViewer()
@@ -178,4 +180,57 @@ void GLClientViewer::onPaintDataChanged()
 
 	} while (true);
 	update();
+}
+
+void GLClientViewer::calcPointScale(double& scaleX, double& scaleY)
+{
+	if (m_pixmap == NULL)
+	{
+		return;
+	}
+	const QSize& screenSize = size();
+	const QSize& bufferSize = m_pixmap->size();
+	scaleX = (double)bufferSize.width() / max(1, screenSize.width());
+	scaleY = (double)bufferSize.height() / max(1, screenSize.height());
+}
+
+void GLClientViewer::mousePressEvent(QMouseEvent *event)
+{
+	double scaleX = 1, scaleY = 1;
+	calcPointScale(scaleX, scaleY);
+	QPoint pos(event->pos().x()*scaleX, event->pos().y()*scaleY);
+}
+
+void GLClientViewer::mouseReleaseEvent(QMouseEvent *event)
+{
+	double scaleX = 1, scaleY = 1;
+	calcPointScale(scaleX, scaleY);
+	QPoint pos(event->pos().x()*scaleX, event->pos().y()*scaleY);
+}
+
+void GLClientViewer::mouseMoveEvent(QMouseEvent *event)
+{
+	double scaleX = 1, scaleY = 1;
+	calcPointScale(scaleX, scaleY);
+	QPoint pos(event->pos().x()*scaleX, event->pos().y()*scaleY);
+}
+
+void GLClientViewer::mouseDoubleClickEvent(QMouseEvent *event)
+{
+	double scaleX = 1, scaleY = 1;
+	calcPointScale(scaleX, scaleY);
+	QPoint pos(event->pos().x()*scaleX, event->pos().y()*scaleY);
+}
+
+void GLClientViewer::wheelEvent(QWheelEvent *event)
+{
+	int delta = event->delta();
+}
+
+void GLClientViewer::keyPressEvent(QKeyEvent *event)
+{
+	int key = event->key();
+	QString text = event->text();
+	int modify = event->modifiers();
+	printf("%d->%s->%d\n", key, text.toStdString().c_str(), modify);
 }

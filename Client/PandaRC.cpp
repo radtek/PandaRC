@@ -58,7 +58,13 @@ void PandaRC::onBtnLogin()
 
 void PandaRC::onBtnBuild()
 {
-	buildReq();
+	//buildReq();
+	GLClientViewer* pView = new GLClientViewer(this);
+	m_clientViewerMap[1] = pView;
+	pView->setUserID(1);
+	pView->setRoomID(1);
+	pView->setGeometry(m_clientViewerRect);
+	pView->show();
 }
 
 void PandaRC::paintEvent(QPaintEvent *event)

@@ -27,6 +27,14 @@ protected:
 	void initializeGL(); //初始化当前的opengl环境
 	void resizeGL(int w, int h); //主要用来对渲染区域的高度和宽度进行一些变化处理
 
+	void calcPointScale(double& scaleX, double& scaleY);
+	void mousePressEvent(QMouseEvent * event);
+	void mouseReleaseEvent(QMouseEvent * event);
+	void mouseMoveEvent(QMouseEvent * event);
+	void mouseDoubleClickEvent(QMouseEvent * event);
+	void wheelEvent(QWheelEvent *event);
+	void keyPressEvent(QKeyEvent * event);
+
 public slots:
 	void onPaintDataChanged();
 
