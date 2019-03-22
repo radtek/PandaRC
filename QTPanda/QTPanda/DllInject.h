@@ -1,7 +1,7 @@
 #pragma once
 #include <stdio.h>
-#include <Windows.h>
 #include <tchar.h>
+#include <Windows.h>
 #include <TlHelp32.h>
 
 char szOutputBuf[1024] = { 0 };
@@ -129,6 +129,20 @@ bool WriteDword2Process(HANDLE hProcess, DWORD dwValue, LPVOID& Out_lpBuf, SIZE_
 	return true;
 }
 
+DWORD GetRemoteLastError(HANDLE hProcess)
+{
+	LPVOID pFunc = GetLastError;
+	DWORD dwID = 0;
+	HANDLE hThread = CreateRemoteThread(hProcess, NULL, 0, (LPTHREAD_START_ROUTINE)pFunc, (LPVOID)0, 0, &dwID);
+	WaitForSingleObject(hThread, INFINITE);
+	DWORD dwError = 0;
+	GetExitCodeThread(hThread, &dwError);
+	CloseHandle(hThread);
+	sprintf_s(szOutputBuf, "Last Error:%d\n", dwError);
+	OutputDebugStringA(szOutputBuf);
+	return dwError;
+}
+
 bool InjectDll(LPCTSTR lpszProcess, LPCTSTR lpszDllName)
 {
 	DWORD dwProcessID = FindProcess(lpszProcess);
@@ -138,7 +152,7 @@ bool InjectDll(LPCTSTR lpszProcess, LPCTSTR lpszDllName)
 		return false;
 	}
 	// 打开目标进程  
-	HANDLE hProcess = OpenProcess(PROCESS_CREATE_THREAD | PROCESS_VM_OPERATION | PROCESS_VM_WRITE, FALSE, dwProcessID);
+	HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS | PROCESS_CREATE_THREAD | PROCESS_VM_OPERATION | PROCESS_VM_WRITE, FALSE, dwProcessID);
 	if (hProcess == NULL)
 	{
 		OutputDebugStringA("打开进程失败\n");
@@ -169,6 +183,8 @@ bool InjectDll(LPCTSTR lpszProcess, LPCTSTR lpszDllName)
 	}
 	// 等待LoadLibrary加载完毕  
 	WaitForSingleObject(hThread, INFINITE);
+	DWORD dwExitCode = 0;
+	GetExitCodeThread(hThread, &dwExitCode);
 	// 释放目标进程中申请的空间  
 	VirtualFreeEx(hProcess, lpBuf, dwSize, MEM_DECOMMIT);
 	CloseHandle(hThread);
@@ -185,7 +201,7 @@ bool UnjectDll(LPCTSTR lpszProcess, LPCTSTR lpszDllName)
 		return false;
 	}
 	// 打开目标进程  
-	HANDLE hProcess = OpenProcess(PROCESS_CREATE_THREAD | PROCESS_VM_OPERATION | PROCESS_VM_WRITE, FALSE, dwProcessID);
+	HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS | PROCESS_CREATE_THREAD | PROCESS_VM_OPERATION | PROCESS_VM_WRITE, FALSE, dwProcessID);
 	if (hProcess == NULL)
 	{
 		OutputDebugStringA("打开进程失败\n");
@@ -220,14 +236,7 @@ bool UnjectDll(LPCTSTR lpszProcess, LPCTSTR lpszDllName)
 	if (dwCode == 0)
 	{
 		CloseHandle(hThread);
-		DWORD dwError = 0;
-
-		pFunc = GetLastError;
-		hThread = CreateRemoteThread(hProcess, NULL, 0, (LPTHREAD_START_ROUTINE)pFunc, (LPVOID)0, 0, &dwID);
-		WaitForSingleObject(hThread, INFINITE);
-		GetExitCodeThread(hThread, &dwError);
-
-		CloseHandle(hThread);
+		DWORD dwError = GetRemoteLastError(hProcess);
 		CloseHandle(hProcess);
 
 		sprintf_s(szOutputBuf, "卸载DLL失败 Err Code: %d\n", dwError);

@@ -1,29 +1,136 @@
-<UI version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>QTPandaClass</class>
- <widget class="QMainWindow" name="QTPandaClass" >
-  <property name="objectName" >
-   <string notr="true">QTPandaClass</string>
-  </property>
-  <property name="geometry" >
+ <widget class="QMainWindow" name="QTPandaClass">
+  <property name="geometry">
    <rect>
-	<x>0</x>
-	<y>0</y>
-	<width>600</width>
-	<height>400</height>
+    <x>0</x>
+    <y>0</y>
+    <width>600</width>
+    <height>400</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>QTPanda</string>
   </property>
-  <widget class="QMenuBar" name="menuBar" />
-  <widget class="QToolBar" name="mainToolBar" />
-  <widget class="QWidget" name="centralWidget" />
-  <widget class="QStatusBar" name="statusBar" />
+  <widget class="QWidget" name="centralWidget">
+   <widget class="QPushButton" name="btnInject">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>10</y>
+      <width>81</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>注入</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnUnject">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>50</y>
+      <width>81</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>卸载</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnSendMsg">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>100</y>
+      <width>81</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>消息</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>600</width>
+     <height>23</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
  </widget>
- <layoutDefault spacing="6" margin="11" />
- <pixmapfunction></pixmapfunction>
+ <layoutdefault spacing="6" margin="11"/>
  <resources>
-   <include location="QTPanda.qrc"/>
+  <include location="QTPanda.qrc"/>
  </resources>
- <connections/>
-</UI>
+ <connections>
+  <connection>
+   <sender>btnInject</sender>
+   <signal>clicked()</signal>
+   <receiver>QTPandaClass</receiver>
+   <slot>onBtnInject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>82</x>
+     <y>61</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>284</x>
+     <y>66</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnUnject</sender>
+   <signal>clicked()</signal>
+   <receiver>QTPandaClass</receiver>
+   <slot>onBtnUnject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>74</x>
+     <y>99</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>284</x>
+     <y>112</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnSendMsg</sender>
+   <signal>clicked()</signal>
+   <receiver>QTPandaClass</receiver>
+   <slot>onBtnSendMsg()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>88</x>
+     <y>148</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>283</x>
+     <y>154</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>onBtnInject()</slot>
+  <slot>onBtnUnject()</slot>
+  <slot>onBtnSendMsg()</slot>
+ </slots>
+</ui>

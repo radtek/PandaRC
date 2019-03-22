@@ -10,6 +10,14 @@ class QTPanda : public QMainWindow
 public:
 	QTPanda(QWidget *parent = Q_NULLPTR);
 
+protected:
+	virtual bool nativeEvent(const QByteArray &eventType, void *message, long *result);
+
+public slots:
+	void onBtnSendMsg();
+	void onBtnInject();
+	void onBtnUnject();
+
 private:
 	Ui::QTPandaClass ui;
 };

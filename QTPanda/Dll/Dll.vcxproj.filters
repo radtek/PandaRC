@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="源文件\Common">
+      <UniqueIdentifier>{0345273b-caae-4569-bcb0-b163fc3ef619}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -24,6 +27,18 @@
     <ClInclude Include="targetver.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Hook.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\MutexLock.h">
+      <Filter>源文件\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\NamedPipe.h">
+      <Filter>源文件\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\XThread.h">
+      <Filter>源文件\Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -34,6 +49,9 @@
     </ClCompile>
     <ClCompile Include="dllmain.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\NamedPipe.cpp">
+      <Filter>源文件\Common</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
