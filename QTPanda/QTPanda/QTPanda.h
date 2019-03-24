@@ -2,6 +2,7 @@
 
 #include <QtWidgets/QMainWindow>
 #include "ui_QTPanda.h"
+#include "Common/XThread.h"
 
 class QTPanda : public QMainWindow
 {
@@ -9,15 +10,19 @@ class QTPanda : public QMainWindow
 
 public:
 	QTPanda(QWidget *parent = Q_NULLPTR);
-
-protected:
-	virtual bool nativeEvent(const QByteArray &eventType, void *message, long *result);
+	static void WorkderFunc(void* param);
 
 public slots:
 	void onBtnSendMsg();
 	void onBtnInject();
 	void onBtnUnject();
 
+protected:
+	void closeEvent(QCloseEvent *event);
+	void injectDll(LPCSTR lpszProcessName, LPCSTR lpszDllName);
+	void unjectDll(LPCSTR lpszProcessName, LPCSTR lpszDllName);
+
 private:
 	Ui::QTPandaClass ui;
+	XThread m_oWorderThread;
 };

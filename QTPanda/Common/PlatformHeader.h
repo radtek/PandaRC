@@ -27,7 +27,7 @@
 
 //#include <MSWsock.h>
 //#include <Ws2tcpip.h>
-//#include <WinSock2.h>
+#include <WinSock2.h>
 #include <windows.h>
 #include <process.h>
 #include <dbghelp.h>

@@ -39,6 +39,36 @@
     <ClInclude Include="..\Common\XThread.h">
       <Filter>源文件\Common</Filter>
     </ClInclude>
+    <ClInclude Include="..\Common\Encoding.h">
+      <Filter>源文件\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\MailBox.h">
+      <Filter>源文件\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Memory.h">
+      <Filter>源文件\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\MsgDef.h">
+      <Filter>源文件\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\NetAPI.h">
+      <Filter>源文件\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Platform.h">
+      <Filter>源文件\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\PlatformHeader.h">
+      <Filter>源文件\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\PureList.h">
+      <Filter>源文件\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\XSignal.h">
+      <Filter>源文件\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\XTime.h">
+      <Filter>源文件\Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -51,6 +81,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\Common\NamedPipe.cpp">
+      <Filter>源文件\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\NetAPI.cpp">
+      <Filter>源文件\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\XSignal.cpp">
       <Filter>源文件\Common</Filter>
     </ClCompile>
   </ItemGroup>

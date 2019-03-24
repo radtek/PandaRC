@@ -1,5 +1,4 @@
 #include "QtTest.h"
-#include <Windows.h>
 #include "Common/NamedPipe.h"
 
 NamedPipeServer oServer;
@@ -8,7 +7,7 @@ QtTest::QtTest(QWidget *parent)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);
-	oServer.Init();
+	oServer.Init((HWND)winId());
 
 	//HWND hForm = FindWindow(NULL, "QTPanda");
 	//COPYDATASTRUCT cds;

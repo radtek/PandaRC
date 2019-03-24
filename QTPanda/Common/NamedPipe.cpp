@@ -3,8 +3,8 @@
 #include <Windows.h>
 
 const int nPipeBufSize = 1024 * 64;
-static char szOutputBuf[1024] = {0};
-const char* pszPipeName = "\\\\.\\pipe\\comunicate";
+static char szOutputBuf[nPipeBufSize] = {0};
+const char* pszPipeName = "\\\\.\\pipe\\my-comunicate";
 
 struct PIPE_NODE
 {
@@ -25,13 +25,56 @@ struct PIPE_NODE
 	}
 };
 
+int WaitFinish(HANDLE hPipe, OVERLAPPED& tagOver, DWORD& dwTransBytes)
+{
+	bool bPendingIO = false;
+	switch (GetLastError())
+	{
+	//正在连接中
+	case ERROR_IO_PENDING:
+		bPendingIO = true;
+		break;
+	//已经连接
+	case ERROR_PIPE_CONNECTED:
+		SetEvent(tagOver.hEvent);
+		break;
+	}
+
+	DWORD dwWait = -1;
+	//等待读写操作完成
+	dwWait = WaitForSingleObject(tagOver.hEvent, INFINITE);
+	switch (dwWait)
+	{
+	case 0:
+		if (bPendingIO)
+		{
+			//获取Overlapped结果
+			if (GetOverlappedResult(hPipe, &tagOver, &dwTransBytes, FALSE) == FALSE)
+			{
+				sprintf(szOutputBuf, "GetOverlappedResult failed GLE=%d\n", GetLastError());
+				OutputDebugString(szOutputBuf);
+				return -1;
+			}
+		}
+		break;
+
+	//	读写完成
+	case WAIT_IO_COMPLETION:
+		break;
+
+	}
+	return 0;
+}
+
 NamedPipeServer::NamedPipeServer()
 {
 	m_pAcceptThread = NULL;
+	m_hWnd = NULL;
 }
 
-bool NamedPipeServer::Init()
+bool NamedPipeServer::Init(HWND hWnd)
 {
+	m_hWnd = hWnd;
 	m_pAcceptThread = new XThread();
 	return m_pAcceptThread->Create(&NamedPipeServer::AcceptThread, this);
 }
@@ -46,11 +89,11 @@ void NamedPipeServer::AcceptThread(void* pParam)
 	for (;;)
 	{
 		hPipe = CreateNamedPipe(
-			pszPipeName,             // pipe name 
-			PIPE_ACCESS_DUPLEX,       // read/write access 
-			PIPE_TYPE_MESSAGE |       // message type pipe 
-			PIPE_READMODE_MESSAGE |   // message-read mode 
-			PIPE_WAIT,                // blocking mode 
+			pszPipeName,									// pipe name 
+			PIPE_ACCESS_DUPLEX | FILE_FLAG_OVERLAPPED,		// read/write access 
+			PIPE_TYPE_MESSAGE |			// message type pipe 
+			PIPE_READMODE_MESSAGE |		// message-read mode 
+			PIPE_WAIT,                  // blocking mode 
 			PIPE_UNLIMITED_INSTANCES, // max. instances  
 			nPipeBufSize,             // output buffer size 
 			nPipeBufSize,             // input buffer size 
@@ -63,26 +106,37 @@ void NamedPipeServer::AcceptThread(void* pParam)
 			OutputDebugString(szOutputBuf);
 			return;
 		}
-		bool bConnected = ConnectNamedPipe(hPipe, NULL) ?  TRUE : (GetLastError() == ERROR_PIPE_CONNECTED);
-		if (bConnected)
-		{
-			pThread = new XThread();
-			PIPE_NODE* pAcceptNode = new PIPE_NODE();
-			pAcceptNode->hPipe = hPipe;
-			pAcceptNode->pThread = pThread;
-			pAcceptNode->pServer = pServer;
 
-			bool bSuccess = pThread->Create(&NamedPipeServer::ServerReadThread, pAcceptNode);
-			if (!bSuccess)
-			{
-				delete pThread;
-				return;
-			}
-		}
-		else
+		OVERLAPPED tagOver;
+		memset(&tagOver, 0, sizeof(tagOver));
+		bool bSuccess = ConnectNamedPipe(hPipe, NULL) ?  TRUE : (GetLastError() == ERROR_PIPE_CONNECTED);
+		if (!bSuccess)
 		{
-			// The client could not connect, so close the pipe. 
 			CloseHandle(hPipe);
+			sprintf(szOutputBuf, "ConnectNamedPipe failed! GLE=%d\n", GetLastError());
+			OutputDebugString(szOutputBuf);
+			continue;
+		}
+
+		DWORD dwTransBytes = 0;
+		if (WaitFinish(hPipe, tagOver, dwTransBytes) != 0)
+		{
+			CloseHandle(hPipe);
+			continue;
+		}
+
+		pThread = new XThread();
+		PIPE_NODE* pAcceptNode = new PIPE_NODE();
+		pAcceptNode->hPipe = hPipe;
+		pAcceptNode->pThread = pThread;
+		pAcceptNode->pServer = pServer;
+
+		bSuccess = pThread->Create(&NamedPipeServer::ServerReadThread, pAcceptNode);
+		if (!bSuccess)
+		{
+			CloseHandle(hPipe);
+			delete pThread;
+			return;
 		}
 	}
 }
@@ -90,56 +144,25 @@ void NamedPipeServer::AcceptThread(void* pParam)
 void NamedPipeServer::ServerReadThread(void* pParam)
 {
 	PIPE_NODE* pAcceptNode = (PIPE_NODE*)pParam;
-	HANDLE hHeap = GetProcessHeap();
-
-	char* pchRequest = (char*)HeapAlloc(hHeap, 0, nPipeBufSize * sizeof(char));
-	char* pchRequestPos = pchRequest;
-
-	char* pchReply = (char*)HeapAlloc(hHeap, 0, nPipeBufSize * sizeof(char));
-
-	DWORD cbBytesRead = 0, cbReplyBytes = 0, cbWritten = 0;
-	BOOL bSuccess = FALSE;
-
-// The thread's parameter is a handle to a pipe object instance. 
 	HANDLE hPipe = pAcceptNode->hPipe;
+	DWORD dwBindProcessID = 0;
 
-	// Do some extra error checking since the app will keep running even if this
-	// thread fails.
-	if (pParam == NULL)
+	char szReadBuf[nPipeBufSize] = { 0 };
+	DWORD dwReadSize = 0;
+
+	OVERLAPPED tagOver;
+	memset(&tagOver, 0x0, sizeof(tagOver));
+	tagOver.hEvent = CreateEvent(NULL,//默认属性
+		TRUE, //手工reset
+		TRUE, //初始状态signaled
+		NULL); //未命名
+
+	while (1)
 	{
-		if (pchReply != NULL) HeapFree(hHeap, 0, pchReply);
-		if (pchRequest != NULL) HeapFree(hHeap, 0, pchRequest);
-		OutputDebugString("ERROR - Pipe Server Failure: no accept node\n");
-		return;
-	}
-
-	if (pchRequest == NULL)
-	{
-		OutputDebugString("ERROR - Pipe Server Failure: InstanceThread got an unexpected NULL heap allocation.\n");
-		if (pchReply != NULL) HeapFree(hHeap, 0, pchReply);
-		return;
-	}
-
-	if (pchReply == NULL)
-	{
-		OutputDebugString("ERROR - Pipe Server Failure:\n   InstanceThread got an unexpected NULL heap allocation.\n");
-		if (pchRequest != NULL) HeapFree(hHeap, 0, pchRequest);
-		return;
-	}
-
-	// Loop until done reading
-	for (;;)
-	{
-		// Read client requests from the pipe. This simplistic code only allows messages
-		// up to BUFSIZE characters in length.
-		bSuccess = ReadFile(
-			hPipe,									// handle to pipe 
-			pchRequestPos,							// buffer to receive data 
-			pchRequest+nPipeBufSize-pchRequestPos,	// size of buffer 
-			&cbBytesRead,							// number of bytes read 
-			NULL);									// not overlapped I/O 
-
-		if (!bSuccess || cbBytesRead == 0)
+		//读
+		int nRet = ReadFile(hPipe, &szReadBuf, sizeof(szReadBuf), &dwReadSize, &tagOver);
+		bool bRet = nRet != 0 ? true : (GetLastError() == ERROR_IO_PENDING);
+		if (!bRet)
 		{
 			if (GetLastError() == ERROR_BROKEN_PIPE)
 			{
@@ -152,62 +175,76 @@ void NamedPipeServer::ServerReadThread(void* pParam)
 			}
 			break;
 		}
-
-		if (pchRequestPos - pchRequest <= 2)
+		if (WaitFinish(hPipe, tagOver, dwReadSize) != 0)
 		{
-			continue;
+			break;
 		}
-		int nPacketSize = *(uint16_t*)pchRequest;
-		if (nPacketSize >= nPipeBufSize)
+		NSPROTO::HEAD* pHeader = (NSPROTO::HEAD*)szReadBuf;
+		if (pHeader->cmd == NSCMD::eCLT_REG)
 		{
-			sprintf(szOutputBuf, "Server ReadFile packet invalid size: %d.\n", nPacketSize);
+			NSPROTO::CLT_REG reg = *(NSPROTO::CLT_REG*)szReadBuf;
+			pAcceptNode->pServer->AddProcessPipe(reg.processid, hPipe);
+			dwBindProcessID = reg.processid;
+			sprintf(szOutputBuf, "Server recv client reg pid=%d pipe=%lld thread=%u\n", reg.processid, (DWORD_PTR)hPipe, GetCurrentThreadId());
+			OutputDebugString(szOutputBuf);
+		}
+		else if (pHeader->cmd == NSCMD::eCLT_UNREG)
+		{
+			NSPROTO::CLT_UNREG unreg = *(NSPROTO::CLT_UNREG*)szReadBuf;
+			pAcceptNode->pServer->RemoveProcessPipe(unreg.processid);
+			sprintf(szOutputBuf, "Server recv client unreg pid=%d pipe=%lld thread=%u\n", unreg.processid, (DWORD_PTR)hPipe, GetCurrentThreadId());
 			OutputDebugString(szOutputBuf);
 			break;
 		}
-		if (pchRequestPos - pchRequest < nPacketSize)
+		else if (pHeader->cmd == NSCMD::eCOM_ERR)
 		{
-			continue;
+			NSPROTO::COM_ERR err = *(NSPROTO::COM_ERR*)szReadBuf;
+			sprintf(szOutputBuf, "Server recv client error pid=%d pipe=%lld err=%s thread=%u\n", err.processid, (DWORD_PTR)hPipe, err.errormsg, GetCurrentThreadId());
+			OutputDebugString(szOutputBuf);
 		}
-
-		NSPROTO::DATA data = *(NSPROTO::DATA*)pchRequest;
-		int nCurrDataSize = pchRequestPos - pchRequest;
-		if (nCurrDataSize - nPacketSize)
+		else
 		{
-			memmove(pchRequest, pchRequestPos, nCurrDataSize-nPacketSize);
-			pchRequestPos = pchRequest + (nCurrDataSize-nPacketSize);
+			NSPROTO::COM_DATA data = *(NSPROTO::COM_DATA*)szReadBuf;
+			pAcceptNode->pServer->GetMailBox().Send(data);
 		}
-		sprintf(szOutputBuf, "Server recv size:%d", data.size);
-		OutputDebugString(szOutputBuf);
+		memset(szReadBuf, 0x0, sizeof(szReadBuf));
 	}
-
-	// Flush the pipe to allow the client to read the pipe's contents 
-	// before disconnecting. Then disconnect the pipe, and close the 
-	// handle to this pipe instance. 
-
-	FlushFileBuffers(hPipe);
-	DisconnectNamedPipe(hPipe);
+	pAcceptNode->pServer->RemovePipeProcess(hPipe);
 	CloseHandle(hPipe);
-
-	HeapFree(hHeap, 0, pchRequest);
-	HeapFree(hHeap, 0, pchReply);
 	delete pAcceptNode;
+	sprintf(szOutputBuf, "Server read thread exit pid=%d\n", dwBindProcessID);
+	OutputDebugString(szOutputBuf);
 }
 
-bool NamedPipeServer::SendMsg2Client(HANDLE hPipe, NSPROTO::DATA* data)
+bool NamedPipeServer::SendMsg2Client(DWORD dwProcessID, NSPROTO::PROTO* data)
 {
-	// Write the reply to the pipe. 
-	DWORD cbWritten = 0;
-	bool bSuccess = WriteFile(
-		hPipe,      // handle to pipe 
-		data,		// buffer to write from 
-		data->size,	// number of bytes to write 
-		&cbWritten, // number of bytes written 
-		NULL);      // not overlapped I/O 
-
-	if (!bSuccess || data->size != cbWritten)
+	HANDLE hPipe = GetProcessPipe(dwProcessID);
+	if (hPipe == NULL)
 	{
-		sprintf(szOutputBuf, "InstanceThread WriteFile failed, GLE=%d.\n", GetLastError());
+		sprintf(szOutputBuf, "SendMsg2Client can not find pipe by process. pid=%d\n", dwProcessID);
 		OutputDebugString(szOutputBuf);
+		return false;
+	}
+	DWORD dwReadSize = 0;
+	OVERLAPPED tagOver;
+	memset(&tagOver, 0x0, sizeof(tagOver));
+
+	tagOver.hEvent = CreateEvent(NULL,//默认属性
+		TRUE,	//手工reset
+		TRUE,	//初始状态signaled
+		NULL);	//未命名
+
+	DWORD dwHadWrite = 0;
+	int nRet = WriteFile(hPipe, data, data->size, &dwHadWrite, &tagOver);
+	if (nRet == 0)
+	{
+		sprintf(szOutputBuf, "WriteFile to pipe failed. GLE=%d\n", GetLastError());
+		OutputDebugString(szOutputBuf);
+		return false;
+	}
+
+	if (WaitFinish(hPipe, tagOver, dwHadWrite) != 0)
+	{
 		return false;
 	}
 	return true;
@@ -234,11 +271,11 @@ bool NamedPipeClient::Init()
 			0,              // no sharing 
 			NULL,           // default security attributes
 			OPEN_EXISTING,  // opens existing pipe 
-			0,              // default attributes 
-			NULL);          // no template file 
+			FILE_FLAG_OVERLAPPED,	// default attributes 
+			NULL);					// no template file 
 
-							// Break if the pipe handle is valid. 
 
+		// Break if the pipe handle is valid. 
 		if (m_hPipe != INVALID_HANDLE_VALUE)
 		{
 			break;
@@ -255,21 +292,21 @@ bool NamedPipeClient::Init()
 		// All pipe instances are busy, so wait for 20 seconds. 
 		if (!WaitNamedPipe(pszPipeName, 20000))
 		{
-			sprintf(szOutputBuf, "Could not open pipe: 20 second wait timed out.", GetLastError());
-			OutputDebugString(szOutputBuf);
+			OutputDebugString("Could not open pipe: 20 second wait timed out.");
 			return false;
 		}
 	}
 
 	// The pipe connected; change to message-read mode. 
+	//DWORD dwMode = PIPE_READMODE_MESSAGE;
 	DWORD dwMode = PIPE_READMODE_MESSAGE;
-	bool bSuccess = SetNamedPipeHandleState(
+	int nRet = SetNamedPipeHandleState(
 		m_hPipe,    // pipe handle 
 		&dwMode,  // new pipe mode 
 		NULL,     // don't set maximum bytes 
 		NULL);    // don't set maximum time 
 
-	if (!bSuccess)
+	if (nRet == 0)
 	{
 		sprintf(szOutputBuf, "SetNamedPipeHandleState failed. GLE=%d\n", GetLastError());
 		OutputDebugString(szOutputBuf);
@@ -282,7 +319,7 @@ bool NamedPipeClient::Init()
 	pClientNode->pThread = pThread;
 	pClientNode->pClient = this;
 
-	bSuccess = pThread->Create(&NamedPipeClient::ClientReadThread, pClientNode);
+	bool bSuccess = pThread->Create(&NamedPipeClient::ClientReadThread, pClientNode);
 	if (!bSuccess)
 	{
 		delete pThread;
@@ -291,20 +328,30 @@ bool NamedPipeClient::Init()
 	return true;
 }
 
-bool NamedPipeClient::SendMsg2Server(NSPROTO::DATA* data)
+bool NamedPipeClient::SendMsg2Server(NSPROTO::PROTO* data)
 {
-	DWORD cbWritten = 0;
-	bool bSuccess = WriteFile(
-		m_hPipe,                // pipe handle 
-		data,					// message 
-		data->size,             // message length 
-		&cbWritten,             // bytes written 
-		NULL);                  // not overlapped 
+	if (IsShutDown())
+	{
+		return false;
+	}
+	OVERLAPPED tagOver;
+	memset(&tagOver, 0x0, sizeof(tagOver));
 
-	if (!bSuccess)
+	tagOver.hEvent = CreateEvent(NULL,//默认属性
+		TRUE,//手工reset
+		TRUE,//初始状态signaled
+		NULL);//未命名
+
+	DWORD dwHadWrite = 0;
+	int nRet = WriteFile(m_hPipe, data, data->size, &dwHadWrite, &tagOver);
+	if (nRet == 0)
 	{
 		sprintf(szOutputBuf, "WriteFile to pipe failed. GLE=%d\n", GetLastError());
 		OutputDebugString(szOutputBuf);
+		return false;
+	}
+	if (WaitFinish(m_hPipe, tagOver, dwHadWrite) != 0)
+	{
 		return false;
 	}
 	return true;
@@ -313,23 +360,24 @@ bool NamedPipeClient::SendMsg2Server(NSPROTO::DATA* data)
 void NamedPipeClient::ClientReadThread(void* pParam)
 {
 	PIPE_NODE* pClientNode = (PIPE_NODE*)pParam;
+	HANDLE hPipe = pClientNode->hPipe;
 
-	HANDLE hHeap = GetProcessHeap();
-	char* pchRequest = (char*)HeapAlloc(hHeap, 0, nPipeBufSize * sizeof(char));
-	char* pchRequestPos = pchRequest;
+	char szReadBuf[nPipeBufSize] = { 0 };
+	DWORD dwReadSize = 0;
 
-	while (pClientNode->pClient->m_bShutDown)
+	OVERLAPPED tagOver;
+	memset(&tagOver, 0x0, sizeof(tagOver));
+	tagOver.hEvent = CreateEvent(NULL,//默认属性
+		TRUE, //手工reset
+		TRUE, //初始状态signaled
+		NULL); //未命名
+
+	while (!pClientNode->pClient->IsShutDown())
 	{
-		// Read from the pipe. 
-		DWORD cbBytesRead = 0;
-		bool bSuccess = ReadFile(
-			pClientNode->hPipe,							// handle to pipe 
-			pchRequestPos,								// buffer to receive data 
-			pchRequest + nPipeBufSize - pchRequestPos,	// size of buffer 
-			&cbBytesRead,								// number of bytes read 
-			NULL);										// not overlapped I/O 
-
-		if (!bSuccess || cbBytesRead == 0)
+		//读
+		int nRet = ReadFile(hPipe, &szReadBuf, sizeof(szReadBuf), &dwReadSize, &tagOver);
+		bool bRet = nRet != 0 ? true : (GetLastError() == ERROR_IO_PENDING);
+		if (!bRet)
 		{
 			if (GetLastError() == ERROR_BROKEN_PIPE)
 			{
@@ -342,36 +390,23 @@ void NamedPipeClient::ClientReadThread(void* pParam)
 			}
 			break;
 		}
-
-		if (pchRequestPos - pchRequest <= 2)
+		if (WaitFinish(hPipe, tagOver, dwReadSize) != 0)
 		{
-			continue;
-		}
-		int nPacketSize = *(uint16_t*)pchRequest;
-		if (nPacketSize >= nPipeBufSize)
-		{
-			sprintf(szOutputBuf, "Client ReadFile packet invalid size: %d.\n", nPacketSize);
-			OutputDebugString(szOutputBuf);
 			break;
 		}
-		if (pchRequestPos - pchRequest < nPacketSize)
+		NSPROTO::HEAD* pHeader = (NSPROTO::HEAD*)szReadBuf;
+		if (pHeader->cmd == NSCMD::eSRV_EXITTHREAD)
 		{
-			continue;
+			pClientNode->pClient->ShutDown();
 		}
-
-		NSPROTO::DATA data = *(NSPROTO::DATA*)pchRequest;
-		int nCurrDataSize = pchRequestPos - pchRequest;
-		if (nCurrDataSize - nPacketSize)
+		else
 		{
-			memmove(pchRequest, pchRequestPos, nCurrDataSize - nPacketSize);
-			pchRequestPos = pchRequest + (nCurrDataSize - nPacketSize);
+			NSPROTO::COM_DATA data = *(NSPROTO::COM_DATA*)szReadBuf;
+			sprintf(szOutputBuf, "Client recv data len=%d pid=%d\n", data.len, GetCurrentProcessId());
+			OutputDebugString(szOutputBuf);
 		}
-
-		sprintf(szOutputBuf, "Client recv size:%d", data.size);
-		OutputDebugString(szOutputBuf);
+		memset(szReadBuf, 0x0, sizeof(szReadBuf));;
 	}
-
-	CloseHandle(pClientNode->hPipe);
-	HeapFree(hHeap, 0, pchRequest);
+	CloseHandle(hPipe);
 	delete pClientNode;
 }

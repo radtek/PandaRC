@@ -1,7 +1,11 @@
 ﻿#pragma once
 #include "stdafx.h"
-#include <WinSock2.h>
+#include "Common/NamedPipe.h"
+#include "Common/NetAPI.h"
 #include <stdio.h>
+#include <WinSock2.h>
+
+extern NamedPipeClient goPipeClient;
 
 //自定义APIHOOK结构
 typedef struct
@@ -47,7 +51,7 @@ int WINAPI MyWSASend(
 	LPWSAOVERLAPPED lpOverlapped,
 	LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine
 );
-bool sndmsg(char *buf);
+bool sndmsg(const char* api, const char *buf, const int len, uint32_t nHostIP, uint16_t nHostPort, uint32_t nPeerIP, uint16_t nPeerPort);
 
 void HookOn();
 void HookOff();
@@ -88,12 +92,14 @@ bool hookapi(char *dllname, char *procname, DWORD_PTR myfuncaddr, HOOKSTRUCT *ho
 	hModule = LoadLibrary(dllname);
 	hookfunc->funcaddr = GetProcAddress(hModule, procname);
 	if (hookfunc->funcaddr == NULL)
+	{
 		return false;
+	}
 
 	memcpy(hookfunc->olddata, hookfunc->funcaddr, 5);
 	hookfunc->newdata[0] = 0xe9; //JMP指令
-	DWORD_PTR jmpaddr = myfuncaddr - (DWORD_PTR)hookfunc->funcaddr - 5;
-	memcpy(&hookfunc->newdata[1], &jmpaddr, 5);
+	LONG_PTR jmpaddr = myfuncaddr - (DWORD_PTR)hookfunc->funcaddr - 5;
+	memcpy(&hookfunc->newdata[1], &jmpaddr, 4);
 	return true;
 }
 //---------------------------------------------------------------------------
@@ -107,6 +113,16 @@ void HookOnOne(HOOKSTRUCT *hookfunc)
 	VirtualProtectEx(hProc, hookfunc->funcaddr, 5, dwIdOld, &dwIdOld);
 }
 //---------------------------------------------------------------------------
+void HookOffOne(HOOKSTRUCT *hookfunc)
+{
+	HANDLE hProc;
+	dwIdOld = dwIdNew;
+	hProc = OpenProcess(PROCESS_ALL_ACCESS, 0, dwIdOld);
+	VirtualProtectEx(hProc, hookfunc->funcaddr, 5, PAGE_READWRITE, &dwIdOld);
+	WriteProcessMemory(hProc, hookfunc->funcaddr, hookfunc->olddata, 5, 0);
+	VirtualProtectEx(hProc, hookfunc->funcaddr, 5, dwIdOld, &dwIdOld);
+}
+//---------------------------------------------------------------------------
 void HookOn()
 {
 	HookOnOne(&recvapi);
@@ -116,16 +132,6 @@ void HookOn()
 	HookOnOne(&sendapi1);
 	HookOnOne(&sendtoapi1);
 	HookOnOne(&WSASendapi);
-}
-//---------------------------------------------------------------------------
-void HookOffOne(HOOKSTRUCT *hookfunc)
-{
-	HANDLE hProc;
-	dwIdOld = dwIdNew;
-	hProc = OpenProcess(PROCESS_ALL_ACCESS, 0, dwIdOld);
-	VirtualProtectEx(hProc, hookfunc->funcaddr, 5, PAGE_READWRITE, &dwIdOld);
-	WriteProcessMemory(hProc, hookfunc->funcaddr, hookfunc->olddata, 5, 0);
-	VirtualProtectEx(hProc, hookfunc->funcaddr, 5, dwIdOld, &dwIdOld);
 }
 
 //---------------------------------------------------------------------------
@@ -147,11 +153,16 @@ int WINAPI Myrecv(SOCKET s, char FAR *buf, int len, int flags)
 	nReturn = recv(s, buf, len, flags);
 	HookOnOne(&recvapi);
 
-	char *tmpbuf = new char[len + 100];
-	memset(tmpbuf, 0, sizeof(tmpbuf));
-	sprintf(tmpbuf, "recv|%d|%d|%s", GetCurrentProcessId(), len, buf);
-	sndmsg(tmpbuf);
-	delete tmpbuf;
+	if (nReturn > 0)
+	{
+		uint32_t nHostIP = 0;
+		uint16_t nHostPort = 0;
+		uint32_t nPeerIP = 0;
+		uint16_t nPeerPort = 0;
+		NetAPI::GetHostName(s, &nHostIP, &nHostPort);
+		NetAPI::GetPeerName(s, &nPeerIP, &nPeerPort);
+		sndmsg("recv", buf, nReturn, nHostIP, nHostPort, nPeerIP, nPeerPort);
+	}
 	return(nReturn);
 }
 //---------------------------------------------------------------------------
@@ -162,11 +173,16 @@ int WINAPI Myrecv1(SOCKET s, char FAR *buf, int len, int flags)
 	nReturn = recv(s, buf, len, flags);
 	HookOnOne(&recvapi1);
 
-	char * const tmpbuf = new char[len + 100];
-	memset(tmpbuf, 0, sizeof(tmpbuf));
-	sprintf(tmpbuf, "recv1|%d|%d|%s", GetCurrentProcessId(), len, buf);
-	sndmsg(tmpbuf);
-	delete tmpbuf;
+	if (nReturn > 0)
+	{
+		uint32_t nHostIP = 0;
+		uint16_t nHostPort = 0;
+		uint32_t nPeerIP = 0;
+		uint16_t nPeerPort = 0;
+		NetAPI::GetHostName(s, &nHostIP, &nHostPort);
+		NetAPI::GetPeerName(s, &nPeerIP, &nPeerPort);
+		sndmsg("recv1", buf, nReturn, nHostIP, nHostPort, nPeerIP, nPeerPort);
+	}
 	return(nReturn);
 }
 //---------------------------------------------------------------------------
@@ -177,14 +193,16 @@ int WINAPI Mysend(SOCKET s, char FAR *buf, int len, int flags)
 	nReturn = send(s, buf, len, flags);
 	HookOnOne(&sendapi);
 
-	char *tmpbuf = new char[len + 100];
-	memset(tmpbuf, 0, sizeof(tmpbuf));
-	sprintf(tmpbuf, "send|%d|%d|%s",
-		GetCurrentProcessId(),
-		len,
-		buf);
-	sndmsg(tmpbuf);
-	delete tmpbuf;
+	if (nReturn > 0)
+	{
+		uint32_t nHostIP = 0;
+		uint16_t nHostPort = 0;
+		uint32_t nPeerIP = 0;
+		uint16_t nPeerPort = 0;
+		NetAPI::GetHostName(s, &nHostIP, &nHostPort);
+		NetAPI::GetPeerName(s, &nPeerIP, &nPeerPort);
+		sndmsg("send", buf, len, nHostIP, nHostPort, nPeerIP, nPeerPort);
+	}
 	return(nReturn);
 }
 //---------------------------------------------------------------------------
@@ -195,14 +213,16 @@ int WINAPI Mysend1(SOCKET s, char FAR *buf, int len, int flags)
 	nReturn = send(s, buf, len, flags);
 	HookOnOne(&sendapi1);
 
-	char *tmpbuf = new char[len + 100];
-	memset(tmpbuf, 0, sizeof(tmpbuf));
-	sprintf(tmpbuf, "send1|%d|%d|%s",
-		GetCurrentProcessId(),
-		len,
-		buf);
-	sndmsg(tmpbuf);
-	delete tmpbuf;
+	if (nReturn > 0)
+	{
+		uint32_t nHostIP = 0;
+		uint16_t nHostPort = 0;
+		uint32_t nPeerIP = 0;
+		uint16_t nPeerPort = 0;
+		NetAPI::GetHostName(s, &nHostIP, &nHostPort);
+		NetAPI::GetPeerName(s, &nPeerIP, &nPeerPort);
+		sndmsg("send1", buf, len, nHostIP, nHostPort, nPeerIP, nPeerPort);
+	}
 	return(nReturn);
 }
 //--------------------------------------------------------------------------
@@ -214,14 +234,16 @@ int WINAPI Mysendto(SOCKET s, const char FAR * buf, int len,
 	nReturn = sendto(s, buf, len, flags, to, tolen);
 	HookOnOne(&sendtoapi);
 
-	char *tmpbuf = new char[len + 100];
-	memset(tmpbuf, 0, sizeof(tmpbuf));
-	sprintf(tmpbuf, "sendto|%d|%d|%s",
-		GetCurrentProcessId(),
-		len,
-		buf);
-	sndmsg(tmpbuf);
-	delete tmpbuf;
+	if (nReturn > 0)
+	{
+		uint32_t nHostIP = 0;
+		uint16_t nHostPort = 0;
+		uint32_t nPeerIP = 0;
+		uint16_t nPeerPort = 0;
+		NetAPI::GetHostName(s, &nHostIP, &nHostPort);
+		NetAPI::GetPeerName(s, &nPeerIP, &nPeerPort);
+		sndmsg("sendto", buf, len, nHostIP, nHostPort, nPeerIP, nPeerPort);
+	}
 	return(nReturn);
 }
 //--------------------------------------------------------------------------
@@ -233,14 +255,16 @@ int WINAPI Mysendto1(SOCKET s, const char FAR * buf, int len,
 	nReturn = sendto(s, buf, len, flags, to, tolen);
 	HookOnOne(&sendtoapi1);
 
-	char *tmpbuf = new char[len + 100];
-	memset(tmpbuf, 0, sizeof(tmpbuf));
-	sprintf(tmpbuf, "sendto1|%d|%d|%s",
-		GetCurrentProcessId(),
-		len,
-		buf);
-	sndmsg(tmpbuf);
-	delete tmpbuf;
+	if (nReturn > 0)
+	{
+		uint32_t nHostIP = 0;
+		uint16_t nHostPort = 0;
+		uint32_t nPeerIP = 0;
+		uint16_t nPeerPort = 0;
+		NetAPI::GetHostName(s, &nHostIP, &nHostPort);
+		NetAPI::GetPeerName(s, &nPeerIP, &nPeerPort);
+		sndmsg("sendto1", buf, len, nHostIP, nHostPort, nPeerIP, nPeerPort);
+	}
 	return(nReturn);
 }
 //----------------------------------------------------------------------------
@@ -260,11 +284,16 @@ int WINAPI MyWSASend(
 		lpNumberOfBytesSent, dwFlags, lpOverlapped, lpCompletionRoutine);
 	HookOnOne(&WSASendapi);
 
-	char *tmpbuf = new char[*lpNumberOfBytesSent + 100];
-	memset(tmpbuf, 0, sizeof(tmpbuf));
-	sprintf(tmpbuf, "WSASend|%d|%d|%s", GetCurrentProcessId(), *lpNumberOfBytesSent, lpBuffers->buf);
-	sndmsg(tmpbuf);
-	delete tmpbuf;
+	if (nReturn >= 0 && lpNumberOfBytesSent != NULL &&  *lpNumberOfBytesSent>0)
+	{
+		uint32_t nHostIP = 0;
+		uint16_t nHostPort = 0;
+		uint32_t nPeerIP = 0;
+		uint16_t nPeerPort = 0;
+		NetAPI::GetHostName(s, &nHostIP, &nHostPort);
+		NetAPI::GetPeerName(s, &nPeerIP, &nPeerPort);
+		sndmsg("WSASend", lpBuffers->buf, *lpNumberOfBytesSent, nHostIP, nHostPort, nPeerIP, nPeerPort);
+	}
 	return(nReturn);
 }
 
@@ -273,13 +302,34 @@ int WINAPI MyWSASend(
 // 考虑到简单性,用了COPYDATASTRUCT结构
 // 用内存映射应该会快一点
 //-----------------------------------------------------------------
-bool sndmsg(char *buf)
+bool sndmsg(const char* api, const char *buf, const int len, uint32_t nHostIP, uint16_t nHostPort, uint32_t nPeerIP, uint16_t nPeerPort)
 {
-	COPYDATASTRUCT cds;
-	cds.dwData = sizeof(COPYDATASTRUCT);
-	cds.cbData = (DWORD)strlen(buf);
-	cds.lpData = buf;
-	SendMessage(g_hForm, WM_COPYDATA, (WPARAM)NULL, (LPARAM)&cds);
+	if (goPipeClient.IsShutDown())
+	{
+		return false;
+	}
+	//MessageBox(0, "hehehehehehehe", "data", MB_ICONINFORMATION);
+	NSPROTO::COM_DATA data;
+	if (len > sizeof(data.data))
+	{
+		NSPROTO::COM_ERR err;
+		err.processid = GetCurrentProcessId();
+		char sTmpBuf[128] = { 0 };
+		char sTmpBuf1[128] = { 0 };
+		NetAPI::N2P(nHostIP, sTmpBuf, sizeof(sTmpBuf));
+		NetAPI::N2P(nPeerIP, sTmpBuf1, sizeof(sTmpBuf1));
+		sprintf(err.errormsg, "超出缓冲区 api=%s len=%d host=%s:%d target=%s:%d", api, len, sTmpBuf, nHostPort, sTmpBuf1, nPeerPort);
+		goPipeClient.SendMsg2Server(&err);
+		return false;
+	}
+	strcpy(data.sparam1, api);
+	data.hostip = nHostIP;
+	data.hostport = nHostPort;
+	data.peerip = nPeerIP;
+	data.peerport = nPeerPort;
+	data.len = len;
+	memcpy(data.data, buf, data.len);
+	goPipeClient.SendMsg2Server(&data);
 	return true;
 }
 

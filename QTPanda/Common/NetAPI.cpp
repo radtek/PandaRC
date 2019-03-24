@@ -343,6 +343,33 @@ uint32_t NetAPI::P2N(const char* pszIP)
 	return oAddr.s_addr;
 }
 
+bool NetAPI::GetHostName(HSOCKET hSock, uint32_t* puHostIP, uint16_t* puHostPort)
+{
+	struct sockaddr_in addr_in;
+	memset(&addr_in, 0, (int)sizeof(addr_in));
+	int nAddrLen = (int)sizeof(addr_in);
+	int nRet = getsockname(hSock, (struct sockaddr*)&addr_in, &nAddrLen);
+	if (nRet == -1)
+	{
+#ifdef __linux
+		const char* psErr = strerror(errno);
+#else
+		const char* psErr = Platform::LastErrorStr(GetLastError());
+#endif
+		printf("%s\n", psErr);
+		return false;
+	}
+	if (puHostIP != NULL)
+	{
+		*puHostIP = addr_in.sin_addr.s_addr;	//网络字节顺序
+	}
+	if (puHostPort != NULL)
+	{
+		*puHostPort = ntohs(addr_in.sin_port);	//转成主机字节顺序
+	}
+	return true;
+}
+
 bool NetAPI::GetPeerName(HSOCKET hSock, uint32_t* puPeerIP, uint16_t* puPeerPort)
 {
 	struct sockaddr_in oAddr;

@@ -27,6 +27,7 @@ namespace NetAPI
 	uint32_t P2N(const char* pIP);
 	const char* N2P(uint32_t nIP, char *pBuf, int nBufLen);
 	bool GetPeerName(HSOCKET nSock, uint32_t* puPeerIP, uint16_t* puPeerPort);
+	bool GetHostName(HSOCKET hSock, uint32_t* puHostIP, uint16_t* puHostPort);
 
 	unsigned long long N2Hll(unsigned long long val);
 	unsigned long long H2Nll(unsigned long long val);

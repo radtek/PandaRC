@@ -1,7 +1,10 @@
 // dllmain.cpp : 定义 DLL 应用程序的入口点。
 #include "stdafx.h"
+#include <stdio.h>
 #include "Hook.h"
+
 char szOutputBuffer[1024] = { 0 };
+NamedPipeClient goPipeClient;
 
 ///< 枚举窗口参数
 typedef struct
@@ -52,10 +55,20 @@ BOOL APIENTRY DllMain(HMODULE hInst,
 	{
 		g_hinstDll = hInst;
 		g_hForm = GetWindowHwndByPID(GetCurrentProcessId());
-		sndmsg("I'm in*********************\n");
-		//g_hForm = FindWindow(NULL, "QTPanda");
-		sprintf(szOutputBuffer, "DLL已进入目标进程。form:%u inst:%u", g_hForm, hInst);
+		sprintf(szOutputBuffer, "precess attach pid=%u", GetCurrentProcessId());
 		MessageBox(NULL, szOutputBuffer, "信息", MB_ICONINFORMATION);
+		if (!goPipeClient.Init())
+		{
+			MessageBox(NULL, "InitPipClient fail\n", "ERROR", MB_OK);
+			return(false);
+		}
+		NSPROTO::CLT_REG reg;
+		reg.processid = GetCurrentProcessId();
+		if (!goPipeClient.SendMsg2Server(&reg))
+		{
+			MessageBox(NULL, "SendMsg2Server fail\n", "ERROR", MB_OK);
+			return(false);
+		}
 		if (!InitHook())
 		{
 			MessageBox(NULL, "InitHook fail\n", "ERROR", MB_OK);
@@ -70,8 +83,8 @@ BOOL APIENTRY DllMain(HMODULE hInst,
 	case DLL_PROCESS_DETACH:
 	{
 		UninstallHook();
-		sprintf(szOutputBuffer, "DLL已从目标进程卸载 proc id:%d", GetCurrentProcessId());
-		MessageBox(NULL, szOutputBuffer, "信息", MB_ICONINFORMATION);
+		sprintf(szOutputBuffer, "precess detach pid=%u", GetCurrentProcessId());
+		MessageBox(0, szOutputBuffer, "信息", MB_ICONINFORMATION);
 	}
 	break;
 	}

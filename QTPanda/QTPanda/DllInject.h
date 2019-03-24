@@ -19,14 +19,14 @@ DWORD FindProcess(LPCTSTR lpszProcess)
 			dwRet = pe32.th32ProcessID;
 			//char szName[32] = { 0 };
 			//sprintf_s(szName, "found------>%s\n", pe32.szExeFile);
-			//OutputDebugStringA(szName);
+			//OutputDebugString(szName);
 			break;
 		}
 		else
 		{
 			//char szName[32] = { 0 };
 			//sprintf_s(szName, "%s\n", pe32.szExeFile);
-			//OutputDebugStringA(szName);
+			//OutputDebugString(szName);
 		}
 	} while (Process32Next(hSnapshot, &pe32));
 	CloseHandle(hSnapshot);
@@ -38,13 +38,13 @@ bool FindProcessModule(LPCTSTR lpszProcess, LPCTSTR lpszModule, MODULEENTRY32* o
 	DWORD dwProcessID = FindProcess(lpszProcess);
 	if (dwProcessID == 0)
 	{
-		OutputDebugStringA("找不到进程\n");
+		OutputDebugString("找不到进程\n");
 		return false;
 	}
 	HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, dwProcessID);
 	if (hSnapshot == NULL)
 	{
-		OutputDebugStringA("创建进程快照失败\n");
+		OutputDebugString("创建进程快照失败\n");
 		return false;
 	}
 
@@ -52,7 +52,7 @@ bool FindProcessModule(LPCTSTR lpszProcess, LPCTSTR lpszModule, MODULEENTRY32* o
 	me32.dwSize = sizeof(MODULEENTRY32);
 	if (!Module32First(hSnapshot, &me32))
 	{
-		OutputDebugStringA("取进程模块失败\n");
+		OutputDebugString("取进程模块失败\n");
 		return false;
 	}
 	do
@@ -75,7 +75,7 @@ bool WriteString2Process(HANDLE hProcess, LPCTSTR lpszName, LPVOID& Out_lpBuf, S
 	LPVOID lpBuf = VirtualAllocEx(hProcess, NULL, dwSize, MEM_COMMIT, PAGE_READWRITE);
 	if (lpBuf == NULL)
 	{
-		OutputDebugStringA("分配远程内存失败\n");
+		OutputDebugString("分配远程内存失败\n");
 		return false;
 	}
 	if (WriteProcessMemory(hProcess, lpBuf, (LPVOID)lpszName, dwSize, &dwWritten))
@@ -84,13 +84,13 @@ bool WriteString2Process(HANDLE hProcess, LPCTSTR lpszName, LPVOID& Out_lpBuf, S
 		if (dwWritten != dwSize)
 		{
 			VirtualFreeEx(hProcess, lpBuf, dwSize, MEM_DECOMMIT);
-			OutputDebugStringA("写入远程内存错误\n");
+			OutputDebugString("写入远程内存错误\n");
 			return false;
 		}
 	}
 	else
 	{
-		OutputDebugStringA("写入远程内存失败\n");
+		OutputDebugString("写入远程内存失败\n");
 		return false;
 	}
 	Out_lpBuf = lpBuf;
@@ -106,7 +106,7 @@ bool WriteDword2Process(HANDLE hProcess, DWORD dwValue, LPVOID& Out_lpBuf, SIZE_
 	LPVOID lpBuf = VirtualAllocEx(hProcess, NULL, dwSize, MEM_COMMIT, PAGE_READWRITE);
 	if (lpBuf == NULL)
 	{
-		OutputDebugStringA("分配远程内存失败\n");
+		OutputDebugString("分配远程内存失败\n");
 		return false;
 	}
 	if (WriteProcessMemory(hProcess, lpBuf, (LPVOID)&dwValue, dwSize, &dwWritten))
@@ -115,13 +115,13 @@ bool WriteDword2Process(HANDLE hProcess, DWORD dwValue, LPVOID& Out_lpBuf, SIZE_
 		if (dwWritten != dwSize)
 		{
 			VirtualFreeEx(hProcess, lpBuf, dwSize, MEM_DECOMMIT);
-			OutputDebugStringA("写入远程内存错误\n");
+			OutputDebugString("写入远程内存错误\n");
 			return false;
 		}
 	}
 	else
 	{
-		OutputDebugStringA("写入远程内存失败\n");
+		OutputDebugString("写入远程内存失败\n");
 		return false;
 	}
 	Out_lpBuf = lpBuf;
@@ -139,7 +139,7 @@ DWORD GetRemoteLastError(HANDLE hProcess)
 	GetExitCodeThread(hThread, &dwError);
 	CloseHandle(hThread);
 	sprintf_s(szOutputBuf, "Last Error:%d\n", dwError);
-	OutputDebugStringA(szOutputBuf);
+	OutputDebugString(szOutputBuf);
 	return dwError;
 }
 
@@ -148,14 +148,14 @@ bool InjectDll(LPCTSTR lpszProcess, LPCTSTR lpszDllName)
 	DWORD dwProcessID = FindProcess(lpszProcess);
 	if (dwProcessID == 0)
 	{
-		OutputDebugStringA("找不到进程\n");
+		OutputDebugString("找不到进程\n");
 		return false;
 	}
 	// 打开目标进程  
 	HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS | PROCESS_CREATE_THREAD | PROCESS_VM_OPERATION | PROCESS_VM_WRITE, FALSE, dwProcessID);
 	if (hProcess == NULL)
 	{
-		OutputDebugStringA("打开进程失败\n");
+		OutputDebugString("打开进程失败\n");
 		return false;
 	}
 
@@ -177,8 +177,8 @@ bool InjectDll(LPCTSTR lpszProcess, LPCTSTR lpszDllName)
 	{
 		CloseHandle(hProcess);
 
-		sprintf_s(szOutputBuf, "创建远程线程失败:%d\n", GetLastError());
-		OutputDebugStringA(szOutputBuf);
+		sprintf_s(szOutputBuf, "创建远程线程失败 GLE=%d\n", GetLastError());
+		OutputDebugString(szOutputBuf);
 		return false;
 	}
 	// 等待LoadLibrary加载完毕  
@@ -194,29 +194,37 @@ bool InjectDll(LPCTSTR lpszProcess, LPCTSTR lpszDllName)
 
 bool UnjectDll(LPCTSTR lpszProcess, LPCTSTR lpszDllName)
 {
+	std::string dllname;
+	std::string tmpstr = lpszDllName;
+	int pos = tmpstr.rfind("\\");
+	if (pos != std::string::npos)
+	{
+		dllname = tmpstr.substr(pos+1);
+	}
+
 	DWORD dwProcessID = FindProcess(lpszProcess);
 	if (dwProcessID == 0)
 	{
-		OutputDebugStringA("找不到进程\n");
+		OutputDebugString("找不到进程\n");
 		return false;
 	}
 	// 打开目标进程  
 	HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS | PROCESS_CREATE_THREAD | PROCESS_VM_OPERATION | PROCESS_VM_WRITE, FALSE, dwProcessID);
 	if (hProcess == NULL)
 	{
-		OutputDebugStringA("打开进程失败\n");
+		OutputDebugString("打开进程失败\n");
 		return false;
 	}
 
 	// 使目标进程调用FreeLibrary，卸载DLL  
 	LPVOID pFunc = FreeLibrary;
 	MODULEENTRY32 me;
-	if (!FindProcessModule(lpszProcess, lpszDllName, &me))
+	if (!FindProcessModule(lpszProcess, dllname.c_str(), &me))
 	{
 		CloseHandle(hProcess);
 
-		sprintf_s(szOutputBuf, "获取模块句柄失败: %s\n", lpszDllName);
-		OutputDebugStringA(szOutputBuf);
+		sprintf_s(szOutputBuf, "获取模块句柄失败: %s\n", dllname.c_str());
+		OutputDebugString(szOutputBuf);
 		return false;
 	}
 	DWORD dwID, dwCode;
@@ -226,7 +234,7 @@ bool UnjectDll(LPCTSTR lpszProcess, LPCTSTR lpszDllName)
 		CloseHandle(hProcess);
 
 		sprintf_s(szOutputBuf, "创建远程线程失败:%d\n", GetLastError());
-		OutputDebugStringA(szOutputBuf);
+		OutputDebugString(szOutputBuf);
 		return false;
 	}
 	// 等待FreeLibrary卸载完毕  
@@ -239,8 +247,8 @@ bool UnjectDll(LPCTSTR lpszProcess, LPCTSTR lpszDllName)
 		DWORD dwError = GetRemoteLastError(hProcess);
 		CloseHandle(hProcess);
 
-		sprintf_s(szOutputBuf, "卸载DLL失败 Err Code: %d\n", dwError);
-		OutputDebugStringA(szOutputBuf);
+		sprintf_s(szOutputBuf, "卸载DLL失败 GLE=%d\n", dwError);
+		OutputDebugString(szOutputBuf);
 		return false;
 	}
 	CloseHandle(hThread);

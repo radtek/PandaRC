@@ -1,52 +1,96 @@
 #include "QTPanda.h"
-#include "DllInject.h"
 #include "Common/NamedPipe.h"
+#include "Common/NetAPI.h"
+#include "DllInject.h"
+#include <QFile.h>
+#include <QTextStream.h>
 
-NamedPipeClient oClient;
+NamedPipeServer goPipeServer;
+LPCSTR lpszProcessName = "MEmuHeadless.exe";
+LPCSTR lpszDllName = "E:\\PandaRC\\QTPanda\\Debug\\HACK.dll";
+
+std::string ToHex(uint8_t* data, int len)
+{
+	char sTmpBuf[8];
+	std::string strHex;
+	for (int i = 0; i < len; i++)
+	{
+		sprintf(sTmpBuf, "%02X ", data[i]);
+		strHex += sTmpBuf;
+	}
+	return strHex;
+}
+
+void QTPanda::closeEvent(QCloseEvent *event)
+{
+	unjectDll(lpszProcessName, lpszDllName);
+}
+
+void QTPanda::injectDll(LPCSTR lpszProcessName, LPCSTR lpszDllName)
+{
+	::InjectDll(lpszProcessName, lpszDllName);
+}
+
+void QTPanda::unjectDll(LPCSTR lpszProcessName, LPCSTR lpszDllName)
+{
+	DWORD dwProcessID = FindProcess(lpszProcessName);
+	NSPROTO::SRV_EXITTHREAD exit;
+	goPipeServer.SendMsg2Client(dwProcessID, &exit);
+	::UnjectDll(lpszProcessName, lpszDllName);
+}
+
+void QTPanda::WorkderFunc(void* param)
+{
+	char sIPHost[128] = { 0 };
+	char sIPPeer[128] = { 0 };
+	char sHeader[1024] = { 0 };
+	QTPanda* pParent = (QTPanda*)param;
+	MailBox<NSPROTO::COM_DATA>& oMailBox = goPipeServer.GetMailBox();
+
+	QFile ofile("./ouput.txt");
+	ofile.remove();
+	for (;;)
+	{
+		NSPROTO::COM_DATA data;
+		bool bRet = oMailBox.Recv(&data, 100);
+		if (!bRet) continue;
+		NetAPI::N2P(data.hostip, sIPHost, sizeof(sIPHost));
+		NetAPI::N2P(data.peerip, sIPPeer, sizeof(sIPPeer));
+		sprintf(sHeader, "\n%s host=%s:%d peer=%s:%d len=%d data=", data.sparam1, sIPHost, data.hostport, sIPPeer, data.peerport, data.len);
+		std::string output = sHeader;
+		std::string hex = ToHex((uint8_t*)data.data, data.len);
+		output += hex;
+		std::string raw(data.data, data.len);
+		output += "\nraw=" + raw;
+		
+		if (ofile.open(QIODevice::Append | QIODevice::WriteOnly))
+		{
+			QDataStream stream(&ofile);
+			stream.writeBytes(output.c_str(), output.size());
+			ofile.close();
+		}
+		//OutputDebugString(output.c_str());
+	}
+}
 
 QTPanda::QTPanda(QWidget *parent)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);
-
-	//sprintf(szOutputBuf, "mai form:%u", (HWND)winId());
-	//MessageBox(NULL, szOutputBuf, "пео╒", MB_ICONINFORMATION);
-	oClient.Init();
+	goPipeServer.Init((HWND)winId());
+	m_oWorderThread.Create(&QTPanda::WorkderFunc, this);
 } 
-
-bool QTPanda::nativeEvent(const QByteArray &eventType, void *message, long *result)
-{
-	MSG* msg = (MSG*)message;
-	if (msg->message == WM_COPYDATA)
-	{
-		COPYDATASTRUCT* p = reinterpret_cast<COPYDATASTRUCT*>(msg->lParam);
-		OutputDebugStringA(static_cast<char*>(p->lpData));
-	}
-	return QMainWindow::nativeEvent(eventType, message, result);
-}
 
 void QTPanda::onBtnSendMsg()
 {
-	NSPROTO::DATA data;
-	data.un.iparam1 = 1;
-	oClient.SendMsg2Server(&data);
-	//HWND hwnd = (HWND)winId();
-	//char buf[32] = { 0 };
-	//sprintf(buf, "%u\n", hwnd);
-	//OutputDebugStringA(buf);
-
-	//COPYDATASTRUCT cds;
-	//cds.dwData = sizeof(COPYDATASTRUCT);
-	//cds.cbData = (DWORD)strlen("hehehe");
-	//cds.lpData = "hehehe";
-	//SendMessage(hwnd, WM_COPYDATA, (WPARAM)NULL, (LPARAM)&cds);
 }
+
 void QTPanda::onBtnInject()
 {
-	InjectDll("xshellcore.exe", "F:\\Test\\QTPanda\\Debug\\HACK.dll");
+	injectDll(lpszProcessName, lpszDllName);
 }
 
 void QTPanda::onBtnUnject()
 {
-	UnjectDll("xshellcore.exe", "HACK.dll");
+	unjectDll(lpszProcessName, lpszDllName);
 }
