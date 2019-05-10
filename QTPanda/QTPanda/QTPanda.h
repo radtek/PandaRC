@@ -25,4 +25,5 @@ protected:
 private:
 	Ui::QTPandaClass ui;
 	XThread m_oWorderThread;
+	bool m_bShutDown;
 };
