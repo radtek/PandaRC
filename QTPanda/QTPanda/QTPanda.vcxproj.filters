@@ -27,6 +27,9 @@
     <Filter Include="Source Files\Common">
       <UniqueIdentifier>{0d094f17-2b08-484d-a480-b0b36d2602f6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Decoder">
+      <UniqueIdentifier>{ae816620-04b1-4350-a569-fef894168986}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -108,6 +111,9 @@
     </ClInclude>
     <ClInclude Include="..\Common\XTime.h">
       <Filter>Source Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Decoder\websocket.h">
+      <Filter>Source Files\Decoder</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -250,6 +250,7 @@
     <ClInclude Include="..\Common\XSignal.h" />
     <ClInclude Include="..\Common\XThread.h" />
     <ClInclude Include="..\Common\XTime.h" />
+    <ClInclude Include="..\Decoder\websocket.h" />
     <ClInclude Include="DllInject.h" />
     <ClInclude Include="GeneratedFiles\ui_QTPanda.h" />
   </ItemGroup>
