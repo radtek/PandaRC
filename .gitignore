@@ -31,3 +31,5 @@ Debug
 /QTPanda/QTPanda/ipch/DLL-28e5b44b/*.ipch
 /QTPanda/QTPanda/ipch/DLL-b9082e3/*.ipch
 /QTPanda/QTPanda/*.opendb
+/QTPanda/QTPanda/*.db
+/QTPanda/QTPanda/.vs/QTPanda/v14/*.suo
